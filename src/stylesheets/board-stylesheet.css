@@ -1,0 +1,33 @@
+.country-label{
+	-fx-font-size: 6px;
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-padding: -15px 0 0 0;
+	-fx-pref-width: 30px;
+	-fx-rotate: 90deg;
+
+
+}
+
+.city-label{
+	-fx-font-size: 10px;
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-pref-width: 30px;
+	-fx-padding: 25px 0 0 0;
+	-fx-rotate: 90deg;
+	
+	
+}
+.city-cell .country-header{
+	-fx-background-color: #EB534E;
+	
+}
+
+.city-cell{
+
+}
+
+.general-grid{
+	-fx-border-color: black;
+}
