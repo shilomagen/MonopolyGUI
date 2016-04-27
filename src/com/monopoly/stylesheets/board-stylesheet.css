@@ -120,3 +120,130 @@
 .general-grid{
 	-fx-border-color: black;
 }
+
+.trans-util-cell.left{
+	-fx-border-width: 1px 1px 0px 0px;
+	-fx-border-color: #C8C8C8;
+	-fx-alignment: center_right;
+	-fx-pref-height: 150px;
+	-fx-pref-width: 84px;
+}
+
+.trans-util-image.left{
+	-fx-translate-x: -5px;
+}
+.trans-util-label.left{
+	-fx-alignment: center;
+	-fx-content-display: center;
+	-fx-pref-height: 17px;
+	-fx-pref-width: 59px;
+	-fx-rotate: 90deg;
+	-fx-translate-x: -15px;
+	-fx-wrap-text: true;
+
+}
+
+.trans-util-price.left{	
+	-fx-alignment: center;
+	-fx-content-display: center;
+	-fx-pref-height: 17px;
+	-fx-pref-width: 56px;
+	-fx-rotate: 90deg;
+	-fx-translate-x: -15px;
+	-fx-wrap-text: true;
+
+	
+}
+.trans-util-cell.right{
+	-fx-border-width: 1px 1px 0px 0px;
+	-fx-border-color: #C8C8C8;
+	-fx-alignment: center_right;
+	-fx-pref-height: 150px;
+	-fx-pref-width: 84px;
+}
+
+.trans-util-image.right{
+	-fx-translate-y: -5px;
+	-fx-translate-x: -5px;
+	-fx-rotate: 180deg;
+}
+.trans-util-label.right{
+	-fx-alignment: center;
+	-fx-content-display: center;
+	-fx-pref-height: 17px;
+	-fx-pref-width: 59px;
+	-fx-rotate: 270deg;
+	-fx-translate-x: 5px;
+	-fx-wrap-text: true;
+}
+
+.trans-util-price.right{	
+	-fx-alignment: center;
+	-fx-content-display: center;
+	-fx-pref-height: 17px;
+	-fx-pref-width: 56px;
+	-fx-rotate: 270deg;
+	-fx-translate-x: 15px;
+	-fx-wrap-text: true;
+}
+.trans-util-cell.top{
+	-fx-border-width: 1px 1px 0px 0px;
+	-fx-border-color: #C8C8C8;
+	-fx-alignment: center_right;
+	-fx-pref-height: 150px;
+	-fx-pref-width: 84px;
+}
+
+.trans-util-image.top{
+
+	-fx-translate-y: -5px;
+	-fx-rotate: 90deg;
+}
+.trans-util-label.top{
+	-fx-alignment: center;
+	-fx-content-display: center;
+	-fx-pref-height: 17px;
+	-fx-pref-width: 59px;
+	-fx-rotate: 180deg;
+	-fx-translate-y: -15px;
+	-fx-wrap-text: true;
+}
+
+.trans-util-price.top{	
+	-fx-alignment: center;
+	-fx-content-display: center;
+	-fx-pref-height: 17px;
+	-fx-pref-width: 56px;
+	-fx-rotate: 180deg;
+
+	-fx-wrap-text: true;
+}
+
+.trans-util-cell.bottom{
+	-fx-border-width: 1px 1px 0px 0px;
+	-fx-border-color: #C8C8C8;
+	-fx-alignment: center_right;
+	-fx-pref-height: 150px;
+	-fx-pref-width: 84px;
+}
+
+.trans-util-image.bottom{
+	-fx-translate-y: 2px;
+	-fx-rotate: 270deg;
+}
+.trans-util-label.bottom{
+	-fx-alignment: center;
+	-fx-content-display: center;
+	-fx-pref-height: 17px;
+	-fx-pref-width: 59px;
+	-fx-translate-y: 12px;
+	-fx-wrap-text: true;
+}
+
+.trans-util-price.bottom{	
+	-fx-alignment: center;
+	-fx-content-display: center;
+	-fx-pref-height: 17px;
+	-fx-pref-width: 56px;
+	-fx-wrap-text: true;
+}
