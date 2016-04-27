@@ -1,4 +1,4 @@
-package scenes;
+package com.monopoly.scenes;
 
 import java.io.IOException;
 
@@ -31,11 +31,7 @@ public class LandingSceneController {
 	// Event Listener on Button[#playBtn].onAction
 	@FXML
 	public void startGame(ActionEvent event) throws IOException {
-		Parent gameParent = FXMLLoader.load(getClass().getResource("GameBoard.fxml"));
-		Scene monopolyBoard = new Scene(gameParent);
-		Stage appStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		appStage.setScene(monopolyBoard);
-		appStage.show();
+		System.out.println("started");
 
 	}
 	// Event Listener on Button[#exitBtn].onAction

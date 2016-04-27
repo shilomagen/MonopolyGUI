@@ -1,4 +1,4 @@
-package scenes;
+package com.monopoly.garbage;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.SplitPane;

@@ -1,4 +1,6 @@
-package scenes;
+package com.monopoly.scenes;
+
+import com.monopoly.utility.BoardConsts;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
@@ -12,7 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
@@ -29,15 +30,13 @@ public class MainBoard {
 		this.borderPane.setPrefHeight(768.0);
 		this.borderPane.setPrefWidth(1024.0);
 		this.gridPane = new GridPane();
+		this.borderPane.setCenter(this.gridPane);
 		this.gridPane.getStyleClass().add("general-grid");
 		this.gridPane.setPrefHeight(606.0);
 		this.gridPane.setPrefWidth(737.0);
-		this.borderPane.setCenter(this.gridPane);
-
-		
-		
+		this.gridPane.setMaxHeight(606.0);
+		this.gridPane.setMaxWidth(737.0);
 	}
-	
 	
 	public void createBasicGridPane(){
 		
@@ -112,8 +111,8 @@ public class MainBoard {
 		jailPane.setPrefHeight(200);
 		jailPane.setPrefWidth(200);
 		ImageView jailImage = new ImageView();
-		jailImage.setFitHeight(100);
-		jailImage.setFitWidth(100);
+		jailImage.setFitHeight(91);
+		jailImage.setFitWidth(91);
 		jailImage.setPickOnBounds(true);
 		jailImage.setPreserveRatio(true);
 		jailImage.setImage(new Image(BoardConsts.IMAGE_URL + "/jail-free-pass.png"));
@@ -122,14 +121,13 @@ public class MainBoard {
 		this.gridPane.add(jailPane, 0, 8);
 	}
 
-
 	public void createFreeParkingPane() {
 		StackPane freeParkingPane = new StackPane();
 		freeParkingPane.setPrefHeight(200);
 		freeParkingPane.setPrefWidth(200);
 		ImageView freeParkingImage = new ImageView();
-		freeParkingImage.setFitHeight(100);
-		freeParkingImage.setFitWidth(100);
+		freeParkingImage.setFitHeight(91);
+		freeParkingImage.setFitWidth(91);
 		freeParkingImage.setPickOnBounds(true);
 		freeParkingImage.setPreserveRatio(true);
 		freeParkingImage.setImage(new Image(BoardConsts.IMAGE_URL + "/free-parking.png"));
@@ -145,8 +143,8 @@ public class MainBoard {
 		goToJailPane.setPrefHeight(200);
 		goToJailPane.setPrefWidth(200);
 		ImageView goToJailImage = new ImageView();
-		goToJailImage.setFitHeight(100);
-		goToJailImage.setFitWidth(100);
+		goToJailImage.setFitHeight(91);
+		goToJailImage.setFitWidth(91);
 		goToJailImage.setPickOnBounds(true);
 		goToJailImage.setPreserveRatio(true);
 		goToJailImage.setImage(new Image(BoardConsts.IMAGE_URL + "/gotojail.png"));
@@ -162,8 +160,8 @@ public class MainBoard {
 		startPane.setPrefHeight(200);
 		startPane.setPrefWidth(200);
 		ImageView startImage = new ImageView();
-		startImage.setFitHeight(100);
-		startImage.setFitWidth(100);
+		startImage.setFitHeight(91);
+		startImage.setFitWidth(91);
 		startImage.setPickOnBounds(true);
 		startImage.setPreserveRatio(true);
 		startImage.setImage(new Image(BoardConsts.IMAGE_URL + "/start.png"));
@@ -181,20 +179,27 @@ public class MainBoard {
 	public void createCityPane(int col, int row){
 		 SplitPane cityPane = new SplitPane();
 		 cityPane.getStyleClass().add("city-cell");
+		 Pane infoPane = new StackPane();
+		 Label countryLabel = new Label("Country");
+		 Label cityLabel = new Label("City");
+		 Label priceLabel = new Label("155$");
+		 cityLabel.getStyleClass().add("city-label");
+		 countryLabel.getStyleClass().add("country-label");
+		 priceLabel.getStyleClass().add("price-label");
+		 
+		 infoPane.getChildren().add(countryLabel);
+		 infoPane.getChildren().add(cityLabel);
+		 infoPane.getChildren().add(priceLabel);
+
 		 
 		 if (col == 0){ //LEFT SIDE OF MONOPOLY BOARD
 			 cityPane.setOrientation(Orientation.HORIZONTAL);
 			 cityPane.prefHeight(BoardConsts.SPLIT_PREF_HEIGHT_LEFT_RIGHT);
 			 cityPane.prefWidth(BoardConsts.SPLIT_PREF_WIDTH_LEFT_RIGHT);
 			 cityPane.setDividerPosition(0, BoardConsts.SPLIT_DIVIDOR_UP_LEFT);
-			 Pane infoPane = new StackPane();
-
-			 Label countryLabel = new Label("Country");
-			 Label cityLabel = new Label("City");
-			 cityLabel.getStyleClass().add("city-label");
-			 countryLabel.getStyleClass().add("country-label");
-			 infoPane.getChildren().add(countryLabel);
-			 infoPane.getChildren().add(cityLabel);
+			 cityLabel.getStyleClass().add("left");
+			 countryLabel.getStyleClass().add("left");
+			 priceLabel.getStyleClass().add("left");
 			 cityPane.getItems().add(infoPane);	 
 			 cityPane.getItems().add(new Pane());
 			 cityPane.getItems().get(1).getStyleClass().add("country-header");
@@ -206,9 +211,12 @@ public class MainBoard {
 			 cityPane.prefHeight(BoardConsts.SPLIT_PREF_HEIGHT_LEFT_RIGHT);
 			 cityPane.prefWidth(BoardConsts.SPLIT_PREF_WIDTH_LEFT_RIGHT);
 			 cityPane.setDividerPosition(0, BoardConsts.SPLIT_DIVIDOR_DOWN_RIGHT);
+			 cityLabel.getStyleClass().add("right");
+			 countryLabel.getStyleClass().add("right");
+			 priceLabel.getStyleClass().add("right");
 			 cityPane.getItems().add(new Pane());
-//			 cityPane.getItems().get(0).setStyle("-fx-background-color:blue;");
-			 cityPane.getItems().add(new Pane());
+			 cityPane.getItems().get(0).getStyleClass().add("country-header");
+			 cityPane.getItems().add(infoPane);
 			 this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		 }
 		 else if (row==0){//UPPER SIDE OF MONOPOLY BOARD
@@ -216,7 +224,10 @@ public class MainBoard {
 			 cityPane.prefHeight(BoardConsts.SPLIT_PREF_HEIGHT_UP_DOWN);
 			 cityPane.prefWidth(BoardConsts.SPLIT_PREF_WIDTH_UP_DOWN);
 			 cityPane.setDividerPosition(0, BoardConsts.SPLIT_DIVIDOR_UP_LEFT);
-			 cityPane.getItems().add(new Pane()); 
+			 cityLabel.getStyleClass().add("top");
+			 countryLabel.getStyleClass().add("top");
+			 priceLabel.getStyleClass().add("top");
+			 cityPane.getItems().add(infoPane); 
 			 cityPane.getItems().add(new Pane());
 //			 cityPane.getItems().get(1).setStyle("-fx-background-color:yellow;");
 			 this.assignPaneOnGridByCoordinates(col, row, cityPane);
@@ -226,9 +237,11 @@ public class MainBoard {
 			 cityPane.prefHeight(BoardConsts.SPLIT_PREF_HEIGHT_UP_DOWN);
 			 cityPane.prefWidth(BoardConsts.SPLIT_PREF_WIDTH_UP_DOWN);
 			 cityPane.setDividerPosition(0, BoardConsts.SPLIT_DIVIDOR_DOWN_RIGHT);
+			 cityLabel.getStyleClass().add("bottom");
+			 countryLabel.getStyleClass().add("bottom");
+			 priceLabel.getStyleClass().add("bottom");
 			 cityPane.getItems().add(new Pane());
-//			 cityPane.getItems().get(0).setStyle("-fx-background-color:pink;");
-			 cityPane.getItems().add(new Pane());
+			 cityPane.getItems().add(infoPane);
 			 this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		 }
 	}

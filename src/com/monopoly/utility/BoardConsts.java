@@ -1,4 +1,4 @@
-package scenes;
+package com.monopoly.utility;
 
 public final class BoardConsts {
 	public static final double SPLIT_DIVIDOR_UP_LEFT = 0.7222;
@@ -7,7 +7,7 @@ public final class BoardConsts {
 	public static final double SPLIT_PREF_WIDTH_UP_DOWN = 160;
 	public static final double SPLIT_PREF_HEIGHT_LEFT_RIGHT = 160;
 	public static final double SPLIT_PREF_WIDTH_LEFT_RIGHT = 200;
-	public static final String IMAGE_URL = "/resources";
+	public static final String IMAGE_URL = "/com/monopoly/assets";
 	
 	
 

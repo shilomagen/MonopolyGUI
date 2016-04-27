@@ -1,0 +1,122 @@
+.country-label.left{
+	-fx-alignment: center;
+	-fx-font-weight: normal;
+	-fx-text-alignment: center;
+	-fx-rotate: 90deg;
+	-fx-min-width: 73.7px;
+	-fx-max-width: 73.7px;
+	-fx-translate-x: 30px;
+}
+
+.city-label.left{
+
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-min-width: 73.7px;
+	-fx-max-width: 73.7px;
+	-fx-rotate: 90deg;
+	-fx-translate-x: 15px;
+	
+}
+
+.city-label.right{
+	-fx-rotate: 270deg;
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-min-width: 73.7px;
+	-fx-max-width: 73.7px;
+	-fx-translate-x: -15px;
+}
+
+.country-label.right{
+	-fx-rotate: 270deg;
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-min-width: 73.7px;
+	-fx-max-width: 73.7px;
+	-fx-translate-x: -30px;
+}
+
+.country-label.top{
+	-fx-rotate:180deg;
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-min-width: 49px;
+	-fx-max-width: 60.6px;	
+	-fx-translate-y: 25px;
+	
+}
+
+.city-label.top{
+	-fx-rotate:180deg;
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-min-width: 49px;
+	-fx-max-width: 60.6px;	
+	-fx-translate-y: 10px;
+}
+
+.country-label.bottom{
+
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-min-width: 49px;
+	-fx-max-width: 60.6px;	
+	-fx-translate-y: -22px;
+	
+}
+
+.city-label.bottom{
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-min-width: 49px;
+	-fx-max-width: 60.6px;	
+	-fx-translate-y: -10px;
+}
+.city-cell .country-header{
+	-fx-background-color: #EB534E;
+	
+}
+
+.price-label.left{
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-rotate: 90deg;
+	-fx-translate-x: -30px;
+	-fx-min-width: 73.7px;
+	-fx-max-width: 73.7px;
+}
+
+.price-label.right{
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-rotate: 270deg;
+	-fx-translate-x: 30px;
+	-fx-min-width: 73.7px;
+	-fx-max-width: 73.7px;
+}
+
+.price-label.bottom{
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-translate-y: 20px;
+	-fx-min-width: 49px;
+	-fx-max-width: 60.6px;	
+}
+
+.price-label.top{
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-rotate: 180deg;
+	-fx-translate-y: -20px;
+	-fx-min-width: 49px;
+	-fx-max-width: 60.6px;	
+}
+
+.city-cell{
+
+}
+
+.general-grid{
+	-fx-border-color: black;
+}
