@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="768.0" prefWidth="1024.0" stylesheets="@../stylesheets/board-stylesheet.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scenes.GameBoardController.java">
    <children>
@@ -201,16 +200,6 @@
                         <String fx:value="cell" />
                      </styleClass>
                   </SplitPane>
-                  <SplitPane dividerPositions="0.7222222222222222" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="6">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country8" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
                   <SplitPane dividerPositions="0.7222222222222222" onMouseClicked="#splitUpData" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="7">
                      <items>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
@@ -260,23 +249,13 @@
                   <Pane prefHeight="200.0" prefWidth="200.0" styleClass="cell" GridPane.columnIndex="4" />
                   <Pane prefHeight="200.0" prefWidth="200.0" styleClass="cell" GridPane.columnIndex="4" GridPane.rowIndex="8" />
                   <Pane prefHeight="200.0" prefWidth="200.0" styleClass="cell" GridPane.columnIndex="8" GridPane.rowIndex="4" />
-                  <StackPane alignment="CENTER_RIGHT" prefHeight="150.0" prefWidth="84.0" styleClass="trans-cell" GridPane.rowIndex="6">
+                  <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="6">
                      <children>
-                        <ImageView fitHeight="57.0" fitWidth="60.0" pickOnBounds="true" translateX="-5.0">
+                        <ImageView fitHeight="82.0" fitWidth="57.0" pickOnBounds="true" rotate="180.0" StackPane.alignment="CENTER">
                            <image>
-                              <Image url="@../assets/transportation.png" />
+                              <Image url="@../assets/warrant.png" />
                            </image>
                         </ImageView>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="59.0" rotate="90.0" text="Label" translateX="-15.0" wrapText="true" StackPane.alignment="CENTER">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="56.0" rotate="90.0" text="120$" textAlignment="CENTER" translateX="-15.0" StackPane.alignment="CENTER_LEFT">
-                           <font>
-                              <Font size="8.0" />
-                           </font>
-                        </Label>
                      </children>
                   </StackPane>
                </children>

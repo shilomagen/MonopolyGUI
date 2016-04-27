@@ -1,5 +1,7 @@
 package com.monopoly.application;
 	
+import com.monopoly.engine.GameBoard;
+import com.monopoly.engine.InitiateGame;
 import com.monopoly.scenes.MainBoard;
 
 import javafx.application.Application;
@@ -18,11 +20,15 @@ public class Main extends Application {
 //			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 //			primaryStage.setScene(scene);
 //			primaryStage.show();
+			InitiateGame.xmlLoad();
 			AnchorPane root = new AnchorPane();
 			MainBoard mainBoard = new MainBoard();
 			mainBoard.createBasicGridPane();
+			
 			BorderPane borderPane = mainBoard.getBorderPane();
 			root.getChildren().add(borderPane);
+			GameBoard gameBoard = new GameBoard(mainBoard);
+			gameBoard.loadTheBoard();
 			Scene scene = new Scene(root,1024, 768);
 			borderPane.prefHeightProperty().bind(scene.heightProperty());
 	        borderPane.prefWidthProperty().bind(scene.widthProperty());
