@@ -21,17 +21,12 @@ public class Main extends Application {
 //			primaryStage.setScene(scene);
 //			primaryStage.show();
 			InitiateGame.xmlLoad();
-			AnchorPane root = new AnchorPane();
 			MainBoard mainBoard = new MainBoard();
-			mainBoard.createBasicGridPane();
-			
-			BorderPane borderPane = mainBoard.getBorderPane();
-			root.getChildren().add(borderPane);
+			AnchorPane root = mainBoard.getRoot();
+
 			GameBoard gameBoard = new GameBoard(mainBoard);
 			gameBoard.loadTheBoard();
 			Scene scene = new Scene(root,1024, 768);
-			borderPane.prefHeightProperty().bind(scene.heightProperty());
-	        borderPane.prefWidthProperty().bind(scene.widthProperty());
 			scene.getStylesheets().add(getClass().getResource("/com/monopoly/stylesheets/board-stylesheet.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("testttt");

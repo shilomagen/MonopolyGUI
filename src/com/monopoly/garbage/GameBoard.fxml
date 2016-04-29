@@ -1,266 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="768.0" prefWidth="1024.0" stylesheets="@../stylesheets/board-stylesheet.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scenes.GameBoardController.java">
    <children>
-      <BorderPane prefHeight="768.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <center>
-            <GridPane id="main-grid-board" maxHeight="606.0" maxWidth="737.0" prefHeight="606.0" prefWidth="737.0" BorderPane.alignment="CENTER">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.12863159179688" minWidth="10.0" prefWidth="134.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.7" minWidth="10.0" prefWidth="73.7" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.7" minWidth="10.0" prefWidth="73.7" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.7" minWidth="10.0" prefWidth="73.7" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.7" minWidth="10.0" prefWidth="73.7" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.7" minWidth="10.0" prefWidth="73.7" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.7" minWidth="10.0" prefWidth="73.7" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.7" minWidth="10.0" prefWidth="73.7" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.12863159179688" minWidth="10.0" prefWidth="134.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints maxHeight="121.12863159179688" minHeight="10.0" prefHeight="90.9" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="60.6" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="60.6" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="60.6" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="60.6" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="60.6" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="60.6" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="60.6" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="90.9" vgrow="SOMETIMES" />
-               </rowConstraints>
+      <AnchorPane layoutX="167.0" layoutY="124.0" prefHeight="768.0" prefWidth="835.0" style="-fx-background-color: green;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="189.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <GridPane gridLinesVisible="true" layoutX="85.0" layoutY="86.0" prefHeight="768.0" prefWidth="835.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.85" minWidth="10.0" prefWidth="113.85" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="56.0" prefWidth="75.9" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.85" minWidth="10.0" prefWidth="113.85" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="104.7" minHeight="10.0" prefHeight="104.7" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="104.7" minHeight="10.0" prefHeight="104.7" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="1" GridPane.rowSpan="7">
+                  <ImageView fitHeight="559.0" fitWidth="608.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.columnSpan="8" GridPane.rowIndex="1" GridPane.rowSpan="8">
+                     <image>
+                        <Image url="@../assets/main-pic.png" />
+                     </image>
+                  </ImageView>
+                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.rowSpan="4">
                      <children>
-                        <ImageView fitHeight="426.0" fitWidth="498.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: yellow;">
+                        <ImageView fitHeight="223.0" fitWidth="189.0" layoutX="38.0" layoutY="21.0" pickOnBounds="true" rotate="6.3">
                            <image>
-                              <Image url="@../resources/main-pic.png" />
+                              <Image url="@../assets/surprise-deck.png" />
                            </image>
                         </ImageView>
                      </children>
-                  </StackPane>
-                  <SplitPane prefHeight="160.0" prefWidth="200.0" styleClass="cell, country6" GridPane.rowIndex="1" />
-                  <SplitPane onMouseClicked="#splitRightData" prefHeight="160.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="1">
-                     <styleClass>
-                        <String fx:value="country1" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="2">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="country-header" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country1" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="3">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="country-header" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country1" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="5">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="country-header" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country2" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="6">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="country-header" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country2" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="7">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="country-header" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country2" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.2777777777777778" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country4" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.2777777777777778" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country4" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.2777777777777778" onMouseClicked="#splitDownData" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="2" GridPane.rowIndex="8">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <Label layoutX="17.0" layoutY="5.0" styleClass="country-label" text="Label" />
-                           </children></AnchorPane>
-                     </items>
-                     <styleClass>
-                        <String fx:value="country4" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.7264957264957265" prefHeight="160.0" prefWidth="200.0" GridPane.rowIndex="7">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="country-header" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country5" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.7264957264957265" prefHeight="160.0" prefWidth="200.0" GridPane.rowIndex="5">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="country-header" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country5" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.7222222222222222" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="1">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country7" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.7222" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="2">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country7" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.7222" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="3">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country7" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.7222222222222222" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="5">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country8" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.7222222222222222" onMouseClicked="#splitUpData" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="7">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country8" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.2777777777777778" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="5" GridPane.rowIndex="8">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country3" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.2777777777777778" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="6" GridPane.rowIndex="8">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country3" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <SplitPane dividerPositions="0.2777777777777778" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="7" GridPane.rowIndex="8">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="country-header" />
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
-                     </items>
-                     <styleClass>
-                        <String fx:value="country3" />
-                        <String fx:value="cell" />
-                     </styleClass>
-                  </SplitPane>
-                  <Pane prefHeight="200.0" prefWidth="119.0" styleClass="cell" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" styleClass="cell" GridPane.columnIndex="8" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" styleClass="cell" GridPane.rowIndex="8" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" styleClass="cell" GridPane.columnIndex="8" GridPane.rowIndex="8" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" styleClass="cell" GridPane.rowIndex="3" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" styleClass="cell" GridPane.rowIndex="4" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" styleClass="cell" GridPane.columnIndex="4" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" styleClass="cell" GridPane.columnIndex="4" GridPane.rowIndex="8" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" styleClass="cell" GridPane.columnIndex="8" GridPane.rowIndex="4" />
-                  <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="6">
+                  </Pane>
+                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.columnSpan="4" GridPane.rowIndex="5" GridPane.rowSpan="4">
                      <children>
-                        <ImageView fitHeight="82.0" fitWidth="57.0" pickOnBounds="true" rotate="180.0" StackPane.alignment="CENTER">
+                        <ImageView fitHeight="223.0" fitWidth="189.0" layoutX="76.0" layoutY="29.0" pickOnBounds="true" rotate="8.0">
                            <image>
-                              <Image url="@../assets/warrant.png" />
+                              <Image url="@../assets/warrant-deck.png" />
                            </image>
                         </ImageView>
                      </children>
-                  </StackPane>
+                  </Pane>
                </children>
             </GridPane>
-         </center>
-      </BorderPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="835.0" prefHeight="768.0" prefWidth="189.0" style="-fx-background-color: red;">
+         <children>
+            <VBox prefHeight="768.0" prefWidth="189.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: black;" />
+                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: white;">
+                     <children>
+                        <ImageView fitHeight="70.0" fitWidth="69.0" layoutX="60.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/players-avatar/Ricketts.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" layoutX="1.0" layoutY="85.0" prefHeight="17.0" prefWidth="187.0" text="Eden Swissa" />
+                        <Label alignment="CENTER" layoutX="1.0" layoutY="105.0" prefHeight="17.0" prefWidth="187.0" text="820$" />
+                        <ImageView fitHeight="17.0" fitWidth="15.0" layoutX="169.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/player-on.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: black;" />
+                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: white;" />
+                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: black;" />
+                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: white;" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

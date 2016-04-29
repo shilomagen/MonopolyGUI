@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 .country-label.left{
 	-fx-alignment: center;
 	-fx-font-weight: normal;
@@ -12,8 +19,8 @@
 
 	-fx-alignment: center;
 	-fx-text-alignment: center;
-	-fx-min-width: 73.7px;
-	-fx-max-width: 73.7px;
+	-fx-min-width: 75.9px;
+	-fx-max-width: 75.9px;
 	-fx-rotate: 90deg;
 	-fx-translate-x: 15px;
 	
@@ -23,8 +30,8 @@
 	-fx-rotate: 270deg;
 	-fx-alignment: center;
 	-fx-text-alignment: center;
-	-fx-min-width: 73.7px;
-	-fx-max-width: 73.7px;
+	-fx-min-width: 75.9px;
+	-fx-max-width: 75.9px;
 	-fx-translate-x: -15px;
 }
 
@@ -114,7 +121,7 @@
 }
 
 .city-cell{
-
+	-fx-font-size: 12px;
 }
 
 .general-grid{
@@ -247,3 +254,18 @@
 	-fx-pref-width: 56px;
 	-fx-wrap-text: true;
 }
+
+.warrant-pane{
+	-fx-border-color: #C8C8C8;
+	-fx-border-width: 0px 1px 0px 1px;
+}
+
+.logo-pane{
+	-fx-border-color: black;
+	-fx-border-width: 1px;
+}
+
+
+
+
+

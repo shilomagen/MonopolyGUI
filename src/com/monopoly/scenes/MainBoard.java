@@ -11,30 +11,67 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class MainBoard {
-	private BorderPane borderPane;
-	private GridPane gridPane;
+	AnchorPane root;
+	AnchorPane gridAnchor;
+	GridPane boardPane;
+	AnchorPane playersAnchor;
 
 	public MainBoard() {
-		this.borderPane = new BorderPane();
-		this.borderPane.getStyleClass().add("board-border-pane");
-		this.borderPane.setPrefHeight(768.0);
-		this.borderPane.setPrefWidth(1024.0);
-		this.gridPane = new GridPane();
-		this.borderPane.setCenter(this.gridPane);
-		this.gridPane.getStyleClass().add("general-grid");
-		this.gridPane.setPrefHeight(606.0);
-		this.gridPane.setPrefWidth(737.0);
-		this.gridPane.setMaxHeight(606.0);
-		this.gridPane.setMaxWidth(737.0);
+		root = new AnchorPane();
+		root.setPrefHeight(768);
+		root.setPrefWidth(1024);
+
+		gridAnchor = new AnchorPane();
+		gridAnchor.getStyleClass().add("grid-anchor");
+		gridAnchor.setLayoutX(167.0);
+		gridAnchor.setLayoutY(124);
+		gridAnchor.setPrefHeight(768);
+		gridAnchor.setPrefWidth(835);
+		AnchorPane.setRightAnchor(gridAnchor, 189.0);
+		AnchorPane.setTopAnchor(gridAnchor, 0.0);
+		AnchorPane.setBottomAnchor(gridAnchor, 0.0);
+		AnchorPane.setLeftAnchor(gridAnchor, 0.0);
+
+		boardPane = new GridPane();
+		boardPane.setLayoutX(85);
+		boardPane.setLayoutY(86);
+		boardPane.setPrefHeight(768);
+		boardPane.setPrefWidth(835);
+		boardPane.getStyleClass().add("general-grid");
+		AnchorPane.setBottomAnchor(boardPane, 0.0);
+		AnchorPane.setLeftAnchor(boardPane, 0.0);
+		AnchorPane.setRightAnchor(boardPane, 0.0);
+		AnchorPane.setTopAnchor(boardPane, 0.0);
+
+		gridAnchor.getChildren().add(boardPane);
+		this.createBasicGridPane();
+
+		playersAnchor = new AnchorPane();
+		playersAnchor.setLayoutX(835);
+		playersAnchor.setPrefHeight(768);
+		playersAnchor.setPrefWidth(189);
+		this.createPlayerPane();
+		
+		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
+		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
+		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
+		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
+		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
+		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
+
+		
+		root.getChildren().addAll(gridAnchor, playersAnchor);
+
 	}
 
 	public void createBasicGridPane() {
@@ -45,15 +82,15 @@ public class MainBoard {
 		colRegular = new ColumnConstraints();
 
 		colEdge.setHgrow(Priority.SOMETIMES);
-		colEdge.setMaxWidth(121.12863159179688);
+		colEdge.setMaxWidth(113.85);
 		colEdge.setMinWidth(10.0);
-		colEdge.setPrefWidth(134.0);
+		colEdge.setPrefWidth(113.85);
 		colEdge.setHalignment(HPos.CENTER);
 
 		colRegular.setHgrow(Priority.SOMETIMES);
-		colRegular.setMaxWidth(73.7);
+		colRegular.setMaxWidth(75.9);
 		colRegular.setMinWidth(10.0);
-		colRegular.setPrefWidth(73.7);
+		colRegular.setPrefWidth(75.9);
 		colRegular.setHalignment(HPos.CENTER);
 
 		// Create Rows
@@ -61,45 +98,45 @@ public class MainBoard {
 		rowEdge = new RowConstraints();
 		rowRegular = new RowConstraints();
 
-		rowEdge.setMaxHeight(121.12863159179688);
+		rowEdge.setMaxHeight(104.7);
 		rowEdge.setMinHeight(10.0);
-		rowEdge.setPrefHeight(90.9);
+		rowEdge.setPrefHeight(104.7);
 		rowEdge.setVgrow(Priority.SOMETIMES);
 		rowEdge.setValignment(VPos.CENTER);
 
-		rowRegular.setMaxHeight(60.6);
+		rowRegular.setMaxHeight(69.8);
 		rowRegular.setMinHeight(10.0);
-		rowRegular.setPrefHeight(49.0);
+		rowRegular.setPrefHeight(69.8);
 		rowRegular.setVgrow(Priority.SOMETIMES);
 		rowRegular.setValignment(VPos.CENTER);
 
-		this.gridPane.getColumnConstraints().add(colEdge);
-		this.gridPane.getRowConstraints().add(rowEdge);
+		this.boardPane.getColumnConstraints().add(colEdge);
+		this.boardPane.getRowConstraints().add(rowEdge);
 		for (int i = 0; i < 8; i++) {
-			this.gridPane.getColumnConstraints().add(colRegular);
-			this.gridPane.getRowConstraints().add(rowRegular);
+			this.boardPane.getColumnConstraints().add(colRegular);
+			this.boardPane.getRowConstraints().add(rowRegular);
 		}
-		this.gridPane.getColumnConstraints().add(colEdge);
-		this.gridPane.getRowConstraints().add(rowEdge);
+		this.boardPane.getColumnConstraints().add(colEdge);
+		this.boardPane.getRowConstraints().add(rowEdge);
 
-//		for (int i = 1; i < 9; i++) {
-//			this.createSurprisePane(i, 0);
-//		}
-//		for (int i = 1; i < 9; i++) {
-//			this.createSurprisePane(i, 9);
-//		}
-//		for (int i = 1; i < 9; i++) {
-//			this.createSurprisePane(0, i);
-//		}
-//		for (int i = 1; i < 9; i++) {
-//			this.createSurprisePane(9, i);
-//		}
-//
-//		this.createBoardLogo();
-//		this.createStartPane();
-//		this.createGoToJailPane();
-//		this.createFreeParkingPane();
-//		this.createJailPane();
+		// for (int i = 1; i < 9; i++) {
+		// this.createCityPane(i, 0, "SHILO", "MANGAM", 22);
+		// }
+		// for (int i = 1; i < 9; i++) {
+		// this.createSurprisePane(i, 9);
+		// }
+		// for (int i = 1; i < 9; i++) {
+		// this.createSurprisePane(0, i);
+		// }
+		// for (int i = 1; i < 9; i++) {
+		// this.createSurprisePane(9, i);
+		// }
+		//
+		// this.createBoardLogo();
+		// this.createStartPane();
+		// this.createGoToJailPane();
+		// this.createFreeParkingPane();
+		// this.createJailPane();
 
 	}
 
@@ -116,7 +153,7 @@ public class MainBoard {
 		jailImage.setRotate(270);
 		jailPane.getChildren().add(jailImage);
 		StackPane.setAlignment(jailImage, Pos.CENTER);
-		this.gridPane.add(jailPane, col, row);
+		this.boardPane.add(jailPane, col, row);
 	}
 
 	public void createFreeParkingPane(int col, int row) {
@@ -131,7 +168,7 @@ public class MainBoard {
 		freeParkingImage.setImage(new Image(BoardConsts.IMAGE_URL + "/free-parking.png"));
 		freeParkingPane.getChildren().add(freeParkingImage);
 		StackPane.setAlignment(freeParkingImage, Pos.CENTER);
-		this.gridPane.add(freeParkingPane, col, row);
+		this.boardPane.add(freeParkingPane, col, row);
 
 	}
 
@@ -147,7 +184,7 @@ public class MainBoard {
 		goToJailImage.setImage(new Image(BoardConsts.IMAGE_URL + "/gotojail.png"));
 		goToJailPane.getChildren().add(goToJailImage);
 		StackPane.setAlignment(goToJailImage, Pos.CENTER);
-		this.gridPane.add(goToJailPane, col, row);
+		this.boardPane.add(goToJailPane, col, row);
 
 	}
 
@@ -163,12 +200,12 @@ public class MainBoard {
 		startImage.setImage(new Image(BoardConsts.IMAGE_URL + "/start.png"));
 		startPane.getChildren().add(startImage);
 		StackPane.setAlignment(startImage, Pos.CENTER);
-		this.gridPane.add(startPane, col, row);
+		this.boardPane.add(startPane, col, row);
 
 	}
 
 	public void assignPaneOnGridByCoordinates(int gridCol, int gridRow, Node paneToAssign) {
-		this.gridPane.add(paneToAssign, gridCol, gridRow);
+		this.boardPane.add(paneToAssign, gridCol, gridRow);
 	}
 
 	public void createCityPane(int col, int row, String countryName, String cityName, int cityPrice) {
@@ -177,7 +214,7 @@ public class MainBoard {
 		Pane infoPane = new StackPane();
 		Label countryLabel = new Label(countryName);
 		Label cityLabel = new Label(cityName);
-		Label priceLabel = new Label(cityPrice+"$");
+		Label priceLabel = new Label(cityPrice + "$");
 		cityLabel.getStyleClass().add("city-label");
 		countryLabel.getStyleClass().add("country-label");
 		priceLabel.getStyleClass().add("price-label");
@@ -236,22 +273,47 @@ public class MainBoard {
 		}
 	}
 
-	public BorderPane getBorderPane() {
-		return this.borderPane;
-	}
-
 	public void createBoardLogo() {
 		StackPane logoPane = new StackPane();
 		logoPane.setPrefHeight(150.0);
 		logoPane.setPrefWidth(200.0);
 		ImageView logoImage = new ImageView();
-		logoImage.setFitHeight(426.0);
-		logoImage.setFitWidth(498.0);
+		logoPane.getStyleClass().add("logo-pane");
+		logoImage.setFitHeight(554.0);
+		logoImage.setFitWidth(604.0);
 		logoImage.setPickOnBounds(true);
 		logoImage.setPreserveRatio(true);
 		logoImage.setImage(new Image(BoardConsts.IMAGE_URL + "/main-pic.png"));
 		logoPane.getChildren().add(logoImage);
-		this.gridPane.add(logoPane, 1, 1, 8, 8);
+		this.boardPane.add(logoPane, 1, 1, 8, 8);
+		this.createCardDecks();
+	}
+
+	private void createCardDecks() {
+		Pane surprisePane = new Pane();
+		surprisePane.setPrefSize(200, 200);
+		ImageView surpriseImage = new ImageView(BoardConsts.IMAGE_URL + "/surprise-deck.png");
+		surpriseImage.setFitHeight(223);
+		surpriseImage.setFitWidth(189);
+		surpriseImage.setLayoutX(38);
+		surpriseImage.setLayoutY(21);
+		surpriseImage.setPickOnBounds(true);
+		surpriseImage.setRotate(6.3);
+		surprisePane.getChildren().add(surpriseImage);
+		this.boardPane.add(surprisePane, 1, 1, 4, 4);
+
+		Pane warrantPane = new Pane();
+		warrantPane.setPrefSize(200, 200);
+		ImageView warrantImage = new ImageView(BoardConsts.IMAGE_URL + "/warrant-deck.png");
+		warrantImage.setFitHeight(223);
+		warrantImage.setFitWidth(189);
+		warrantImage.setLayoutX(76);
+		warrantImage.setLayoutY(29);
+		warrantImage.setPickOnBounds(true);
+		warrantImage.setRotate(8.0);
+		warrantPane.getChildren().add(warrantImage);
+		this.boardPane.add(warrantPane, 5, 5, 4, 4);
+
 	}
 
 	public void createTransportationPane(int col, int row, String transName, int transportPrice) {
@@ -263,7 +325,7 @@ public class MainBoard {
 
 		Label transLabel = new Label(transName);
 		transLabel.getStyleClass().add("trans-util-label");
-		Label transPrice = new Label(transportPrice+"");
+		Label transPrice = new Label(transportPrice + "");
 		transPrice.getStyleClass().add("trans-util-price");
 
 		if (col == 0) { // LEFT SIDE OF MONOPOLY BOARD
@@ -326,7 +388,7 @@ public class MainBoard {
 
 		Label utilityLabel = new Label(utilName);
 		utilityLabel.getStyleClass().add("trans-util-label");
-		Label utilityPrice = new Label(utilPrice+"$");
+		Label utilityPrice = new Label(utilPrice + "$");
 		utilityPrice.getStyleClass().add("trans-util-price");
 
 		if (col == 0) { // LEFT SIDE OF MONOPOLY BOARD
@@ -386,7 +448,6 @@ public class MainBoard {
 		ImageView warrantImage = new ImageView(BoardConsts.IMAGE_URL + "/warrant.png");
 		warrantImage.getStyleClass().add("warrant-image");
 		warrantImage.setPickOnBounds(true);
-		
 
 		StackPane.setAlignment(warrantImage, Pos.CENTER);
 		warrantPane.getChildren().add(warrantImage);
@@ -454,4 +515,56 @@ public class MainBoard {
 		}
 	}
 
+	public AnchorPane getRoot() {
+		return this.root;
+	}
+
+	public void createPlayerPane(){
+		VBox playerVBox = new VBox();
+		playerVBox.setPrefSize(189.0, 768.0);
+		AnchorPane.setBottomAnchor(playerVBox, 0.0);
+		AnchorPane.setLeftAnchor(playerVBox, 0.0);
+		AnchorPane.setRightAnchor(playerVBox, 0.0);
+		AnchorPane.setTopAnchor(playerVBox, 0.0);
+		this.playersAnchor.getChildren().add(playerVBox);
+	}
+	
+	public void createPlayerProfile(VBox playersPane){
+		Pane playerProfile = new Pane();
+		playerProfile.setPrefSize(200.0, 128.0);
+		
+		ImageView playerAvatar = new ImageView(BoardConsts.IMAGE_URL + "/players-avatar/Ricketts.png");
+		playerAvatar.setFitHeight(70.0);
+		playerAvatar.setFitWidth(69.0);
+		playerAvatar.setLayoutY(7.0);
+		playerAvatar.setLayoutX(60);
+		playerAvatar.setPickOnBounds(true);
+		playerAvatar.setPreserveRatio(true);
+		
+		Label playerName = new Label("Eden Swissa");
+		playerName.setAlignment(Pos.CENTER);
+		playerName.setLayoutX(1.0);
+		playerName.setLayoutY(85.0);
+		playerName.setPrefSize(187.0, 17.0);
+		
+		Label playerMoney = new Label("820$");
+		playerMoney.setAlignment(Pos.CENTER);
+		playerMoney.setLayoutX(1.0);
+		playerMoney.setLayoutY(105.0);
+		playerMoney.setPrefSize(187.0, 17.0);
+		
+		ImageView playerStatus = new ImageView(BoardConsts.IMAGE_URL + "/player-on.png");
+		playerStatus.setFitHeight(17.0);
+		playerStatus.setFitWidth(15.0);
+		playerStatus.setLayoutX(169.0);
+		playerStatus.setLayoutY(4.0);
+		playerStatus.setPickOnBounds(true);
+		playerStatus.setPreserveRatio(true);
+		
+		playerProfile.getChildren().addAll(playerAvatar, playerName, playerMoney,playerStatus);
+		playersPane.getChildren().add(playerProfile);
+		
+	}
+	
 }
+
