@@ -41,7 +41,7 @@ public class MainBoard {
 		AnchorPane.setTopAnchor(gridAnchor, 0.0);
 		AnchorPane.setBottomAnchor(gridAnchor, 0.0);
 		AnchorPane.setLeftAnchor(gridAnchor, 0.0);
-
+		
 		boardPane = new GridPane();
 		boardPane.setLayoutX(85);
 		boardPane.setLayoutY(86);
