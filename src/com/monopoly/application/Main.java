@@ -23,7 +23,6 @@ public class Main extends Application {
 			InitiateGame.xmlLoad();
 			MainBoard mainBoard = new MainBoard();
 			AnchorPane root = mainBoard.getRoot();
-			//test
 			GameBoard gameBoard = new GameBoard(mainBoard);
 			gameBoard.loadTheBoard();
 			Scene scene = new Scene(root,1024, 768);
