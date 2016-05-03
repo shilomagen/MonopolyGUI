@@ -1,4 +1,4 @@
-package com.monopoly.player;
+package com.monopoly.engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,6 +8,8 @@ import java.util.Comparator;
 import com.monopoly.exception.DuplicateNameException;
 import com.monopoly.exception.EmptyNameException;
 import com.monopoly.exception.NullPictureException;
+import com.monopoly.player.PlayerInitiate;
+import com.monopoly.player.PlayerModel;
 
 import javafx.scene.image.Image;
 
