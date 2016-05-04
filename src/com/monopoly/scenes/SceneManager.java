@@ -34,6 +34,9 @@ public class SceneManager extends Application {
 	private Scene userCreatingScene;
 	private Pane userCreatingSceneLayout;
 
+	
+	private Scene mainBoardScene;
+	private MainBoardController mainBoardController;
 	private BooleanProperty finishedInit = new SimpleBooleanProperty(this, "Finish Init");
 
 	@Override
@@ -42,6 +45,13 @@ public class SceneManager extends Application {
 		this.primaryStage.setTitle("Start Screen");
 		this.loadLandingScreen();
 		this.loadUserCreatingScreen();
+		
+		mainBoardController = new MainBoardController(this);
+		mainBoardScene = mainBoardController.getMainBoardScene();
+		mainBoardController.setPlayersManager(userCreatingSceneController.getPlayersManager());
+		
+		
+		
 
 		primaryStage.setScene(landingScene);
 		primaryStage.show();
@@ -104,6 +114,13 @@ public class SceneManager extends Application {
 		return this.userCreatingScene;
 	}
 	
+	public Scene getMainBoardScene(){
+		return this.mainBoardScene;
+	}
+	
+	public MainBoardController getMainBoardController(){
+		return this.mainBoardController;
+	}
 
 	
 }

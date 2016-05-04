@@ -83,7 +83,7 @@ public class UserCreatingSceneController implements Initializable {
 	public void setPlayersManager(PlayersManager playersManager) {
 		this.playersManager = playersManager;
 	}
-
+	
 	/**
 	 * Initializes the controller class.
 	 */
@@ -157,6 +157,7 @@ public class UserCreatingSceneController implements Initializable {
 	protected void onContinue(ActionEvent event) {
 		finishedInit = new SimpleBooleanProperty(true);
 		sceneManager.getPrimaryStage().setScene(sceneManager.getStartScene());
+		
 	}
 
 	private void updateAddPlayerButtonState() {
@@ -289,5 +290,9 @@ public class UserCreatingSceneController implements Initializable {
 	@FXML
 	private void returnToLandingScene(ActionEvent event){
 		this.sceneManager.getPrimaryStage().setScene(this.sceneManager.getStartScene());
+	}
+	
+	public PlayersManager getPlayersManager(){
+		return this.playersManager;
 	}
 }

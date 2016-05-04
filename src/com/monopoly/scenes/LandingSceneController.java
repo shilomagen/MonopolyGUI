@@ -51,6 +51,12 @@ public class LandingSceneController implements Initializable {
         updateStarGameButtonVisability(isIsCreated());
         
     }
+    
+    @FXML
+    private void showMainBoard(){
+    	this.scneneManager.getMainBoardController().addPlayersToMainBoard();
+    	this.scneneManager.getPrimaryStage().setScene(this.scneneManager.getMainBoardScene());
+    }
 
     public BooleanProperty getCreatePlayerProperty() {
         return createPlayerProperty;

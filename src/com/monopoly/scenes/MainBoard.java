@@ -1,5 +1,6 @@
 package com.monopoly.scenes;
 
+import com.monopoly.player.PlayerInitiate;
 import com.monopoly.utility.BoardConsts;
 
 import javafx.geometry.HPos;
@@ -25,6 +26,7 @@ public class MainBoard {
 	AnchorPane gridAnchor;
 	GridPane boardPane;
 	AnchorPane playersAnchor;
+	
 
 	public MainBoard() {
 		root = new AnchorPane();
@@ -41,7 +43,7 @@ public class MainBoard {
 		AnchorPane.setTopAnchor(gridAnchor, 0.0);
 		AnchorPane.setBottomAnchor(gridAnchor, 0.0);
 		AnchorPane.setLeftAnchor(gridAnchor, 0.0);
-		
+
 		boardPane = new GridPane();
 		boardPane.setLayoutX(85);
 		boardPane.setLayoutY(86);
@@ -61,16 +63,10 @@ public class MainBoard {
 		playersAnchor.setPrefHeight(768);
 		playersAnchor.setPrefWidth(189);
 		this.createPlayerPane();
-		
-		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
-		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
-		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
-		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
-		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
-		this.createPlayerProfile((VBox)this.playersAnchor.getChildren().get(0));
 
-		
-		root.getChildren().addAll(gridAnchor, playersAnchor);
+
+//		root.getChildren().addAll(gridAnchor, playersAnchor);
+		root.getChildren().add(gridAnchor);
 
 	}
 
@@ -118,25 +114,6 @@ public class MainBoard {
 		}
 		this.boardPane.getColumnConstraints().add(colEdge);
 		this.boardPane.getRowConstraints().add(rowEdge);
-
-		// for (int i = 1; i < 9; i++) {
-		// this.createCityPane(i, 0, "SHILO", "MANGAM", 22);
-		// }
-		// for (int i = 1; i < 9; i++) {
-		// this.createSurprisePane(i, 9);
-		// }
-		// for (int i = 1; i < 9; i++) {
-		// this.createSurprisePane(0, i);
-		// }
-		// for (int i = 1; i < 9; i++) {
-		// this.createSurprisePane(9, i);
-		// }
-		//
-		// this.createBoardLogo();
-		// this.createStartPane();
-		// this.createGoToJailPane();
-		// this.createFreeParkingPane();
-		// this.createJailPane();
 
 	}
 
@@ -519,7 +496,7 @@ public class MainBoard {
 		return this.root;
 	}
 
-	public void createPlayerPane(){
+	public void createPlayerPane() {
 		VBox playerVBox = new VBox();
 		playerVBox.setPrefSize(189.0, 768.0);
 		AnchorPane.setBottomAnchor(playerVBox, 0.0);
@@ -528,31 +505,32 @@ public class MainBoard {
 		AnchorPane.setTopAnchor(playerVBox, 0.0);
 		this.playersAnchor.getChildren().add(playerVBox);
 	}
-	
-	public void createPlayerProfile(VBox playersPane){
+
+	public void createPlayerProfile(VBox playersPane, PlayerInitiate player) {
 		Pane playerProfile = new Pane();
 		playerProfile.setPrefSize(200.0, 128.0);
-		
-		ImageView playerAvatar = new ImageView(BoardConsts.IMAGE_URL + "/players-avatar/Ricketts.png");
+
+		ImageView playerAvatar = new ImageView();
+		playerAvatar.setImage(player.getImage());
 		playerAvatar.setFitHeight(70.0);
 		playerAvatar.setFitWidth(69.0);
 		playerAvatar.setLayoutY(7.0);
 		playerAvatar.setLayoutX(60);
 		playerAvatar.setPickOnBounds(true);
 		playerAvatar.setPreserveRatio(true);
-		
-		Label playerName = new Label("Eden Swissa");
+
+		Label playerName = new Label(player.getName());
 		playerName.setAlignment(Pos.CENTER);
 		playerName.setLayoutX(1.0);
 		playerName.setLayoutY(85.0);
 		playerName.setPrefSize(187.0, 17.0);
-		
-		Label playerMoney = new Label("820$");
+
+		Label playerMoney = new Label("1500$");
 		playerMoney.setAlignment(Pos.CENTER);
 		playerMoney.setLayoutX(1.0);
 		playerMoney.setLayoutY(105.0);
 		playerMoney.setPrefSize(187.0, 17.0);
-		
+
 		ImageView playerStatus = new ImageView(BoardConsts.IMAGE_URL + "/player-on.png");
 		playerStatus.setFitHeight(17.0);
 		playerStatus.setFitWidth(15.0);
@@ -560,11 +538,19 @@ public class MainBoard {
 		playerStatus.setLayoutY(4.0);
 		playerStatus.setPickOnBounds(true);
 		playerStatus.setPreserveRatio(true);
-		
-		playerProfile.getChildren().addAll(playerAvatar, playerName, playerMoney,playerStatus);
+
+		playerProfile.getChildren().addAll(playerAvatar, playerName, playerMoney, playerStatus);
 		playersPane.getChildren().add(playerProfile);
-		
+
 	}
 	
-}
+	public AnchorPane getPlayersAnchorPane(){
+		return this.playersAnchor;
+	}
+	public AnchorPane getGridAnchor(){
+		return this.gridAnchor;
+	}
+	
+	
 
+}
