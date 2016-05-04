@@ -16,12 +16,13 @@ import javafx.stage.Stage;
 
 public class LandingSceneController implements Initializable {
     
-    private SceneManager manager;
+    private SceneManager scneneManager;
 //    private PlayersManager playersManager;
 //    private PlayersController playersController; 
     final private BooleanProperty createPlayerProperty = new SimpleBooleanProperty(this, "Create Player Property");
  
 
+    
     @FXML
     private Button startGameButton;
     
@@ -42,8 +43,9 @@ public class LandingSceneController implements Initializable {
     }
     
     @FXML
-    public void onCreatPlayerButton(ActionEvent event) throws IOException {
+    public void onCreatePlayerButton(ActionEvent event) throws IOException {
         
+    	this.scneneManager.getPrimaryStage().setScene(this.scneneManager.getUserCreationScene());
         createPlayerProperty.set(true);
         setIsCreated(false);
         updateStarGameButtonVisability(isIsCreated());
@@ -70,7 +72,11 @@ public class LandingSceneController implements Initializable {
     }  
 
     public void setManager(SceneManager manager) {
-        this.manager = manager;
+        this.scneneManager = manager;
+    }
+    
+    public void activateStartGame(boolean val){
+    	this.startGameButton.setDisable(!val);
     }
     
     

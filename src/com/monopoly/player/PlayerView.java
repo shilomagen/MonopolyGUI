@@ -1,16 +1,12 @@
 package com.monopoly.player;
 
-import com.monopoly.utility.ImageUtils;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
-/**
- *
- * @author iblecher
- */
+
 public class PlayerView extends VBox{
 
     public PlayerView(String name, String gender,  boolean isHuman, Image image) {
@@ -24,9 +20,6 @@ public class PlayerView extends VBox{
     }
     
     private ImageView createImage(boolean isHuman, Image image){
-    	if (!isHuman){
-    		return new ImageView(getImage(isHuman));
-    	}
     	ImageView playerImage = new ImageView(image);
     	playerImage.setPreserveRatio(false);
     	playerImage.setFitHeight(150);
@@ -35,8 +28,4 @@ public class PlayerView extends VBox{
         return playerImage;
     }
 
-    private Image getImage(boolean isHuman) {
-        String filename = isHuman ? "human" : "computer";
-        return ImageUtils.getImage(filename);
-    }
 }

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Set;
 
 import com.monopoly.exception.DuplicateNameException;
 import com.monopoly.exception.EmptyNameException;
+import com.monopoly.exception.NoHumanPlayerException;
 import com.monopoly.exception.NullPictureException;
 import com.monopoly.player.PlayerInitiate;
 import com.monopoly.player.PlayerModel;
@@ -15,39 +17,54 @@ import javafx.scene.image.Image;
 
 public class PlayersManager {
 
-    private final PlayerModel playersModel;
+	private final PlayerModel playersModel;
 
-    public PlayersManager() {
-	playersModel = new PlayerModel();
-    }
+	public PlayersManager() {
+		playersModel = new PlayerModel();
+	}
 
-    public PlayerInitiate addPlayer(String name, boolean isHuman, String gender, Image image) throws DuplicateNameException, EmptyNameException, NullPictureException {
-	if (name == null || name.isEmpty()){
-	    throw new EmptyNameException();
+	public PlayerInitiate addPlayer(String name, boolean isHuman, String gender, Image image)
+			throws DuplicateNameException, EmptyNameException, NullPictureException {
+		if (name == null || name.isEmpty()) {
+			throw new EmptyNameException();
+		}
+		if (image == null) {
+			throw new NullPictureException();
+		}
+		PlayerInitiate newPlayer = new PlayerInitiate(name, isHuman, gender, image);
+		if (playersModel.isPlayerExists(newPlayer)) {
+			throw new DuplicateNameException();
+		} else {
+			playersModel.addPlayer(newPlayer);
+		}
+
+		return newPlayer;
 	}
-	if (image == null){
-		throw new NullPictureException();
+
+	public Collection<PlayerInitiate> getPlayers() {
+		ArrayList<PlayerInitiate> sortedPlayersList = new ArrayList<>(playersModel.getPlayers());
+		Collections.sort(sortedPlayersList, new PlayerComparator());
+		return sortedPlayersList;
 	}
-	PlayerInitiate newPlayer = new PlayerInitiate(name, isHuman, gender, image);
-	if (playersModel.isPlayerExists(newPlayer)) {
-	    throw new DuplicateNameException();
-	} else {
-	    playersModel.addPlayer(newPlayer);
+
+	static class PlayerComparator implements Comparator<PlayerInitiate> {
+		@Override
+		public int compare(PlayerInitiate o1, PlayerInitiate o2) {
+			return o1.getName().compareTo(o2.getName());
+		}
 	}
 	
-	return newPlayer;
-    }
-
-    public Collection<PlayerInitiate> getPlayers(){
-	ArrayList<PlayerInitiate> sortedPlayersList = new ArrayList<>(playersModel.getPlayers());
-	Collections.sort(sortedPlayersList, new PlayerComparator()) ;
-	return sortedPlayersList;
-    }
-
-    static class PlayerComparator implements Comparator<PlayerInitiate> {
-	@Override
-	public int compare(PlayerInitiate o1, PlayerInitiate o2) {
-	    return o1.getName().compareTo(o2.getName());
+	public boolean isPlayersFullyLoaded(){
+		return playersModel.getPlayers().size() >= 6;	
 	}
-    }
+	
+	public boolean isThereHumanPlayer() throws NoHumanPlayerException{
+		Collection<PlayerInitiate> players = playersModel.getPlayers();
+		for (PlayerInitiate player : players){
+			if (player.isHuman())
+				return true;
+		}
+		throw new NoHumanPlayerException();
+	}
+		
 }

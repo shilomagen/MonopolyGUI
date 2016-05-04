@@ -40,21 +40,21 @@ public class SceneManager extends Application {
 	public void start(Stage primaryStage) throws IOException {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Start Screen");
-		loadLandingScreen();
-		loadUserCreatingScreen();
+		this.loadLandingScreen();
+		this.loadUserCreatingScreen();
 
 		primaryStage.setScene(landingScene);
 		primaryStage.show();
-		// listen to create player button on start screen
-		landingSceneController.getCreatePlayerProperty().addListener((source, oldValue, newValue) -> {
-			if (newValue) {
-				showUserCreatingScreen();
-			}
-		});
+//		// listen to create player button on start screen
+//		landingSceneController.getCreatePlayerProperty().addListener((source, oldValue, newValue) -> {
+//			if (newValue) {
+//				showUserCreatingScreen();
+//			}
+//		});
 		// listen to continue button on create player screen
 		userCreatingSceneController.getFinishedInit().addListener((source, oldValue, newValue) -> {
 			if (newValue) {
-				showLandingScreen();
+				landingSceneController.activateStartGame(true);
 			}
 		});
 	}
@@ -99,4 +99,11 @@ public class SceneManager extends Application {
 	public Scene getStartScene() {
 		return this.landingScene;
 	}
+	
+	public Scene getUserCreationScene(){
+		return this.userCreatingScene;
+	}
+	
+
+	
 }

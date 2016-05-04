@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import com.monopoly.engine.PlayersManager;
 import com.monopoly.exception.DuplicateNameException;
 import com.monopoly.exception.EmptyNameException;
+import com.monopoly.exception.NoHumanPlayerException;
 import com.monopoly.exception.NullPictureException;
 import com.monopoly.player.PlayerInitiate;
 import com.monopoly.player.PlayerView;
@@ -71,8 +72,11 @@ public class UserCreatingSceneController implements Initializable {
 	@FXML
 	private Button selectImage;
 
+	@FXML
+	private Button backBtn;
+
 	private boolean isErrorMessageShown = false;
-	private BooleanProperty finishedInit = new SimpleBooleanProperty(this, "Finish Init") ;
+	private BooleanProperty finishedInit = new SimpleBooleanProperty(this, "Finish Init");
 	private Image playerImage = null;
 	private PlayersManager playersManager;
 
@@ -93,25 +97,27 @@ public class UserCreatingSceneController implements Initializable {
 				onPlayerNameChange();
 			}
 		});
-        this.finishedInit.addListener((source, oldValue, newValue) -> {
-            if (newValue) {
-                final PlayersPane gameScene = new PlayersPane(playersManager);
-                sceneManager.getPrimaryStage().setScene(gameScene);
-            }
-        });
-        this.playersManager = new PlayersManager();
+		this.finishedInit.addListener((source, oldValue, newValue) -> {
+			if (newValue) {
+				final PlayersPane gameScene = new PlayersPane(playersManager);
+				sceneManager.getPrimaryStage().setScene(gameScene);
+			}
+		});
+		this.playersManager = new PlayersManager();
 		selectImage.setDisable(true);
-
+		continueButton.setDisable(true);
+		playerImage = new Image("com/monopoly/assets/players-avatar/robot.png");
 		finishedInit = new SimpleBooleanProperty(false);
 	}
 
 	@FXML
 	private void isHumanChange() {
-		if (this.isHumanCheckBox.isSelected())
+		if (this.isHumanCheckBox.isSelected()){
 			this.selectImage.setDisable(false);
+			playerImage = null;
+		}
 		else
 			this.selectImage.setDisable(true);
-
 	}
 
 	@FXML
@@ -125,7 +131,14 @@ public class UserCreatingSceneController implements Initializable {
 			addPlayerToList(player);
 			clearPlayerDetailsFields();
 			hideError();
-		} catch (DuplicateNameException | EmptyNameException | NullPictureException playersManagerException) {
+			if (playersManager.isPlayersFullyLoaded()){
+				if (playersManager.isThereHumanPlayer()){
+					continueButton.setDisable(false);
+					addPlayerButton.setDisable(true);
+					showError("Players are set, Press Continue!");
+				}
+			}
+		} catch (DuplicateNameException | EmptyNameException | NoHumanPlayerException | NullPictureException playersManagerException) {
 			showError(playersManagerException.getMessage());
 		}
 	}
@@ -142,13 +155,13 @@ public class UserCreatingSceneController implements Initializable {
 
 	@FXML
 	protected void onContinue(ActionEvent event) {
-		finishedInit.set(true);
+		finishedInit = new SimpleBooleanProperty(true);
+		sceneManager.getPrimaryStage().setScene(sceneManager.getStartScene());
 	}
-
 
 	private void updateAddPlayerButtonState() {
 		boolean isEmptyName = getPlayerName().trim().isEmpty();
-		boolean disable = (isEmptyName || isErrorMessageShown) && (this.playerImage == null) ;
+		boolean disable = (isEmptyName || isErrorMessageShown) && (this.playerImage == null);
 		addPlayerButton.setDisable(disable);
 	}
 
@@ -179,8 +192,7 @@ public class UserCreatingSceneController implements Initializable {
 		playerNameTextField.requestFocus();
 		MaleFemaleBox.setValue("Male");
 		selectImage.setDisable(true);
-		playerImage = null;
-
+		playerImage = new Image("com/monopoly/assets/players-avatar/robot.png");
 	}
 
 	private void showError(String message) {
@@ -231,7 +243,7 @@ public class UserCreatingSceneController implements Initializable {
 
 	private void createImagesBox(HBox imagesBox, Popup selectImagePopUp) {
 
-		File repo = new File("/Users/ShiloMangam/Documents/workspace/UserCreation/src/resources/images/players-avatar/"
+		File repo = new File("/Users/ShiloMangam/Documents/workspace/MonopolyGUI/src/com/monopoly/assets/players-avatar/"
 				+ MaleFemaleBox.getValue().toString().toLowerCase());
 		File[] fileList = repo.listFiles();
 		ArrayList<String> photoStrings = new ArrayList<>();
@@ -269,10 +281,13 @@ public class UserCreatingSceneController implements Initializable {
 	public ObservableValue<Boolean> getFinishedInit() {
 		return this.finishedInit;
 	}
-public void setManager(SceneManager sceneManager) {
-	this.sceneManager = sceneManager;
-	
-}
 
+	public void setManager(SceneManager sceneManager) {
+		this.sceneManager = sceneManager;
 
+	}
+	@FXML
+	private void returnToLandingScene(ActionEvent event){
+		this.sceneManager.getPrimaryStage().setScene(this.sceneManager.getStartScene());
+	}
 }
