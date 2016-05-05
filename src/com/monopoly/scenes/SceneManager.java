@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 public class SceneManager extends Application {
 
 	private static final String USER_LANDING_SCENE_PATH = "LandingScene.fxml";
-	private static final String USER_CREATING_SCENE_PATH = "userCreatingScene.fxml";
+	private static final String USER_CREATING_SCENE_PATH = "UserCreatingScene.fxml";
 
 	private Stage primaryStage;
 
