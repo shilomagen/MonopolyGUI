@@ -8,6 +8,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
@@ -26,7 +27,6 @@ public class MainBoard {
 	AnchorPane gridAnchor;
 	GridPane boardPane;
 	AnchorPane playersAnchor;
-	
 
 	public MainBoard() {
 		root = new AnchorPane();
@@ -64,8 +64,6 @@ public class MainBoard {
 		playersAnchor.setPrefWidth(189);
 		this.createPlayerPane();
 
-
-//		root.getChildren().addAll(gridAnchor, playersAnchor);
 		root.getChildren().add(gridAnchor);
 
 	}
@@ -251,19 +249,113 @@ public class MainBoard {
 	}
 
 	public void createBoardLogo() {
-		StackPane logoPane = new StackPane();
-		logoPane.setPrefHeight(150.0);
-		logoPane.setPrefWidth(200.0);
-		ImageView logoImage = new ImageView();
-		logoPane.getStyleClass().add("logo-pane");
-		logoImage.setFitHeight(554.0);
-		logoImage.setFitWidth(604.0);
-		logoImage.setPickOnBounds(true);
-		logoImage.setPreserveRatio(true);
-		logoImage.setImage(new Image(BoardConsts.IMAGE_URL + "/main-pic.png"));
-		logoPane.getChildren().add(logoImage);
-		this.boardPane.add(logoPane, 1, 1, 8, 8);
-		this.createCardDecks();
+		StackPane centralPane = new StackPane();
+		centralPane.setPrefSize(200, 150);
+		
+		ImageView centralImage = new ImageView();
+		centralImage.setFitHeight(559);
+		centralImage.setFitWidth(608);
+		centralImage.setPickOnBounds(true);
+		centralImage.setPreserveRatio(true);
+		centralImage.setImage(new Image(BoardConsts.IMAGE_URL + "/main-pic.png"));
+		
+		Pane surpriseDeck = new Pane();
+		surpriseDeck.setPrefSize(200, 200);
+		ImageView surpriseImage = new ImageView(BoardConsts.IMAGE_URL + "/surprise-deck.png");
+		surpriseImage.setFitHeight(223);
+		surpriseImage.setFitWidth(189);
+		surpriseImage.setRotate(8.0);
+		surpriseImage.setLayoutX(38.0);
+		surpriseImage.setLayoutY(21.0);
+		surpriseImage.setPickOnBounds(true);
+		surpriseImage.setOnMouseClicked((event)->{System.out.println("aasd");});
+		surpriseDeck.getChildren().add(surpriseImage);
+		
+
+		Pane warrantDeck = new Pane();
+		warrantDeck.setPrefSize(200, 200);
+		ImageView warrantImage = new ImageView(BoardConsts.IMAGE_URL + "/warrant-deck.png");
+		warrantImage.setFitHeight(223);
+		warrantImage.setFitWidth(189);
+		warrantImage.setRotate(6.3);
+		warrantImage.setPickOnBounds(true);
+		warrantImage.setLayoutX(380.0);
+		warrantImage.setLayoutY(307.0);
+		warrantImage.setOnMouseClicked((event)->{
+			System.out.println("warrant clicked");
+		});
+		warrantDeck.getChildren().add(warrantImage);
+		
+		Pane dicePane = new Pane();
+		dicePane.setId("dicePane");
+		dicePane.setPrefSize(204, 84);
+		dicePane.setMaxHeight(84);
+		StackPane.setAlignment(dicePane, Pos.BOTTOM_LEFT);
+		
+		ImageView leftDie  = new ImageView();
+		leftDie.setFitHeight(55);
+		leftDie.setFitWidth(101);
+		leftDie.setLayoutX(13);
+		leftDie.setLayoutY(15);
+		leftDie.setPreserveRatio(true);
+		leftDie.setPickOnBounds(true);
+		leftDie.setImage(new Image("file:src/com/monopoly/assets/dice/dice-1.png"));
+		
+		ImageView rightDie  = new ImageView();
+		rightDie.setFitHeight(55);
+		rightDie.setFitWidth(101);
+		rightDie.setLayoutX(133);
+		rightDie.setLayoutY(15);
+		rightDie.setPreserveRatio(true);
+		rightDie.setPickOnBounds(true);
+		rightDie.setImage(new Image("file:src/com/monopoly/assets/dice/dice-1.png"));
+		
+		Button rollButton = new Button("Roll");
+		rollButton.setLayoutX(80);
+		rollButton.setLayoutY(30);
+		rollButton.setMnemonicParsing(false);
+		rollButton.setOnAction((event)->{
+			System.out.println("rolls!");
+		});
+		
+		dicePane.getChildren().addAll(leftDie, rightDie, rollButton);
+		
+		Label screenConsole = new Label("Test");
+		screenConsole.setId("screen-console");
+		screenConsole.setAlignment(Pos.CENTER);
+		screenConsole.setPrefSize(331, 47);
+		screenConsole.setWrapText(true);
+		StackPane.setAlignment(screenConsole, Pos.TOP_RIGHT);
+		
+		centralPane.getChildren().addAll(centralImage, surpriseDeck, warrantDeck, dicePane, screenConsole);
+		
+		this.boardPane.add(centralPane, 1, 1, 8, 8);
+		
+
+//		StackPane logoPane = new StackPane();
+//		logoPane.setPrefHeight(150.0);
+//		logoPane.setPrefWidth(200.0);
+//		ImageView logoImage = new ImageView();
+//		logoPane.getStyleClass().add("logo-pane");
+//		logoImage.setFitHeight(554.0);
+//		logoImage.setFitWidth(604.0);
+//		logoImage.setPickOnBounds(true);
+//		logoImage.setPreserveRatio(true);
+//		logoImage.setImage(new Image(BoardConsts.IMAGE_URL + "/main-pic.png"));
+//		logoPane.getChildren().add(logoImage);
+//		this.boardPane.add(logoPane, 1, 1, 8, 8);
+//		this.createCardDecks();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 
 	private void createCardDecks() {
@@ -543,14 +635,13 @@ public class MainBoard {
 		playersPane.getChildren().add(playerProfile);
 
 	}
-	
-	public AnchorPane getPlayersAnchorPane(){
+
+	public AnchorPane getPlayersAnchorPane() {
 		return this.playersAnchor;
 	}
-	public AnchorPane getGridAnchor(){
+
+	public AnchorPane getGridAnchor() {
 		return this.gridAnchor;
 	}
-	
-	
 
 }

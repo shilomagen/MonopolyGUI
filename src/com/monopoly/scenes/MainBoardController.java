@@ -26,6 +26,7 @@ public class MainBoardController{
 			root = mainBoard.getRoot();
 			GameBoard gameBoard = new GameBoard(mainBoard);
 			gameBoard.loadTheBoard();
+			
 			this.mainBoardScene = new Scene(root, 1024, 768);
 			this.mainBoardScene.getStylesheets().add(getClass().getResource("/com/monopoly/stylesheets/board-stylesheet.css").toExternalForm());
 			this.sceneManager = sceneManager;

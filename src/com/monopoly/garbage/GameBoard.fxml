@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -8,93 +9,119 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="768.0" prefWidth="1024.0" stylesheets="@../stylesheets/board-stylesheet.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scenes.GameBoardController.java">
-   <children>
-      <AnchorPane layoutX="167.0" layoutY="124.0" prefHeight="768.0" prefWidth="835.0" style="-fx-background-color: green;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="189.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <GridPane gridLinesVisible="true" layoutX="85.0" layoutY="86.0" prefHeight="768.0" prefWidth="835.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.85" minWidth="10.0" prefWidth="113.85" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="56.0" prefWidth="75.9" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.85" minWidth="10.0" prefWidth="113.85" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints maxHeight="104.7" minHeight="10.0" prefHeight="104.7" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="104.7" minHeight="10.0" prefHeight="104.7" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <ImageView fitHeight="559.0" fitWidth="608.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.columnSpan="8" GridPane.rowIndex="1" GridPane.rowSpan="8">
-                     <image>
-                        <Image url="@../assets/main-pic.png" />
-                     </image>
-                  </ImageView>
-                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.rowSpan="4">
-                     <children>
-                        <ImageView fitHeight="223.0" fitWidth="189.0" layoutX="38.0" layoutY="21.0" pickOnBounds="true" rotate="6.3">
-                           <image>
-                              <Image url="@../assets/surprise-deck.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </Pane>
-                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.columnSpan="4" GridPane.rowIndex="5" GridPane.rowSpan="4">
-                     <children>
-                        <ImageView fitHeight="223.0" fitWidth="189.0" layoutX="76.0" layoutY="29.0" pickOnBounds="true" rotate="8.0">
-                           <image>
-                              <Image url="@../assets/warrant-deck.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </Pane>
-               </children>
-            </GridPane>
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="835.0" prefHeight="768.0" prefWidth="189.0" style="-fx-background-color: red;">
-         <children>
-            <VBox prefHeight="768.0" prefWidth="189.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: black;" />
-                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: white;">
-                     <children>
-                        <ImageView fitHeight="70.0" fitWidth="69.0" layoutX="60.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/players-avatar/Ricketts.png" />
-                           </image>
-                        </ImageView>
-                        <Label alignment="CENTER" layoutX="1.0" layoutY="85.0" prefHeight="17.0" prefWidth="187.0" text="Eden Swissa" />
-                        <Label alignment="CENTER" layoutX="1.0" layoutY="105.0" prefHeight="17.0" prefWidth="187.0" text="820$" />
-                        <ImageView fitHeight="17.0" fitWidth="15.0" layoutX="169.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/player-on.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </Pane>
-                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: black;" />
-                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: white;" />
-                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: black;" />
-                  <Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: white;" />
-               </children>
-            </VBox>
-         </children>
-      </AnchorPane>
-   </children>
+	<children>
+		<AnchorPane layoutX="167.0" layoutY="124.0" prefHeight="768.0" prefWidth="835.0" style="-fx-background-color: green;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="189.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<GridPane gridLinesVisible="true" layoutX="85.0" layoutY="86.0" prefHeight="768.0" prefWidth="835.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+					<columnConstraints>
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="113.85" minWidth="10.0" prefWidth="113.85" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="56.0" prefWidth="75.9" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="75.9" minWidth="75.9" prefWidth="75.9" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="113.85" minWidth="10.0" prefWidth="113.85" />
+					</columnConstraints>
+					<rowConstraints>
+						<RowConstraints maxHeight="104.7" minHeight="10.0" prefHeight="104.7" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="69.8" minHeight="10.0" prefHeight="69.8" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="104.7" minHeight="10.0" prefHeight="104.7" vgrow="SOMETIMES" />
+					</rowConstraints>
+					<children>
+						<StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="8" GridPane.rowIndex="1" GridPane.rowSpan="8">
+							<children>
+								<ImageView fitHeight="559.0" fitWidth="608.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../assets/main-pic.png" />
+									</image>
+								</ImageView>
+								<Pane prefHeight="200.0" prefWidth="200.0">
+									<children>
+										<ImageView fitHeight="223.0" fitWidth="189.0" layoutX="38.0" layoutY="21.0" pickOnBounds="true" rotate="6.3">
+											<image>
+												<Image url="@../assets/surprise-deck.png" />
+											</image>
+										</ImageView>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0">
+									<children>
+										<ImageView fitHeight="223.0" fitWidth="189.0" layoutX="380.0" layoutY="307.0" pickOnBounds="true" rotate="8.0">
+											<image>
+												<Image url="@../assets/warrant-deck.png" />
+											</image>
+										</ImageView>
+									</children>
+								</Pane>
+										<Pane fx:id="dicePane" maxHeight="84.0" prefHeight="84.0" prefWidth="204.0" style="-fx-border-color: black;" StackPane.alignment="BOTTOM_LEFT">
+											<children>
+												<ImageView fitHeight="55.0" fitWidth="101.0" layoutX="13.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../../../../../DiceTest/src/assets/dice-1.png" />
+													</image>
+												</ImageView>
+												<ImageView fitHeight="55.0" fitWidth="101.0" layoutX="133.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+													<image>
+														<Image url="@../../../../../DiceTest/src/assets/dice-1.png" />
+													</image>
+												</ImageView>
+												<Button layoutX="80.0" layoutY="30.0" mnemonicParsing="false" text="Roll" />
+											</children>
+										</Pane>
+										<Label fx:id="screenConsole" alignment="CENTER" prefHeight="47.0" prefWidth="331.0" style="-fx-background-color: black;" text="Label" wrapText="true" StackPane.alignment="TOP_RIGHT">
+											<font>
+												<Font size="9.0" />
+											</font>
+										</Label>
+							</children>
+						</StackPane>
+					</children>
+				</GridPane>
+			</children>
+		</AnchorPane>
+		<AnchorPane layoutX="835.0" prefHeight="768.0" prefWidth="189.0" style="-fx-background-color: red;">
+			<children>
+				<VBox prefHeight="768.0" prefWidth="189.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+					<children>
+						<Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: black;" />
+						<Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: white;">
+							<children>
+								<ImageView fitHeight="70.0" fitWidth="69.0" layoutX="60.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../assets/players-avatar/Ricketts.png" />
+									</image>
+								</ImageView>
+								<Label alignment="CENTER" layoutX="1.0" layoutY="85.0" prefHeight="17.0" prefWidth="187.0" text="Eden Swissa" />
+								<Label alignment="CENTER" layoutX="1.0" layoutY="105.0" prefHeight="17.0" prefWidth="187.0" text="820$" />
+								<ImageView fitHeight="17.0" fitWidth="15.0" layoutX="169.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../assets/player-on.png" />
+									</image>
+								</ImageView>
+							</children>
+						</Pane>
+						<Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: black;" />
+						<Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: white;" />
+						<Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: black;" />
+						<Pane prefHeight="128.0" prefWidth="200.0" style="-fx-background-color: white;" />
+					</children>
+				</VBox>
+			</children>
+		</AnchorPane>
+	</children>
 </AnchorPane>
