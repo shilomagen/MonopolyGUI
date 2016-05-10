@@ -12,6 +12,7 @@ import com.monopoly.data.CountryGame;
 import com.monopoly.data.Transportation;
 import com.monopoly.data.Utility;
 import com.monopoly.scenes.MainBoard;
+import com.monopoly.utility.CountryColors;
 import com.monopoly.utility.GameConstants;
 import com.monopoly.utility.IntPair;
 
@@ -65,7 +66,7 @@ public class GameBoard {
 				City cityToData = theCountries.get(countryCounter).getCities().get(cityCounter);
 				mainBoard.createCityPane(positionHelper.get(placeOnBoard).getCol(),
 						positionHelper.get(placeOnBoard).getRow(), cityToData.getCountry(), cityToData.getName(),
-						cityToData.getCost());
+						cityToData.getCost(), CountryColors.countryArr[countryCounter]);
 				cityCounter++;
 				placeOnBoard++;
 			} else if (cellType.equals("SURPRISE")) {
@@ -108,37 +109,6 @@ public class GameBoard {
 
 	}
 
-	// public static Cell getCellByPosition(int position) {
-	// return theBoard[position];
-	// }
-
-	// public static Cell[] getTheBoard(){
-	// return theBoard;
-	// }
-
-	// public static int getPlaceOnBoardByName(String string){
-	// for (Cell tempCell : theBoard){
-	// if (tempCell.getName().equals(string))
-	// return tempCell.getPosition();
-	// }
-	// return 0;
-	// }
-
-	// public static int getNextSurpriseOnBoard(int currentPosition){
-	// while
-	// (!(theBoard[currentPosition%GameConstants.TOTAL_CELL].getName().equals("SupriseCell"))){
-	// currentPosition++;
-	// }
-	// return currentPosition%GameConstants.TOTAL_CELL;
-	// }
-	//
-	// public static int getNextWarrantOnBoard(int currentPosition){
-	// while
-	// (!(theBoard[currentPosition%GameConstants.TOTAL_CELL].getName().equals("WarrantCell"))){
-	// currentPosition++;
-	// }
-	// return currentPosition%GameConstants.TOTAL_CELL;
-	// }
 
 	public void generatePositionHelper(ArrayList<IntPair> positionHelper) {
 
@@ -156,5 +126,7 @@ public class GameBoard {
 		}
 
 	}
+	
+	
 
 }

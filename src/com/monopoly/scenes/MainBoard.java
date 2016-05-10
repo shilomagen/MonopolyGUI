@@ -2,6 +2,7 @@ package com.monopoly.scenes;
 
 import com.monopoly.player.PlayerInitiate;
 import com.monopoly.utility.BoardConsts;
+import com.monopoly.utility.CountryColors;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
@@ -183,7 +184,7 @@ public class MainBoard {
 		this.boardPane.add(paneToAssign, gridCol, gridRow);
 	}
 
-	public void createCityPane(int col, int row, String countryName, String cityName, int cityPrice) {
+	public void createCityPane(int col, int row, String countryName, String cityName, int cityPrice, String colorCountry) {
 		SplitPane cityPane = new SplitPane();
 		cityPane.getStyleClass().add("city-cell");
 		Pane infoPane = new StackPane();
@@ -207,7 +208,8 @@ public class MainBoard {
 			priceLabel.getStyleClass().add("left");
 			cityPane.getItems().add(infoPane);
 			cityPane.getItems().add(new Pane());
-			cityPane.getItems().get(1).getStyleClass().add("country-header");
+			cityPane.getItems().get(1).setStyle("-fx-background-color:" + colorCountry + ";");
+			
 
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		} else if (col == 9) { // RIGHT SIDE OF MONOPOLY BOARD
@@ -219,7 +221,8 @@ public class MainBoard {
 			countryLabel.getStyleClass().add("right");
 			priceLabel.getStyleClass().add("right");
 			cityPane.getItems().add(new Pane());
-			cityPane.getItems().get(0).getStyleClass().add("country-header");
+			cityPane.getItems().get(0).setStyle("-fx-background-color:" + colorCountry + ";");
+			
 			cityPane.getItems().add(infoPane);
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		} else if (row == 0) {// UPPER SIDE OF MONOPOLY BOARD
@@ -232,7 +235,7 @@ public class MainBoard {
 			priceLabel.getStyleClass().add("top");
 			cityPane.getItems().add(infoPane);
 			cityPane.getItems().add(new Pane());
-			// cityPane.getItems().get(1).setStyle("-fx-background-color:yellow;");
+			cityPane.getItems().get(1).setStyle("-fx-background-color:" + colorCountry + ";");
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		} else if (row == 9) { // LOWER SIDE OF MONOPOLY BOARD
 			cityPane.setOrientation(Orientation.VERTICAL);
@@ -245,6 +248,7 @@ public class MainBoard {
 			cityPane.getItems().add(new Pane());
 			cityPane.getItems().add(infoPane);
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
+			cityPane.getItems().get(0).setStyle("-fx-background-color:" + colorCountry + ";");
 		}
 	}
 
