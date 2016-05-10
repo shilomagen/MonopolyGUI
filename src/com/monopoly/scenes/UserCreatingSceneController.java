@@ -1,6 +1,7 @@
 package com.monopoly.scenes;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -226,7 +227,7 @@ public class UserCreatingSceneController implements Initializable {
 	}
 
 	@FXML
-	private void openPopUpSelection(ActionEvent event) {
+	private void openPopUpSelection(ActionEvent event) throws IOException {
 		final Popup selectImagePopUp = new Popup();
 		selectImagePopUp.setX(800);
 		selectImagePopUp.setY(800);
@@ -242,10 +243,9 @@ public class UserCreatingSceneController implements Initializable {
 		selectImagePopUp.show(theStage);
 	}
 
-	private void createImagesBox(HBox imagesBox, Popup selectImagePopUp) {
-
-		File repo = new File("/Users/ShiloMangam/Documents/workspace/MonopolyGUI/src/com/monopoly/assets/players-avatar/"
-				+ MaleFemaleBox.getValue().toString().toLowerCase());
+	private void createImagesBox(HBox imagesBox, Popup selectImagePopUp) throws IOException {
+		String fullPath = new File("src/com/monopoly/assets/players-avatar").getCanonicalPath().toString();
+		File repo = new File(fullPath + "\\" + MaleFemaleBox.getValue().toString().toLowerCase());
 		File[] fileList = repo.listFiles();
 		ArrayList<String> photoStrings = new ArrayList<>();
 		for (File f : fileList) {
