@@ -9,7 +9,7 @@ import com.monopoly.data.Utility;
 
 
 public class HumanPlayer implements Player{
-	private String playerName;
+	private PlayerData data;
 	private boolean isInJail;
 	private boolean bankrupt;
 	private int money;
@@ -22,14 +22,14 @@ public class HumanPlayer implements Player{
 	private ArrayList<Utility> playerUtil;
 	
 
-	public HumanPlayer(String playerName, int position) {
-		this.playerName = playerName;
+	public HumanPlayer(PlayerData data) {
+		this.data = data;
 		this.money = GameConstants.INITIAL_MONEY;
 		this.isInJail = false;
 		this.isParked = false;
 		this.bankrupt = false;
 		this.hasFreeJailCard = false;
-		this.position = position;
+		this.position = GameConstants.START;
 		playerCities = new ArrayList<>();
 		playerTrans = new ArrayList<>();
 		playerUtil = new ArrayList<>();
@@ -37,9 +37,7 @@ public class HumanPlayer implements Player{
 	}
 	
 	
-	public String toString(){
-		return playerName + " Created with " + Integer.toString(this.money) + "$ and currently on cell BASE";
-	}
+
 	public boolean canPlay(){
 		return this.isInJail && this.isBankrupt() && this.isParked;
 	}
@@ -98,7 +96,7 @@ public class HumanPlayer implements Player{
 		this.playerUtil = playerUtil;
 	}
 	public String getPlayerName() {
-		return this.playerName;
+		return this.data.getName();
 	}
 
 
@@ -115,11 +113,10 @@ public class HumanPlayer implements Player{
 	}
 
 
-//	@Override
-//	public boolean getAnswer() {
-//		return GameView.getAnswerFromRealPlayer();
-//	}
-
+	// @Override
+	// public boolean getAnswer() {
+	// return GameView.getAnswerFromRealPlayer();
+	// }
 
 	@Override
 	public void setIsBankrupt(boolean b) {
@@ -160,6 +157,13 @@ public class HumanPlayer implements Player{
 	@Override
 	public ArrayList<Utility> getUtilites() {
 		return this.playerUtil;
+	}
+
+
+
+	@Override
+	public PlayerData getData() {
+		return this.data;
 	}
 	
 	

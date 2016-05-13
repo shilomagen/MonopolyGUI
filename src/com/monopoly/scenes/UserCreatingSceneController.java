@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import com.monopoly.engine.PlayersManager;
@@ -11,7 +12,7 @@ import com.monopoly.exception.DuplicateNameException;
 import com.monopoly.exception.EmptyNameException;
 import com.monopoly.exception.NoHumanPlayerException;
 import com.monopoly.exception.NullPictureException;
-import com.monopoly.player.PlayerInitiate;
+import com.monopoly.player.PlayerData;
 import com.monopoly.player.PlayerView;
 
 import javafx.animation.FadeTransition;
@@ -40,13 +41,9 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-/**
- * FXML Controller class
- *
- * @author iblecher
- */
 public class UserCreatingSceneController implements Initializable {
-
+	ObservableList<String> iconList = FXCollections.observableArrayList("car", "dog", "iron", "shoe", "thimble",
+			"wheelbarrow");
 	ObservableList<String> MaleFemalePlayersList = FXCollections.observableArrayList("Male", "Female");
 	SceneManager sceneManager;
 	@FXML
@@ -68,6 +65,9 @@ public class UserCreatingSceneController implements Initializable {
 	private ChoiceBox MaleFemaleBox;
 
 	@FXML
+	private ChoiceBox iconBox;
+
+	@FXML
 	private Button continueButton;
 
 	@FXML
@@ -80,14 +80,12 @@ public class UserCreatingSceneController implements Initializable {
 	private BooleanProperty finishedInit = new SimpleBooleanProperty(this, "Finish Init");
 	private Image playerImage = null;
 	private PlayersManager playersManager;
+	private Image playerIcon = null;
 
 	public void setPlayersManager(PlayersManager playersManager) {
 		this.playersManager = playersManager;
 	}
-	
-	/**
-	 * Initializes the controller class.
-	 */
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		MaleFemaleBox.setValue("Male");
@@ -98,6 +96,9 @@ public class UserCreatingSceneController implements Initializable {
 				onPlayerNameChange();
 			}
 		});
+		iconBox.setValue("car");
+		iconBox.setItems(iconList);
+
 		this.finishedInit.addListener((source, oldValue, newValue) -> {
 			if (newValue) {
 				final PlayersPane gameScene = new PlayersPane(playersManager);
@@ -113,11 +114,10 @@ public class UserCreatingSceneController implements Initializable {
 
 	@FXML
 	private void isHumanChange() {
-		if (this.isHumanCheckBox.isSelected()){
+		if (this.isHumanCheckBox.isSelected()) {
 			this.selectImage.setDisable(false);
 			playerImage = null;
-		}
-		else
+		} else
 			this.selectImage.setDisable(true);
 	}
 
@@ -127,21 +127,43 @@ public class UserCreatingSceneController implements Initializable {
 		boolean isHuman = isPlayerHuman();
 		String gender = getGender();
 		Image image = getPlayerImage();
+		this.enterIcons();
+		Image icon = this.getPlayerIcon();
 		try {
-			PlayerInitiate player = playersManager.addPlayer(name, isHuman, gender, image);
+			PlayerData player = playersManager.addPlayer(name, isHuman, gender, image, icon);
 			addPlayerToList(player);
 			clearPlayerDetailsFields();
 			hideError();
-			if (playersManager.isPlayersFullyLoaded()){
-				if (playersManager.isThereHumanPlayer()){
+			if (playersManager.isPlayersFullyLoaded()) {
+				if (playersManager.isThereHumanPlayer()) {
 					continueButton.setDisable(false);
 					addPlayerButton.setDisable(true);
 					showError("Players are set, Press Continue!");
 				}
 			}
-		} catch (DuplicateNameException | EmptyNameException | NoHumanPlayerException | NullPictureException playersManagerException) {
+		} catch (DuplicateNameException | EmptyNameException | NoHumanPlayerException
+				| NullPictureException playersManagerException) {
 			showError(playersManagerException.getMessage());
 		}
+	}
+
+	private void deleteIconFromList(String icon) {
+		Iterator<String> iterator = iconList.iterator();
+		while (iterator.hasNext()) {
+			String newIcon = iterator.next();
+			if (newIcon.equals(icon))
+				iterator.remove();
+		}
+	}
+
+	private Image getPlayerIcon(){
+		return this.playerIcon;
+	}
+	public void enterIcons() {
+		String icon = (String) iconBox.getValue();
+		String iconPath = "file:src/com/monopoly/assets/icons/" + icon + ".png";
+		Image newIcon = new Image(iconPath);
+		playerIcon = newIcon;
 	}
 
 	private Image getPlayerImage() {
@@ -158,7 +180,7 @@ public class UserCreatingSceneController implements Initializable {
 	protected void onContinue(ActionEvent event) {
 		finishedInit = new SimpleBooleanProperty(true);
 		sceneManager.getPrimaryStage().setScene(sceneManager.getStartScene());
-		
+
 	}
 
 	private void updateAddPlayerButtonState() {
@@ -179,9 +201,9 @@ public class UserCreatingSceneController implements Initializable {
 		return MaleFemaleBox.getValue().toString();
 	}
 
-	private void addPlayerToList(PlayerInitiate player) {
+	private void addPlayerToList(PlayerData player) {
 		PlayerView playerView = new PlayerView(player.getName(), player.getGender(), player.isHuman(),
-				player.getImage());
+				player.getImage(), player.getIcon());
 		HBox thebox = (HBox) playersPane.getChildren().get(0);
 		thebox.setPadding(new Insets(20, 20, 20, 20));
 		thebox.setSpacing(20);
@@ -195,6 +217,11 @@ public class UserCreatingSceneController implements Initializable {
 		MaleFemaleBox.setValue("Male");
 		selectImage.setDisable(true);
 		playerImage = new Image("com/monopoly/assets/players-avatar/robot.png");
+		this.deleteIconFromList((String)iconBox.getValue());
+		if (!iconList.isEmpty()){
+			iconBox.setValue(iconList.get(0));
+			iconBox.setItems(iconList);
+		}
 	}
 
 	private void showError(String message) {
@@ -245,7 +272,7 @@ public class UserCreatingSceneController implements Initializable {
 
 	private void createImagesBox(HBox imagesBox, Popup selectImagePopUp) throws IOException {
 		String fullPath = new File("src/com/monopoly/assets/players-avatar").getCanonicalPath().toString();
-		File repo = new File(fullPath + "\\" + MaleFemaleBox.getValue().toString().toLowerCase());
+		File repo = new File(fullPath + "//" + MaleFemaleBox.getValue().toString().toLowerCase());
 		File[] fileList = repo.listFiles();
 		ArrayList<String> photoStrings = new ArrayList<>();
 		for (File f : fileList) {
@@ -287,12 +314,13 @@ public class UserCreatingSceneController implements Initializable {
 		this.sceneManager = sceneManager;
 
 	}
+
 	@FXML
-	private void returnToLandingScene(ActionEvent event){
+	private void returnToLandingScene(ActionEvent event) {
 		this.sceneManager.getPrimaryStage().setScene(this.sceneManager.getStartScene());
 	}
-	
-	public PlayersManager getPlayersManager(){
+
+	public PlayersManager getPlayersManager() {
 		return this.playersManager;
 	}
 }

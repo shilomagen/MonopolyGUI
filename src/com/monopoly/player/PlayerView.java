@@ -9,10 +9,10 @@ import javafx.scene.layout.VBox;
 
 public class PlayerView extends VBox{
 
-    public PlayerView(String name, String gender,  boolean isHuman, Image image) {
+    public PlayerView(String name, String gender,  boolean isHuman, Image image, Image icon) {
         setSpacing(10);
         setAlignment(Pos.CENTER);
-        getChildren().addAll(createImage(isHuman, image), createLabel(name), createLabel(gender));
+        getChildren().addAll(createImage(isHuman, image), createLabel(name), createLabel(gender), createIcon(icon));
     }
     
     private Label createLabel(String title){
@@ -27,5 +27,14 @@ public class PlayerView extends VBox{
     	
         return playerImage;
     }
+    
+    private ImageView createIcon(Image icon){
+    	 ImageView playerIcon = new ImageView(icon);
+    	  playerIcon.setPreserveRatio(false);
+    	  playerIcon.setFitHeight(50);
+    	  playerIcon.setFitWidth(50);
+    	  
+    	 return playerIcon;
+    	 }
 
 }

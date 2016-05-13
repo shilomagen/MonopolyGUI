@@ -51,20 +51,7 @@ public class InitiateGame {
 	private static LinkedList<Card> supriseCards;
 	private static LinkedList<Card> warrantCards;
 
-//	public static void initiatePlayers(Player[] gamePlayers) {
-//		int humanPlayers = GameView.askHowManyHuman();
-//		int pcPlayers = GameConstants.MAX_PLAYERS - humanPlayers;
-//		int playerIndex = 0;
-//		String playerName;
-//		for (int human = 0; human < humanPlayers; ++human) {
-//			playerName = GameView.getPlayerName();
-//			gamePlayers[playerIndex++] = new HumanPlayer(playerName, GameConstants.BASE_CELL);
-//		}
-//		for (int pc = 0; pc < pcPlayers; ++pc) {
-//			playerName = GameConstants.PC_NAME + Integer.toString(pc);
-//			gamePlayers[playerIndex++] = new PcPlayer(playerName, GameConstants.BASE_CELL);
-//		}
-//	}
+
 
 	public static void xmlLoad() throws SAXException {
 		// get the Schema from the XSD file

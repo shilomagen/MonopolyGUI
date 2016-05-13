@@ -1,11 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.monopoly.scenes;
 
 import java.io.IOException;
+
+import com.monopoly.engine.GameEngine;
+import com.monopoly.utility.EventTypes;
 
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
@@ -15,10 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Eden
- */
+
 public class SceneManager extends Application {
 
 	private static final String USER_LANDING_SCENE_PATH = "LandingScene.fxml";
@@ -34,10 +30,11 @@ public class SceneManager extends Application {
 	private Scene userCreatingScene;
 	private Pane userCreatingSceneLayout;
 
-	
 	private Scene mainBoardScene;
 	private MainBoardController mainBoardController;
 	private BooleanProperty finishedInit = new SimpleBooleanProperty(this, "Finish Init");
+
+	private GameEngine gameEngine;
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
@@ -45,33 +42,34 @@ public class SceneManager extends Application {
 		this.primaryStage.setTitle("Start Screen");
 		this.loadLandingScreen();
 		this.loadUserCreatingScreen();
-		
+		this.gameEngine = new GameEngine();
 		mainBoardController = new MainBoardController(this);
 		mainBoardScene = mainBoardController.getMainBoardScene();
 		mainBoardController.setPlayersManager(userCreatingSceneController.getPlayersManager());
-		
-		
-		
+		mainBoardController.setGameEngine(this.gameEngine);
+		mainBoardController.registerButtonEvents();
+		this.gameEngine.setMainBoardController(this.mainBoardController);
+		this.gameEngine.setPlayersManager(userCreatingSceneController.getPlayersManager());
 
 		primaryStage.setScene(landingScene);
 		primaryStage.show();
-//		// listen to create player button on start screen
-//		landingSceneController.getCreatePlayerProperty().addListener((source, oldValue, newValue) -> {
-//			if (newValue) {
-//				showUserCreatingScreen();
-//			}
-//		});
-		// listen to continue button on create player screen
 		userCreatingSceneController.getFinishedInit().addListener((source, oldValue, newValue) -> {
 			if (newValue) {
 				landingSceneController.activateStartGame(true);
 			}
 		});
+		this.landingSceneController.getStartGame().addListener((source, oldValue, newValue) -> {
+			if (newValue){
+				this.gameEngine.startObserv();	
+				this.gameEngine.addEventToEngine(EventTypes.PLAY_TURN);
+			}
+		});
 	}
 
-	public Stage getPrimaryStage(){
+	public Stage getPrimaryStage() {
 		return this.primaryStage;
 	}
+
 	public void loadLandingScreen() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(SceneManager.class.getResource(USER_LANDING_SCENE_PATH));
@@ -98,10 +96,6 @@ public class SceneManager extends Application {
 		this.primaryStage.setScene(landingScene);
 	}
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -109,18 +103,17 @@ public class SceneManager extends Application {
 	public Scene getStartScene() {
 		return this.landingScene;
 	}
-	
-	public Scene getUserCreationScene(){
+
+	public Scene getUserCreationScene() {
 		return this.userCreatingScene;
 	}
-	
-	public Scene getMainBoardScene(){
+
+	public Scene getMainBoardScene() {
 		return this.mainBoardScene;
 	}
-	
-	public MainBoardController getMainBoardController(){
+
+	public MainBoardController getMainBoardController() {
 		return this.mainBoardController;
 	}
 
-	
 }

@@ -4,26 +4,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Set;
 
 import com.monopoly.exception.DuplicateNameException;
 import com.monopoly.exception.EmptyNameException;
 import com.monopoly.exception.NoHumanPlayerException;
 import com.monopoly.exception.NullPictureException;
-import com.monopoly.player.PlayerInitiate;
+import com.monopoly.player.HumanPlayer;
+import com.monopoly.player.PcPlayer;
+import com.monopoly.player.Player;
+import com.monopoly.player.PlayerData;
 import com.monopoly.player.PlayerModel;
+import com.monopoly.utility.GameConstants;
 
 import javafx.scene.image.Image;
 
 public class PlayersManager {
 
 	private final PlayerModel playersModel;
-
+	int currentPlayer=0;
 	public PlayersManager() {
 		playersModel = new PlayerModel();
 	}
 
-	public PlayerInitiate addPlayer(String name, boolean isHuman, String gender, Image image)
+	public PlayerData addPlayer(String name, boolean isHuman, String gender, Image image, Image icon)
 			throws DuplicateNameException, EmptyNameException, NullPictureException {
 		if (name == null || name.isEmpty()) {
 			throw new EmptyNameException();
@@ -31,40 +34,54 @@ public class PlayersManager {
 		if (image == null) {
 			throw new NullPictureException();
 		}
-		PlayerInitiate newPlayer = new PlayerInitiate(name, isHuman, gender, image);
-		if (playersModel.isPlayerExists(newPlayer)) {
+		PlayerData newPlayerData = new PlayerData(name, isHuman, gender, image, icon);
+		if (playersModel.isPlayerExists(newPlayerData)) {
 			throw new DuplicateNameException();
 		} else {
-			playersModel.addPlayer(newPlayer);
+			if (newPlayerData.isHuman()) {
+				HumanPlayer newPlayer = new HumanPlayer(newPlayerData);
+				playersModel.addPlayer(newPlayer);
+			} else {
+				PcPlayer newPlayer = new PcPlayer(newPlayerData);
+				playersModel.addPlayer(newPlayer);
+			}
+
 		}
 
-		return newPlayer;
+		return newPlayerData;
 	}
-
-	public Collection<PlayerInitiate> getPlayers() {
-		ArrayList<PlayerInitiate> sortedPlayersList = new ArrayList<>(playersModel.getPlayers());
+	public int getCurrentPlayer(){
+		return this.currentPlayer;
+	}
+	
+	public void nextPlayer(){
+		this.currentPlayer++;
+		this.currentPlayer %= GameConstants.MAX_PLAYERS;
+	}
+	public Collection<Player> getPlayers() {
+		ArrayList<Player> sortedPlayersList = new ArrayList<>(playersModel.getPlayers());
 		Collections.sort(sortedPlayersList, new PlayerComparator());
 		return sortedPlayersList;
 	}
 
-	static class PlayerComparator implements Comparator<PlayerInitiate> {
+	static class PlayerComparator implements Comparator<Player> {
 		@Override
-		public int compare(PlayerInitiate o1, PlayerInitiate o2) {
-			return o1.getName().compareTo(o2.getName());
+		public int compare(Player o1, Player o2) {
+			return o1.getData().getName().compareTo(o2.getData().getName());
 		}
 	}
-	
-	public boolean isPlayersFullyLoaded(){
-		return playersModel.getPlayers().size() >= 6;	
+
+	public boolean isPlayersFullyLoaded() {
+		return playersModel.getPlayers().size() >= 6;
 	}
-	
-	public boolean isThereHumanPlayer() throws NoHumanPlayerException{
-		Collection<PlayerInitiate> players = playersModel.getPlayers();
-		for (PlayerInitiate player : players){
-			if (player.isHuman())
+
+	public boolean isThereHumanPlayer() throws NoHumanPlayerException {
+		Collection<Player> players = playersModel.getPlayers();
+		for (Player player : players) {
+			if (player.getData().isHuman())
 				return true;
 		}
 		throw new NoHumanPlayerException();
 	}
-		
+
 }

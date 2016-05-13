@@ -8,10 +8,6 @@ import com.monopoly.player.PlayerView;
 import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
 
-/**
- *
- * @author iblecher
- */
 public class PlayersPane extends Scene{
 
     final private FlowPane root;
@@ -22,7 +18,8 @@ public class PlayersPane extends Scene{
         root.setHgap(10);
         root.setVgap(10);
         playersManager.getPlayers().forEach(
-                (player) -> root.getChildren().add(new PlayerView(player.getName(),player.getGender(), player.isHuman(), player.getImage())));
+                (player) -> root.getChildren().add(new PlayerView(player.getData().getName(),player.getData().getGender(),
+                		player.getData().isHuman(), player.getData().getImage(), player.getData().getIcon())));
         setRoot(root);
     }
 }

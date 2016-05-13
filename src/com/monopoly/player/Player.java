@@ -33,4 +33,5 @@ public interface Player {
 	public Card getJailFreeCard();
 	public ArrayList<Transportation> getTransportation();
 	public ArrayList<Utility> getUtilites();
+	public PlayerData getData();
 }

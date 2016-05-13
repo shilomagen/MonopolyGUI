@@ -48,6 +48,10 @@
 	
 }
 
+.active{
+	-fx-background-color: #5BCE68;
+}
+
 .city-label.top{
 	-fx-rotate:180deg;
 	-fx-alignment: center;

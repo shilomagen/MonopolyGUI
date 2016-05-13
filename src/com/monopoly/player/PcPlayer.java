@@ -9,7 +9,7 @@ import com.monopoly.utility.GameConstants;
 
 public class PcPlayer implements Player{
 
-	private String playerName;
+	private PlayerData data;
 	private boolean bankrupt;
 	private boolean isInJail;
 	private int money;
@@ -21,12 +21,12 @@ public class PcPlayer implements Player{
 	private ArrayList<Transportation> playerTrans;
 	private ArrayList<Utility> playerUtil;
 	
-	public PcPlayer(String playerName, int position) {
-		this.playerName = playerName;
+	public PcPlayer(PlayerData data) {
+		this.data = data;
 		this.money = GameConstants.INITIAL_MONEY;
 		this.isInJail = false;
 		this.isParked = false;
-		this.position = position;
+		this.position = GameConstants.START;
 		this.hasFreeJailCard = false;
 		this.bankrupt = false;
 		playerCities = new ArrayList<>();
@@ -36,9 +36,6 @@ public class PcPlayer implements Player{
 		
 	}
 
-	public String toString(){
-		return playerName + " Created with " + Integer.toString(this.money) + "$ and currently on cell BASE";
-	}
 	public boolean canPlay(){
 		return this.isInJail && this.isBankrupt() && this.isParked;
 	}
@@ -95,7 +92,7 @@ public class PcPlayer implements Player{
 
 	@Override
 	public String getPlayerName() {
-		return this.playerName;
+		return this.data.getName();
 	}
 	@Override
 	public void setMoney(int money) {
@@ -149,6 +146,11 @@ public class PcPlayer implements Player{
 	@Override
 	public ArrayList<Utility> getUtilites() {
 		return this.playerUtil;
+	}
+
+	@Override
+	public PlayerData getData() {
+		return this.data;
 	}
 
 	

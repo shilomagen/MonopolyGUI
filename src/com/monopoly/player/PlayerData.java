@@ -4,27 +4,29 @@ import java.util.Objects;
 
 import javafx.scene.image.Image;
 
-public class PlayerInitiate {
+public class PlayerData {
 
     private String name;
     private boolean isHuman;
     private String gender;
     private Image image;
+    private Image icon;
 
-    public PlayerInitiate(String name) {
+    public PlayerData(String name) {
 	this(name, true);
     }
 
-    public PlayerInitiate(String name, boolean isHuman) {
+    public PlayerData(String name, boolean isHuman) {
 	this.name = name;
 	this.isHuman = isHuman;
     }
 
-    public PlayerInitiate(String name, boolean isHuman, String gender, Image image) {
+    public PlayerData(String name, boolean isHuman, String gender, Image image, Image icon) {
         this.name = name;
         this.isHuman = isHuman;
         this.gender = gender;
         this.image = image;
+        this.icon = icon;
     }
 
     public String getGender() {
@@ -59,7 +61,7 @@ public class PlayerInitiate {
 	if (getClass() != obj.getClass()) {
 	    return false;
 	}
-	final PlayerInitiate other = (PlayerInitiate) obj;
+	final PlayerData other = (PlayerData) obj;
 	if (!Objects.equals(this.name, other.name)) {
 	    return false;
 	}
@@ -72,5 +74,13 @@ public class PlayerInitiate {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public Image getIcon() {
+		return icon;
+	}
+
+	public void setIcon(Image icon) {
+		this.icon = icon;
 	}
 }

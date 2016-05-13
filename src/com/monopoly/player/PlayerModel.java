@@ -5,18 +5,20 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.monopoly.utility.GameConstants;
+
 public class PlayerModel {
-	private Set<PlayerInitiate> players;
+	private Set<Player> players;
 
 	public PlayerModel() {
 		players = new HashSet<>();
 	}
 
-	public boolean isPlayerExists(PlayerInitiate player) {
+	public boolean isPlayerExists(PlayerData player) {
 		return players.contains(player);
 	}
 
-	public void addPlayer(PlayerInitiate player) {
+	public void addPlayer(Player player) {
 		players.add(player);
 	}
 
@@ -25,17 +27,17 @@ public class PlayerModel {
 	// players.addAll(players);
 	// }
 
-	public Collection<PlayerInitiate> getPlayers() {
+	public Collection<Player> getPlayers() {
 		return Collections.unmodifiableSet(players);
 	}
 
 	public boolean isPlayersFullyLoaded() {
-		return this.players.size() == 6;
+		return this.players.size() == GameConstants.MAX_PLAYERS;
 	}
 
 	public boolean isThereHumanPlayer() {
-		for (PlayerInitiate player : players){
-			if (player.isHuman())
+		for (Player player : players){
+			if (player.getData().isHuman())
 				return true;
 		}
 		return false;

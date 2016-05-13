@@ -90,14 +90,23 @@
 						</CheckBox>
 					</children>
 				</GridPane>
-				<Label fx:id="errorMessageLabel" prefHeight="17.0" prefWidth="398.0" textAlignment="CENTER" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="2">
+				<Label fx:id="errorMessageLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="19.0" prefWidth="320.0" textAlignment="CENTER" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="2">
 					<font>
 						<Font name="System Bold" size="15.0" />
 					</font>
 					<GridPane.margin>
-						<Insets left="25.0" />
+						<Insets left="160.0" />
 					</GridPane.margin>
 				</Label>
+            <Label alignment="TOP_LEFT" text="Icon:" GridPane.rowIndex="2">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="15.0" />
+               </GridPane.margin>
+            </Label>
+            <ChoiceBox fx:id="iconBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 			</children>
 		</GridPane>
 	</top>

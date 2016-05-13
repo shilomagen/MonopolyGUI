@@ -1,14 +1,16 @@
 package com.monopoly.scenes;
 
-import com.monopoly.player.PlayerInitiate;
+import com.monopoly.player.Player;
 import com.monopoly.utility.BoardConsts;
-import com.monopoly.utility.CountryColors;
+import com.monopoly.utility.PositionHelper;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
@@ -16,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -24,10 +27,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class MainBoard {
-	AnchorPane root;
-	AnchorPane gridAnchor;
-	GridPane boardPane;
-	AnchorPane playersAnchor;
+	private AnchorPane root;
+	private AnchorPane gridAnchor;
+	private GridPane boardPane;
+	private AnchorPane playersAnchor;
+	private Label screenConsole;
+	private Button rollButton;
+	private Pane dicePane;
 
 	public MainBoard() {
 		root = new AnchorPane();
@@ -64,7 +70,6 @@ public class MainBoard {
 		playersAnchor.setPrefHeight(768);
 		playersAnchor.setPrefWidth(189);
 		this.createPlayerPane();
-
 		root.getChildren().add(gridAnchor);
 
 	}
@@ -129,6 +134,11 @@ public class MainBoard {
 		jailImage.setRotate(270);
 		jailPane.getChildren().add(jailImage);
 		StackPane.setAlignment(jailImage, Pos.CENTER);
+		FlowPane playerBox = new FlowPane();
+		playerBox.setId(this.generatePlayerBoxID(col, row));
+		playerBox.setVgap(3);
+		playerBox.setHgap(3);
+		jailPane.getChildren().add(playerBox);
 		this.boardPane.add(jailPane, col, row);
 	}
 
@@ -142,8 +152,14 @@ public class MainBoard {
 		freeParkingImage.setPickOnBounds(true);
 		freeParkingImage.setPreserveRatio(true);
 		freeParkingImage.setImage(new Image(BoardConsts.IMAGE_URL + "/free-parking.png"));
-		freeParkingPane.getChildren().add(freeParkingImage);
+		FlowPane playerBox = new FlowPane();
+		playerBox.setId(this.generatePlayerBoxID(col, row));
+		playerBox.setVgap(3);
+		playerBox.setHgap(3);
+
+		freeParkingPane.getChildren().addAll(freeParkingImage, playerBox);
 		StackPane.setAlignment(freeParkingImage, Pos.CENTER);
+
 		this.boardPane.add(freeParkingPane, col, row);
 
 	}
@@ -158,7 +174,11 @@ public class MainBoard {
 		goToJailImage.setPickOnBounds(true);
 		goToJailImage.setPreserveRatio(true);
 		goToJailImage.setImage(new Image(BoardConsts.IMAGE_URL + "/gotojail.png"));
-		goToJailPane.getChildren().add(goToJailImage);
+		FlowPane playerBox = new FlowPane();
+		playerBox.setId(this.generatePlayerBoxID(col, row));
+		playerBox.setVgap(3);
+		playerBox.setHgap(3);
+		goToJailPane.getChildren().addAll(goToJailImage, playerBox);
 		StackPane.setAlignment(goToJailImage, Pos.CENTER);
 		this.boardPane.add(goToJailPane, col, row);
 
@@ -174,7 +194,12 @@ public class MainBoard {
 		startImage.setPickOnBounds(true);
 		startImage.setPreserveRatio(true);
 		startImage.setImage(new Image(BoardConsts.IMAGE_URL + "/start.png"));
-		startPane.getChildren().add(startImage);
+		FlowPane playerBox = new FlowPane();
+		playerBox.setId(this.generatePlayerBoxID(col, row));
+		playerBox.setVgap(3);
+		playerBox.setHgap(3);
+
+		startPane.getChildren().addAll(startImage, playerBox);
 		StackPane.setAlignment(startImage, Pos.CENTER);
 		this.boardPane.add(startPane, col, row);
 
@@ -184,7 +209,8 @@ public class MainBoard {
 		this.boardPane.add(paneToAssign, gridCol, gridRow);
 	}
 
-	public void createCityPane(int col, int row, String countryName, String cityName, int cityPrice, String colorCountry) {
+	public void createCityPane(int col, int row, String countryName, String cityName, int cityPrice,
+			String colorCountry) {
 		SplitPane cityPane = new SplitPane();
 		cityPane.getStyleClass().add("city-cell");
 		Pane infoPane = new StackPane();
@@ -197,6 +223,11 @@ public class MainBoard {
 		infoPane.getChildren().add(countryLabel);
 		infoPane.getChildren().add(cityLabel);
 		infoPane.getChildren().add(priceLabel);
+		FlowPane playerBox = new FlowPane();
+		playerBox.setId(this.generatePlayerBoxID(col, row));
+		playerBox.setVgap(3);
+		playerBox.setHgap(3);
+		infoPane.getChildren().add(playerBox);
 
 		if (col == 0) { // LEFT SIDE OF MONOPOLY BOARD
 			cityPane.setOrientation(Orientation.HORIZONTAL);
@@ -209,8 +240,6 @@ public class MainBoard {
 			cityPane.getItems().add(infoPane);
 			cityPane.getItems().add(new Pane());
 			cityPane.getItems().get(1).setStyle("-fx-background-color:" + colorCountry + ";");
-			
-
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		} else if (col == 9) { // RIGHT SIDE OF MONOPOLY BOARD
 			cityPane.setOrientation(Orientation.HORIZONTAL);
@@ -222,7 +251,6 @@ public class MainBoard {
 			priceLabel.getStyleClass().add("right");
 			cityPane.getItems().add(new Pane());
 			cityPane.getItems().get(0).setStyle("-fx-background-color:" + colorCountry + ";");
-			
 			cityPane.getItems().add(infoPane);
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		} else if (row == 0) {// UPPER SIDE OF MONOPOLY BOARD
@@ -255,14 +283,14 @@ public class MainBoard {
 	public void createBoardLogo() {
 		StackPane centralPane = new StackPane();
 		centralPane.setPrefSize(200, 150);
-		
+
 		ImageView centralImage = new ImageView();
 		centralImage.setFitHeight(559);
 		centralImage.setFitWidth(608);
 		centralImage.setPickOnBounds(true);
 		centralImage.setPreserveRatio(true);
 		centralImage.setImage(new Image(BoardConsts.IMAGE_URL + "/main-pic.png"));
-		
+
 		Pane surpriseDeck = new Pane();
 		surpriseDeck.setPrefSize(200, 200);
 		ImageView surpriseImage = new ImageView(BoardConsts.IMAGE_URL + "/surprise-deck.png");
@@ -272,9 +300,10 @@ public class MainBoard {
 		surpriseImage.setLayoutX(38.0);
 		surpriseImage.setLayoutY(21.0);
 		surpriseImage.setPickOnBounds(true);
-		surpriseImage.setOnMouseClicked((event)->{System.out.println("aasd");});
+		surpriseImage.setOnMouseClicked((event) -> {
+			System.out.println("aasd");
+		});
 		surpriseDeck.getChildren().add(surpriseImage);
-		
 
 		Pane warrantDeck = new Pane();
 		warrantDeck.setPrefSize(200, 200);
@@ -285,18 +314,18 @@ public class MainBoard {
 		warrantImage.setPickOnBounds(true);
 		warrantImage.setLayoutX(380.0);
 		warrantImage.setLayoutY(307.0);
-		warrantImage.setOnMouseClicked((event)->{
+		warrantImage.setOnMouseClicked((event) -> {
 			System.out.println("warrant clicked");
 		});
 		warrantDeck.getChildren().add(warrantImage);
-		
-		Pane dicePane = new Pane();
+
+		this.dicePane = new Pane();
 		dicePane.setId("dicePane");
 		dicePane.setPrefSize(204, 84);
 		dicePane.setMaxHeight(84);
 		StackPane.setAlignment(dicePane, Pos.BOTTOM_LEFT);
-		
-		ImageView leftDie  = new ImageView();
+
+		ImageView leftDie = new ImageView();
 		leftDie.setFitHeight(55);
 		leftDie.setFitWidth(101);
 		leftDie.setLayoutX(13);
@@ -304,8 +333,8 @@ public class MainBoard {
 		leftDie.setPreserveRatio(true);
 		leftDie.setPickOnBounds(true);
 		leftDie.setImage(new Image("file:src/com/monopoly/assets/dice/dice-1.png"));
-		
-		ImageView rightDie  = new ImageView();
+
+		ImageView rightDie = new ImageView();
 		rightDie.setFitHeight(55);
 		rightDie.setFitWidth(101);
 		rightDie.setLayoutX(133);
@@ -313,53 +342,28 @@ public class MainBoard {
 		rightDie.setPreserveRatio(true);
 		rightDie.setPickOnBounds(true);
 		rightDie.setImage(new Image("file:src/com/monopoly/assets/dice/dice-1.png"));
-		
-		Button rollButton = new Button("Roll");
+
+		this.rollButton = new Button("Roll");
 		rollButton.setLayoutX(80);
 		rollButton.setLayoutY(30);
 		rollButton.setMnemonicParsing(false);
-		rollButton.setOnAction((event)->{
-			System.out.println("rolls!");
+		rollButton.setOnAction((event) -> {
+			
 		});
-		
+
 		dicePane.getChildren().addAll(leftDie, rightDie, rollButton);
-		
-		Label screenConsole = new Label("Test");
+
+		this.screenConsole = new Label("");
 		screenConsole.setId("screen-console");
 		screenConsole.setAlignment(Pos.CENTER);
 		screenConsole.setPrefSize(331, 47);
 		screenConsole.setWrapText(true);
 		StackPane.setAlignment(screenConsole, Pos.TOP_RIGHT);
-		
-		centralPane.getChildren().addAll(centralImage, surpriseDeck, warrantDeck, dicePane, screenConsole);
-		
-		this.boardPane.add(centralPane, 1, 1, 8, 8);
-		
 
-//		StackPane logoPane = new StackPane();
-//		logoPane.setPrefHeight(150.0);
-//		logoPane.setPrefWidth(200.0);
-//		ImageView logoImage = new ImageView();
-//		logoPane.getStyleClass().add("logo-pane");
-//		logoImage.setFitHeight(554.0);
-//		logoImage.setFitWidth(604.0);
-//		logoImage.setPickOnBounds(true);
-//		logoImage.setPreserveRatio(true);
-//		logoImage.setImage(new Image(BoardConsts.IMAGE_URL + "/main-pic.png"));
-//		logoPane.getChildren().add(logoImage);
-//		this.boardPane.add(logoPane, 1, 1, 8, 8);
-//		this.createCardDecks();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		centralPane.getChildren().addAll(centralImage, surpriseDeck, warrantDeck, dicePane, screenConsole);
+
+		this.boardPane.add(centralPane, 1, 1, 8, 8);
+
 	}
 
 	private void createCardDecks() {
@@ -400,6 +404,12 @@ public class MainBoard {
 		transLabel.getStyleClass().add("trans-util-label");
 		Label transPrice = new Label(transportPrice + "");
 		transPrice.getStyleClass().add("trans-util-price");
+		FlowPane playerBox = new FlowPane();
+		playerBox.setId(this.generatePlayerBoxID(col, row));
+		playerBox.setVgap(3);
+		playerBox.setHgap(3);
+
+		transPane.getChildren().add(playerBox);
 
 		if (col == 0) { // LEFT SIDE OF MONOPOLY BOARD
 			transPane.getStyleClass().add("left");
@@ -463,7 +473,12 @@ public class MainBoard {
 		utilityLabel.getStyleClass().add("trans-util-label");
 		Label utilityPrice = new Label(utilPrice + "$");
 		utilityPrice.getStyleClass().add("trans-util-price");
+		FlowPane playerBox = new FlowPane();
+		playerBox.setId(this.generatePlayerBoxID(col, row));
+		playerBox.setVgap(3);
+		playerBox.setHgap(3);
 
+		utilityPane.getChildren().add(playerBox);
 		if (col == 0) { // LEFT SIDE OF MONOPOLY BOARD
 			utilityPane.getStyleClass().add("left");
 			utilityImage.getStyleClass().add("left");
@@ -521,9 +536,12 @@ public class MainBoard {
 		ImageView warrantImage = new ImageView(BoardConsts.IMAGE_URL + "/warrant.png");
 		warrantImage.getStyleClass().add("warrant-image");
 		warrantImage.setPickOnBounds(true);
-
+		FlowPane playerBox = new FlowPane();
+		playerBox.setId(this.generatePlayerBoxID(col, row));
+		playerBox.setVgap(3);
+		playerBox.setHgap(3);
 		StackPane.setAlignment(warrantImage, Pos.CENTER);
-		warrantPane.getChildren().add(warrantImage);
+		warrantPane.getChildren().addAll(warrantImage, playerBox);
 
 		if (col == 0) { // LEFT SIDE OF MONOPOLY BOARD
 			warrantImage.setFitWidth(50);
@@ -558,8 +576,12 @@ public class MainBoard {
 		ImageView surpriseImage = new ImageView(BoardConsts.IMAGE_URL + "/surprise.png");
 		surpriseImage.getStyleClass().add("surprise-image");
 		surpriseImage.setPickOnBounds(true);
+		FlowPane playerBox = new FlowPane();
+		playerBox.setId(this.generatePlayerBoxID(col, row));
+		playerBox.setVgap(3);
+		playerBox.setHgap(3);
 		StackPane.setAlignment(surpriseImage, Pos.CENTER);
-		surprisePane.getChildren().add(surpriseImage);
+		surprisePane.getChildren().addAll(surpriseImage, playerBox);
 
 		if (col == 0) { // LEFT SIDE OF MONOPOLY BOARD
 			surpriseImage.setFitWidth(50);
@@ -602,12 +624,12 @@ public class MainBoard {
 		this.playersAnchor.getChildren().add(playerVBox);
 	}
 
-	public void createPlayerProfile(VBox playersPane, PlayerInitiate player) {
+	public void createPlayerProfile(VBox playersPane, Player player) {
 		Pane playerProfile = new Pane();
 		playerProfile.setPrefSize(200.0, 128.0);
 
 		ImageView playerAvatar = new ImageView();
-		playerAvatar.setImage(player.getImage());
+		playerAvatar.setImage(player.getData().getImage());
 		playerAvatar.setFitHeight(70.0);
 		playerAvatar.setFitWidth(69.0);
 		playerAvatar.setLayoutY(7.0);
@@ -615,7 +637,16 @@ public class MainBoard {
 		playerAvatar.setPickOnBounds(true);
 		playerAvatar.setPreserveRatio(true);
 
-		Label playerName = new Label(player.getName());
+		ImageView playerIcon = new ImageView();
+		playerIcon.setImage(player.getData().getIcon());
+		playerIcon.setFitHeight(40.0);
+		playerIcon.setFitWidth(39.0);
+		playerIcon.setLayoutY(10.0);
+		playerIcon.setLayoutX(10);
+		playerIcon.setPickOnBounds(true);
+		playerIcon.setPreserveRatio(true);
+
+		Label playerName = new Label(player.getData().getName());
 		playerName.setAlignment(Pos.CENTER);
 		playerName.setLayoutX(1.0);
 		playerName.setLayoutY(85.0);
@@ -635,7 +666,7 @@ public class MainBoard {
 		playerStatus.setPickOnBounds(true);
 		playerStatus.setPreserveRatio(true);
 
-		playerProfile.getChildren().addAll(playerAvatar, playerName, playerMoney, playerStatus);
+		playerProfile.getChildren().addAll(playerAvatar, playerIcon, playerName, playerMoney, playerStatus);
 		playersPane.getChildren().add(playerProfile);
 
 	}
@@ -648,4 +679,67 @@ public class MainBoard {
 		return this.gridAnchor;
 	}
 
+	public Node getCellByPosition(int location) {
+		int col = PositionHelper.arr.get(location).getCol();
+		int row = PositionHelper.arr.get(location).getRow();
+		return this.getNodeByRowColumnIndex(row, col);
+
+	}
+
+	public Node getNodeByRowColumnIndex(final int row, final int column) {
+		Node result = null;
+		ObservableList<Node> childrens = this.boardPane.getChildren();
+		for (Node node : childrens) {
+			if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+				result = node;
+				break;
+			}
+		}
+		return result;
+	}
+
+	public FlowPane getPlayerBox(int location) {
+		Node node = this.getCellByPosition(location);
+		int col = PositionHelper.arr.get(location).getCol();
+		int row = PositionHelper.arr.get(location).getRow();
+		Parent tempParent = (Parent) node;
+		if (tempParent.getClass().getSimpleName().equals("SplitPane")){
+			SplitPane pane = (SplitPane)tempParent;
+			for (Node citytemp : pane.getItems()){
+				if (citytemp.getClass().getSimpleName().equals("StackPane")){
+					for (Node theNode : ((StackPane)citytemp).getChildren()){
+						if (theNode.getId() != null && theNode.getId().equals(this.generatePlayerBoxID(col, row)))
+							return (FlowPane)theNode;
+					}
+				}
+			}
+			
+		} else{
+			Pane cellPane = (Pane)tempParent;
+			for (Node runNode : cellPane.getChildrenUnmodifiable()) {
+					if (runNode.getId() != null && runNode.getId().equals(this.generatePlayerBoxID(col, row))) {
+						return (FlowPane) runNode;
+					}
+				}
+		}
+		
+		
+		return null;
+	}
+
+	public String generatePlayerBoxID(int col, int row) {
+		return "playerbox-" + new Integer(col).toString() + new Integer(row).toString();
+	}
+
+	public Label getScreenConsole(){
+		return this.screenConsole;
+	}
+	
+	public Button getRollButton(){
+		return this.rollButton;
+	}
+	
+	public Pane getDicePane(){
+		return this.dicePane;
+	}
 }

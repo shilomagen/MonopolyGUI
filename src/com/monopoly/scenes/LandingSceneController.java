@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,7 +21,8 @@ public class LandingSceneController implements Initializable {
 //    private PlayersManager playersManager;
 //    private PlayersController playersController; 
     final private BooleanProperty createPlayerProperty = new SimpleBooleanProperty(this, "Create Player Property");
- 
+    final private BooleanProperty startGame = new SimpleBooleanProperty(this, "StartGame", false);
+   
 
     
     @FXML
@@ -56,6 +58,8 @@ public class LandingSceneController implements Initializable {
     private void showMainBoard(){
     	this.scneneManager.getMainBoardController().addPlayersToMainBoard();
     	this.scneneManager.getPrimaryStage().setScene(this.scneneManager.getMainBoardScene());
+    	this.startGame.setValue(true);
+    	
     }
 
     public BooleanProperty getCreatePlayerProperty() {
@@ -84,6 +88,10 @@ public class LandingSceneController implements Initializable {
     public void activateStartGame(boolean val){
     	this.startGameButton.setDisable(!val);
     }
+    
+    public BooleanProperty getStartGame() {
+		return this.startGame;
+	}
     
     
     
