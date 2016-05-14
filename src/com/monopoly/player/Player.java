@@ -34,4 +34,6 @@ public interface Player {
 	public ArrayList<Transportation> getTransportation();
 	public ArrayList<Utility> getUtilites();
 	public PlayerData getData();
+	public int getLastFine();
+	public void setLastFine(int lastFine);
 }

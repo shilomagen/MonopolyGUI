@@ -20,6 +20,7 @@ public class HumanPlayer implements Player{
 	private ArrayList<City> playerCities;
 	private ArrayList<Transportation> playerTrans;
 	private ArrayList<Utility> playerUtil;
+	private int lastFine;
 	
 
 	public HumanPlayer(PlayerData data) {
@@ -164,6 +165,18 @@ public class HumanPlayer implements Player{
 	@Override
 	public PlayerData getData() {
 		return this.data;
+	}
+
+
+
+	public int getLastFine() {
+		return lastFine;
+	}
+
+
+
+	public void setLastFine(int lastFine) {
+		this.lastFine = lastFine;
 	}
 	
 	

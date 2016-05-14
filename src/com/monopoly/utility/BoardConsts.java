@@ -10,5 +10,6 @@ public final class BoardConsts {
 	public static final String IMAGE_URL = "/com/monopoly/assets";
 	
 	
+	
 
 }

@@ -1,9 +1,13 @@
 package com.monopoly.scenes;
 
+import com.monopoly.engine.GameEngine;
 import com.monopoly.player.Player;
 import com.monopoly.utility.BoardConsts;
+import com.monopoly.utility.EventTypes;
 import com.monopoly.utility.PositionHelper;
 
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
@@ -138,6 +142,18 @@ public class MainBoard {
 		playerBox.setId(this.generatePlayerBoxID(col, row));
 		playerBox.setVgap(3);
 		playerBox.setHgap(3);
+		playerBox.getChildren().addListener(new ListChangeListener() {
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				while (change.next()) {
+					if (change.wasAdded()) {
+						Platform.runLater(()->{
+							GameEngine.addEventToEngine(EventTypes.ON_JAIL_FREE_PASS);
+						});
+					}
+				}
+			}
+		});
 		jailPane.getChildren().add(playerBox);
 		this.boardPane.add(jailPane, col, row);
 	}
@@ -156,7 +172,18 @@ public class MainBoard {
 		playerBox.setId(this.generatePlayerBoxID(col, row));
 		playerBox.setVgap(3);
 		playerBox.setHgap(3);
-
+		playerBox.getChildren().addListener(new ListChangeListener() {
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				while (change.next()) {
+					if (change.wasAdded()) {
+						Platform.runLater(()->{
+							GameEngine.addEventToEngine(EventTypes.ON_FREE_PARKING);
+						});
+					}
+				}
+			}
+		});
 		freeParkingPane.getChildren().addAll(freeParkingImage, playerBox);
 		StackPane.setAlignment(freeParkingImage, Pos.CENTER);
 
@@ -178,6 +205,18 @@ public class MainBoard {
 		playerBox.setId(this.generatePlayerBoxID(col, row));
 		playerBox.setVgap(3);
 		playerBox.setHgap(3);
+		playerBox.getChildren().addListener(new ListChangeListener() {
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				while (change.next()) {
+					if (change.wasAdded()) {
+						Platform.runLater(()->{
+							GameEngine.addEventToEngine(EventTypes.ON_GO_TO_JAIL);
+						});
+					}
+				}
+			}
+		});
 		goToJailPane.getChildren().addAll(goToJailImage, playerBox);
 		StackPane.setAlignment(goToJailImage, Pos.CENTER);
 		this.boardPane.add(goToJailPane, col, row);
@@ -198,7 +237,18 @@ public class MainBoard {
 		playerBox.setId(this.generatePlayerBoxID(col, row));
 		playerBox.setVgap(3);
 		playerBox.setHgap(3);
-
+		playerBox.getChildren().addListener(new ListChangeListener() {
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				while (change.next()) {
+					if (change.wasAdded()) {
+						Platform.runLater(()->{
+							GameEngine.addEventToEngine(EventTypes.ON_START);
+						});
+					}
+				}
+			}
+		});
 		startPane.getChildren().addAll(startImage, playerBox);
 		StackPane.setAlignment(startImage, Pos.CENTER);
 		this.boardPane.add(startPane, col, row);
@@ -227,6 +277,18 @@ public class MainBoard {
 		playerBox.setId(this.generatePlayerBoxID(col, row));
 		playerBox.setVgap(3);
 		playerBox.setHgap(3);
+		playerBox.getChildren().addListener(new ListChangeListener() {
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				while (change.next()) {
+					if (change.wasAdded()) {
+						Platform.runLater(()->{
+							GameEngine.addEventToEngine(EventTypes.ON_CITY);
+						});
+					}
+				}
+			}
+		});
 		infoPane.getChildren().add(playerBox);
 
 		if (col == 0) { // LEFT SIDE OF MONOPOLY BOARD
@@ -348,7 +410,7 @@ public class MainBoard {
 		rollButton.setLayoutY(30);
 		rollButton.setMnemonicParsing(false);
 		rollButton.setOnAction((event) -> {
-			
+
 		});
 
 		dicePane.getChildren().addAll(leftDie, rightDie, rollButton);
@@ -358,6 +420,7 @@ public class MainBoard {
 		screenConsole.setAlignment(Pos.CENTER);
 		screenConsole.setPrefSize(331, 47);
 		screenConsole.setWrapText(true);
+		
 		StackPane.setAlignment(screenConsole, Pos.TOP_RIGHT);
 
 		centralPane.getChildren().addAll(centralImage, surpriseDeck, warrantDeck, dicePane, screenConsole);
@@ -408,7 +471,18 @@ public class MainBoard {
 		playerBox.setId(this.generatePlayerBoxID(col, row));
 		playerBox.setVgap(3);
 		playerBox.setHgap(3);
-
+		playerBox.getChildren().addListener(new ListChangeListener() {
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				while (change.next()) {
+					if (change.wasAdded()) {
+						Platform.runLater(()->{
+							GameEngine.addEventToEngine(EventTypes.ON_TRANSPORTATION);
+						});
+					}
+				}
+			}
+		});
 		transPane.getChildren().add(playerBox);
 
 		if (col == 0) { // LEFT SIDE OF MONOPOLY BOARD
@@ -477,7 +551,18 @@ public class MainBoard {
 		playerBox.setId(this.generatePlayerBoxID(col, row));
 		playerBox.setVgap(3);
 		playerBox.setHgap(3);
-
+		playerBox.getChildren().addListener(new ListChangeListener() {
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				while (change.next()) {
+					if (change.wasAdded()) {
+						Platform.runLater(()->{
+							GameEngine.addEventToEngine(EventTypes.ON_UTILITY);
+						});
+					}
+				}
+			}
+		});
 		utilityPane.getChildren().add(playerBox);
 		if (col == 0) { // LEFT SIDE OF MONOPOLY BOARD
 			utilityPane.getStyleClass().add("left");
@@ -540,6 +625,18 @@ public class MainBoard {
 		playerBox.setId(this.generatePlayerBoxID(col, row));
 		playerBox.setVgap(3);
 		playerBox.setHgap(3);
+		playerBox.getChildren().addListener(new ListChangeListener() {
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				while (change.next()) {
+					if (change.wasAdded()) {
+						Platform.runLater(()->{
+							GameEngine.addEventToEngine(EventTypes.ON_WARRANT);
+						});
+					}
+				}
+			}
+		});
 		StackPane.setAlignment(warrantImage, Pos.CENTER);
 		warrantPane.getChildren().addAll(warrantImage, playerBox);
 
@@ -580,6 +677,18 @@ public class MainBoard {
 		playerBox.setId(this.generatePlayerBoxID(col, row));
 		playerBox.setVgap(3);
 		playerBox.setHgap(3);
+		playerBox.getChildren().addListener(new ListChangeListener() {
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+				while (change.next()) {
+					if (change.wasAdded()) {
+						Platform.runLater(()->{
+							GameEngine.addEventToEngine(EventTypes.ON_SUPRISE);
+						});
+					}
+				}
+			}
+		});
 		StackPane.setAlignment(surpriseImage, Pos.CENTER);
 		surprisePane.getChildren().addAll(surpriseImage, playerBox);
 
@@ -627,6 +736,7 @@ public class MainBoard {
 	public void createPlayerProfile(VBox playersPane, Player player) {
 		Pane playerProfile = new Pane();
 		playerProfile.setPrefSize(200.0, 128.0);
+		playerProfile.setId(player.getPlayerName()+"-player");
 
 		ImageView playerAvatar = new ImageView();
 		playerAvatar.setImage(player.getData().getImage());
@@ -663,6 +773,7 @@ public class MainBoard {
 		playerStatus.setFitWidth(15.0);
 		playerStatus.setLayoutX(169.0);
 		playerStatus.setLayoutY(4.0);
+		playerStatus.setId(player.getPlayerName() + "-status");
 		playerStatus.setPickOnBounds(true);
 		playerStatus.setPreserveRatio(true);
 
@@ -703,27 +814,26 @@ public class MainBoard {
 		int col = PositionHelper.arr.get(location).getCol();
 		int row = PositionHelper.arr.get(location).getRow();
 		Parent tempParent = (Parent) node;
-		if (tempParent.getClass().getSimpleName().equals("SplitPane")){
-			SplitPane pane = (SplitPane)tempParent;
-			for (Node citytemp : pane.getItems()){
-				if (citytemp.getClass().getSimpleName().equals("StackPane")){
-					for (Node theNode : ((StackPane)citytemp).getChildren()){
+		if (tempParent.getClass().getSimpleName().equals("SplitPane")) {
+			SplitPane pane = (SplitPane) tempParent;
+			for (Node citytemp : pane.getItems()) {
+				if (citytemp.getClass().getSimpleName().equals("StackPane")) {
+					for (Node theNode : ((StackPane) citytemp).getChildren()) {
 						if (theNode.getId() != null && theNode.getId().equals(this.generatePlayerBoxID(col, row)))
-							return (FlowPane)theNode;
+							return (FlowPane) theNode;
 					}
 				}
 			}
-			
-		} else{
-			Pane cellPane = (Pane)tempParent;
+
+		} else {
+			Pane cellPane = (Pane) tempParent;
 			for (Node runNode : cellPane.getChildrenUnmodifiable()) {
-					if (runNode.getId() != null && runNode.getId().equals(this.generatePlayerBoxID(col, row))) {
-						return (FlowPane) runNode;
-					}
+				if (runNode.getId() != null && runNode.getId().equals(this.generatePlayerBoxID(col, row))) {
+					return (FlowPane) runNode;
 				}
+			}
 		}
-		
-		
+
 		return null;
 	}
 
@@ -731,15 +841,15 @@ public class MainBoard {
 		return "playerbox-" + new Integer(col).toString() + new Integer(row).toString();
 	}
 
-	public Label getScreenConsole(){
+	public Label getScreenConsole() {
 		return this.screenConsole;
 	}
-	
-	public Button getRollButton(){
+
+	public Button getRollButton() {
 		return this.rollButton;
 	}
-	
-	public Pane getDicePane(){
+
+	public Pane getDicePane() {
 		return this.dicePane;
 	}
 }

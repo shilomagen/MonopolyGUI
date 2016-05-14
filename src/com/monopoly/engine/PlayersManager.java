@@ -14,8 +14,10 @@ import com.monopoly.player.PcPlayer;
 import com.monopoly.player.Player;
 import com.monopoly.player.PlayerData;
 import com.monopoly.player.PlayerModel;
+import com.monopoly.utility.EventTypes;
 import com.monopoly.utility.GameConstants;
 
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 
 public class PlayersManager {
@@ -57,6 +59,10 @@ public class PlayersManager {
 	public void nextPlayer(){
 		this.currentPlayer++;
 		this.currentPlayer %= GameConstants.MAX_PLAYERS;
+		Platform.runLater(()->{
+			GameEngine.addEventToEngine(EventTypes.PLAY_TURN);
+		});
+		
 	}
 	public Collection<Player> getPlayers() {
 		ArrayList<Player> sortedPlayersList = new ArrayList<>(playersModel.getPlayers());

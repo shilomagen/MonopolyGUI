@@ -263,6 +263,12 @@
 	-fx-border-width: 1px;
 }
 
+#screen-console{
+	-fx-font-size: 16px;
+	-fx-font-weight: bold;
+	-fx-text-fill: blue;
+	
+}
 
 
 

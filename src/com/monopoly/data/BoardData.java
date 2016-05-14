@@ -3,7 +3,7 @@ package com.monopoly.data;
 import java.util.LinkedList;
 
 public class BoardData {
-	private LinkedList<CellData> theBoard;
+	public LinkedList<CellData> theBoard;
 
 	public BoardData(){
 		theBoard = new LinkedList<>();

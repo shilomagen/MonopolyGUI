@@ -50,6 +50,9 @@ public class SceneManager extends Application {
 		mainBoardController.registerButtonEvents();
 		this.gameEngine.setMainBoardController(this.mainBoardController);
 		this.gameEngine.setPlayersManager(userCreatingSceneController.getPlayersManager());
+		this.gameEngine.setCellModel(this.mainBoardController.getCellModel());
+		this.gameEngine.setSurpriseDeck(this.mainBoardController.getSurpriseDeck());
+		this.gameEngine.setWarrantDeck(this.mainBoardController.getWarrantDeck());
 
 		primaryStage.setScene(landingScene);
 		primaryStage.show();

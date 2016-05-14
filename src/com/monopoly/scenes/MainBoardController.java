@@ -1,16 +1,21 @@
 package com.monopoly.scenes;
 
+import java.util.LinkedList;
+
 import org.xml.sax.SAXException;
 
+import com.monopoly.cell.CellModel;
+import com.monopoly.data.Card;
 import com.monopoly.engine.GameBoard;
 import com.monopoly.engine.GameEngine;
 import com.monopoly.engine.InitiateGame;
 import com.monopoly.engine.PlayersManager;
 import com.monopoly.player.Player;
+import com.monopoly.utility.BoardConsts;
 import com.monopoly.utility.EventTypes;
 import com.monopoly.utility.GameConstants;
 
-import javafx.application.Platform;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -22,6 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class MainBoardController {
 	private MainBoard mainBoard;
@@ -31,6 +37,9 @@ public class MainBoardController {
 	private SceneManager sceneManager;
 	private GameEngine gameEngine;
 	private VBox playersVBox;
+	private CellModel cellModel;
+	private LinkedList<Card> surpriseDeck;
+	private LinkedList<Card> warrantDeck;
 
 	public MainBoardController(SceneManager sceneManager) {
 		try {
@@ -38,7 +47,8 @@ public class MainBoardController {
 			mainBoard = new MainBoard();
 			root = mainBoard.getRoot();
 			GameBoard gameBoard = new GameBoard(mainBoard);
-			gameBoard.loadTheBoard();
+			this.cellModel = new CellModel();
+			gameBoard.loadTheBoard(this.cellModel,surpriseDeck, warrantDeck );
 			this.mainBoardScene = new Scene(root, 1024, 768);
 			this.mainBoardScene.getStylesheets()
 					.add(getClass().getResource("/com/monopoly/stylesheets/board-stylesheet.css").toExternalForm());
@@ -55,14 +65,13 @@ public class MainBoardController {
 		System.out.println(this.gameEngine);
 		System.out.println(gameEngine);
 		rollButton.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-            	
-            	gameEngine.addEventToEngine(EventTypes.ROLL_DICE);
-            }
-        });
-		
+
+			@Override
+			public void handle(ActionEvent event) {
+				gameEngine.addEventToEngine(EventTypes.ROLL_DICE);
+			}
+		});
+
 	}
 
 	public Scene getMainBoardScene() {
@@ -86,10 +95,7 @@ public class MainBoardController {
 
 	public void movePlayerIconToSpecificCell(int diceRes, Player player) {
 		int newLocation = (player.getPosition() + diceRes) % GameConstants.TOTAL_CELL;
-		int currentPlayerPositionToDelete = player.getPosition();
-		FlowPane currentPlayerBox = mainBoard.getPlayerBox(currentPlayerPositionToDelete);
-		ImageView currentImageView = this.findImageViewByImage(currentPlayerBox, player.getData().getIcon());
-		currentPlayerBox.getChildren().remove(currentImageView);
+		this.removePlayerIconFromBoard(player);
 		ImageView icon = new ImageView(player.getData().getIcon());
 		icon.setFitHeight(30);
 		icon.setFitWidth(29);
@@ -97,52 +103,106 @@ public class MainBoardController {
 		icon.setLayoutX(10);
 		icon.setPickOnBounds(true);
 		icon.setPreserveRatio(true);
+		player.setPosition(newLocation);
 		FlowPane playerBox = mainBoard.getPlayerBox(newLocation);
 		playerBox.getChildren().add(icon);
+
 	}
 
-
-
 	private ImageView findImageViewByImage(FlowPane currentPlayerBox, Image icon) {
-		for (Node node : currentPlayerBox.getChildren()){
-			if (((ImageView)node).getImage() == icon){
-				return (ImageView)node;
+		for (Node node : currentPlayerBox.getChildren()) {
+			if (((ImageView) node).getImage() == icon) {
+				return (ImageView) node;
 			}
-			
+
 		}
 		return null;
 	}
 
-	public void activatePlayer(int currentPlayer) {
-		this.playersVBox.getChildren().get(currentPlayer).getStyleClass().add("active");
+	public void activatePlayer(int currentPlayer, boolean val) {
+		if (val)
+			this.playersVBox.getChildren().get(currentPlayer).getStyleClass().add("active");
+		else 
+			this.playersVBox.getChildren().get(currentPlayer).getStyleClass().remove("active");
 	}
 
 	public void informPlayerTurn(Player currentPlayer) {
-		String playerName = currentPlayer.getPlayerName();
-		this.mainBoard.getScreenConsole().setText(playerName + " Roll the dice!");
+		this.mainBoard.getScreenConsole().setText(currentPlayer.getPlayerName() + " Roll the dice!");
+		FadeTransition animation = new FadeTransition();
+		animation.setNode(this.mainBoard.getScreenConsole());
+		animation.setDuration(Duration.seconds(2));
+		animation.setFromValue(0.0);
+		animation.setToValue(1.0);
+		animation.play();
+
 		
 
 	}
 
 	public void activateRoll(boolean val) {
 		this.mainBoard.getRollButton().setDisable(!val);
-		
+
 	}
 
 	public void updateDice(int firstDie, int secondDie) {
 		Pane dicePane = this.mainBoard.getDicePane();
-		ImageView firstDieImg = (ImageView)dicePane.getChildren().get(0);
-		ImageView secondDieImg = (ImageView)dicePane.getChildren().get(1);
-		
-		firstDieImg.setImage(new Image("file:src/com/monopoly/assets/dice/dice-"+ firstDie +".png"));
-		secondDieImg.setImage(new Image("file:src/com/monopoly/assets/dice/dice-"+ secondDie +".png"));
-		
-		
+		ImageView firstDieImg = (ImageView) dicePane.getChildren().get(0);
+		ImageView secondDieImg = (ImageView) dicePane.getChildren().get(1);
+
+		firstDieImg.setImage(new Image("file:src/com/monopoly/assets/dice/dice-" + firstDie + ".png"));
+		secondDieImg.setImage(new Image("file:src/com/monopoly/assets/dice/dice-" + secondDie + ".png"));
+
 	}
 
 	public void setGameEngine(GameEngine gameEngine) {
 		this.gameEngine = gameEngine;
-		
+	}
+
+	public CellModel getCellModel() {
+		return this.cellModel;
+	}
+
+	public void showMessage(String string) {
+		this.mainBoard.getScreenConsole().setText(string);
+		FadeTransition animation = new FadeTransition();
+		animation.setNode(this.mainBoard.getScreenConsole());
+		animation.setDuration(Duration.seconds(0.4));
+		animation.setFromValue(0.0);
+		animation.setToValue(1.0);
+		animation.play();
+
+	}
+
+	public void setBankruptIndication(Player player) {
+		for (Node node : this.playersVBox.getChildren()) {
+			// Looking for the player node in the vbox
+			if (node.getId() != null && node.getId().equals(player.getPlayerName()+"-player")) {
+				for (Node secondNode : ((Pane) node).getChildren()) {
+					// looking for the status image in the players pane
+					if (secondNode.getId() != null && secondNode.getId().equals(player.getPlayerName() + "-status")) {
+						((ImageView) secondNode).setImage(new Image(BoardConsts.IMAGE_URL + "/player-off.png"));
+					}
+				}
+			}
+		}
+
+	}
+
+	public void removePlayerIconFromBoard(Player player) {
+		int currentPlayerPositionToDelete = player.getPosition();
+		FlowPane currentPlayerBox = mainBoard.getPlayerBox(currentPlayerPositionToDelete);
+		ImageView currentImageView = this.findImageViewByImage(currentPlayerBox, player.getData().getIcon());
+		if (currentImageView != null)
+			currentPlayerBox.getChildren().remove(currentImageView);
+		// else, player is already bankrupt and he's not on the cell
+
+	}
+	
+	public LinkedList<Card> getSurpriseDeck(){
+		return this.surpriseDeck;
+	}
+	public LinkedList<Card> getWarrantDeck(){
+		return this.warrantDeck;
 	}
 
 }

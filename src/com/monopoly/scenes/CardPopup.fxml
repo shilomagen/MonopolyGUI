@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.monopoly.scenes.CardPopupController">
+   <children>
+      <ImageView fitHeight="141.0" fitWidth="264.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true" x="160.0">
+         <image>
+            <Image url="@../assets/logo.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="kindOfCard" alignment="CENTER" layoutX="223.0" layoutY="89.0" prefHeight="17.0" prefWidth="138.0" text="Surprise" textAlignment="CENTER" textFill="GREEN">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="theMessage" layoutX="27.0" layoutY="126.0" prefHeight="17.0" prefWidth="536.0" text="Label">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="okButton" layoutX="264.0" layoutY="159.0" mnemonicParsing="false" onAction="#okButtonOnAction" prefHeight="27.0" prefWidth="57.0" text="OK" />
+   </children>
+</AnchorPane>

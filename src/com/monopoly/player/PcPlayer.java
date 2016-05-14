@@ -20,6 +20,7 @@ public class PcPlayer implements Player{
 	private ArrayList<City> playerCities;
 	private ArrayList<Transportation> playerTrans;
 	private ArrayList<Utility> playerUtil;
+	private int lastFine;
 	
 	public PcPlayer(PlayerData data) {
 		this.data = data;
@@ -151,6 +152,14 @@ public class PcPlayer implements Player{
 	@Override
 	public PlayerData getData() {
 		return this.data;
+	}
+
+	public int getLastFine() {
+		return lastFine;
+	}
+
+	public void setLastFine(int lastFine) {
+		this.lastFine = lastFine;
 	}
 
 	
