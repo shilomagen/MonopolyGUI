@@ -15,21 +15,14 @@ public class PropertyCell extends Cell implements Buyable {
 		this.hasOwner = false;
 		this.numOfHouses = 0;
 		this.setData(data);
-		
+
 	}
 
 	public Player getOwner() {
 		return owner;
 	}
 
-	public void setOwner(Player owner) {
-		this.owner = owner;
-	}
-
-	public boolean isHasOwner() {
-		return hasOwner;
-	}
-
+	@Override
 	public void setHasOwner(boolean hasOwner) {
 		this.hasOwner = hasOwner;
 	}
@@ -42,21 +35,6 @@ public class PropertyCell extends Cell implements Buyable {
 		this.numOfHouses = numOfHouses;
 	}
 
-//	@Override
-//	public void playAction(Player currentPlayer) {
-//		if (this.hasOwner){
-//			if (currentPlayer == this.owner){
-//				GameController.buyHouseProcedure(this);
-//			} else { //needs to pay fine
-//				int theFine = GameController.calculateFine(this);
-//				GameController.payFine(currentPlayer, this.getOwner(), theFine);
-//			}
-//		} 
-//		else { //the player doesnt have owner
-//			GameController.buyPropertyProcedure(currentPlayer, this);
-//		}
-//	}
-
 	public City getData() {
 		return data;
 	}
@@ -64,8 +42,21 @@ public class PropertyCell extends Cell implements Buyable {
 	public void setData(City data) {
 		this.data = data;
 	}
-	
 
+	@Override
+	public int getCost() {
+		return this.data.getCost();
+	}
 
+	@Override
+	public void setOwner(Player owner) {
+		this.owner = owner;
+
+	}
+
+	@Override
+	public boolean isHasOwner() {
+		return this.hasOwner;
+	}
 
 }

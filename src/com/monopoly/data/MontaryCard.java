@@ -1,7 +1,11 @@
 package com.monopoly.data;
 
+import com.monopoly.engine.GameEngine;
 //import com.monopoly.engine.GameController;
 import com.monopoly.player.Player;
+import com.monopoly.utility.EventTypes;
+
+import javafx.application.Platform;
 
 public class MontaryCard extends Card {
 	private int sum;
@@ -15,26 +19,38 @@ public class MontaryCard extends Card {
 		return String.format(this.cardText, sum);
 	}
 
-//	@Override
-//	public void surpriseAction(Player currentPlayer) {
-//		if (this.cardCode == 1) {
-//			GameController.takeMoneyFromPlayers(currentPlayer, this.sum);
-//		} else if (this.cardCode == 2) {
-//			currentPlayer.setMoney(currentPlayer.getMoney() + this.sum);
-//		}
-//		GameController.returnMontaryCardToSurpriseDeck(this);
-//
-//	}
-//
-//	@Override
-//	public void warrantAction(Player currentPlayer) {
-//		if (this.cardCode == 1) {
-//			GameController.payToAllPlayers(currentPlayer, this.sum);
-//
-//		} else if (this.cardCode == 2) {
-//			GameController.payToTreasury(currentPlayer,this.sum);
-//		}
-//		GameController.returnMontaryCardToWarrantDeck(this);
-//	}
+	@Override
+	public void surpriseAction(Player currentPlayer) {
+		if (this.cardCode == 1) {
+			Platform.runLater(()->{
+				GameEngine.addEventToEngine(EventTypes.TAKE_MONEY_FROM_ALL_PLAYERS);
+			});
+			
+		} else if (this.cardCode == 2) {
+			Platform.runLater(()->{
+				GameEngine.addEventToEngine(EventTypes.TAKE_MONEY_FROM_JACKPOT);
+			});
+		}
+	}
+
+	@Override
+	public void warrantAction(Player currentPlayer) {
+		if (this.cardCode == 1) {
+			Platform.runLater(()->{
+				GameEngine.addEventToEngine(EventTypes.PAY_TO_ALL_PLAYERS);
+			});
+			//GameController.payToAllPlayers(currentPlayer, this.sum);
+
+		} else if (this.cardCode == 2) {
+			Platform.runLater(()->{
+				GameEngine.addEventToEngine(EventTypes.PAY_TO_JACKPOT);
+			});
+			//GameController.payToTreasury(currentPlayer,this.sum);
+		}
+	}
+	
+	public int getSum(){
+		return this.sum;
+	}
 
 }

@@ -38,6 +38,7 @@ public class MainBoard {
 	private Label screenConsole;
 	private Button rollButton;
 	private Pane dicePane;
+	private VBox playerVBox;
 
 	public MainBoard() {
 		root = new AnchorPane();
@@ -147,7 +148,7 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(()->{
+						Platform.runLater(() -> {
 							GameEngine.addEventToEngine(EventTypes.ON_JAIL_FREE_PASS);
 						});
 					}
@@ -177,7 +178,7 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(()->{
+						Platform.runLater(() -> {
 							GameEngine.addEventToEngine(EventTypes.ON_FREE_PARKING);
 						});
 					}
@@ -210,7 +211,7 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(()->{
+						Platform.runLater(() -> {
 							GameEngine.addEventToEngine(EventTypes.ON_GO_TO_JAIL);
 						});
 					}
@@ -242,9 +243,8 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(()->{
+						if (GameEngine.isEventHandlerOn)
 							GameEngine.addEventToEngine(EventTypes.ON_START);
-						});
 					}
 				}
 			}
@@ -282,7 +282,7 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(()->{
+						Platform.runLater(() -> {
 							GameEngine.addEventToEngine(EventTypes.ON_CITY);
 						});
 					}
@@ -420,7 +420,7 @@ public class MainBoard {
 		screenConsole.setAlignment(Pos.CENTER);
 		screenConsole.setPrefSize(331, 47);
 		screenConsole.setWrapText(true);
-		
+
 		StackPane.setAlignment(screenConsole, Pos.TOP_RIGHT);
 
 		centralPane.getChildren().addAll(centralImage, surpriseDeck, warrantDeck, dicePane, screenConsole);
@@ -476,7 +476,7 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(()->{
+						Platform.runLater(() -> {
 							GameEngine.addEventToEngine(EventTypes.ON_TRANSPORTATION);
 						});
 					}
@@ -556,7 +556,7 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(()->{
+						Platform.runLater(() -> {
 							GameEngine.addEventToEngine(EventTypes.ON_UTILITY);
 						});
 					}
@@ -630,7 +630,7 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(()->{
+						Platform.runLater(() -> {
 							GameEngine.addEventToEngine(EventTypes.ON_WARRANT);
 						});
 					}
@@ -682,7 +682,7 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(()->{
+						Platform.runLater(() -> {
 							GameEngine.addEventToEngine(EventTypes.ON_SUPRISE);
 						});
 					}
@@ -724,7 +724,7 @@ public class MainBoard {
 	}
 
 	public void createPlayerPane() {
-		VBox playerVBox = new VBox();
+		this.playerVBox = new VBox();
 		playerVBox.setPrefSize(189.0, 768.0);
 		AnchorPane.setBottomAnchor(playerVBox, 0.0);
 		AnchorPane.setLeftAnchor(playerVBox, 0.0);
@@ -736,7 +736,7 @@ public class MainBoard {
 	public void createPlayerProfile(VBox playersPane, Player player) {
 		Pane playerProfile = new Pane();
 		playerProfile.setPrefSize(200.0, 128.0);
-		playerProfile.setId(player.getPlayerName()+"-player");
+		playerProfile.setId(player.getPlayerName() + "-player");
 
 		ImageView playerAvatar = new ImageView();
 		playerAvatar.setImage(player.getData().getImage());
@@ -762,13 +762,18 @@ public class MainBoard {
 		playerName.setLayoutY(85.0);
 		playerName.setPrefSize(187.0, 17.0);
 
-		Label playerMoney = new Label("1500$");
+		Label playerMoney = new Label(player.getMoney() + "$");
 		playerMoney.setAlignment(Pos.CENTER);
 		playerMoney.setLayoutX(1.0);
 		playerMoney.setLayoutY(105.0);
 		playerMoney.setPrefSize(187.0, 17.0);
 
-		ImageView playerStatus = new ImageView(BoardConsts.IMAGE_URL + "/player-on.png");
+		ImageView playerStatus;
+		if (player.isBankrupt()) {
+			playerStatus = new ImageView(BoardConsts.IMAGE_URL + "/player-off.png");
+		} else {
+			playerStatus = new ImageView(BoardConsts.IMAGE_URL + "/player-on.png");
+		}
 		playerStatus.setFitHeight(17.0);
 		playerStatus.setFitWidth(15.0);
 		playerStatus.setLayoutX(169.0);
@@ -851,5 +856,9 @@ public class MainBoard {
 
 	public Pane getDicePane() {
 		return this.dicePane;
+	}
+
+	public VBox getPlayersVBox() {
+		return this.playerVBox;
 	}
 }

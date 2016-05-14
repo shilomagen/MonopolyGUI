@@ -1,7 +1,11 @@
 package com.monopoly.data;
 
+import com.monopoly.engine.GameEngine;
 //import com.monopoly.engine.GameController;
 import com.monopoly.player.Player;
+import com.monopoly.utility.EventTypes;
+
+import javafx.application.Platform;
 
 public class GoToCard extends Card {
 	String cellToGo;
@@ -11,29 +15,34 @@ public class GoToCard extends Card {
 		this.cellToGo = cellToGo;
 	}
 
-//	@Override
-//	public void surpriseAction(Player currentPlayer) {
-//		if (this.cellToGo.equals("START")) {
-//			GameController.setPlayerNewLocation(currentPlayer, "START");
-//			GameController.addMoneyToPlayer(currentPlayer, 400);
-//		} else if (this.cellToGo.equals("NEXT_SURPRISE")) {
-//			int lastLocation = currentPlayer.getPosition();
-//			GameController.setPlayerNewLocation(currentPlayer, "NEXT_SURPRISE");
-//			if (lastLocation > currentPlayer.getPosition())
-//				GameController.addMoneyToPlayer(currentPlayer, 200);
-//		}
-//		GameController.returnGoToCardToSurpriseDeck(this);
-//	}
-//
-//	@Override
-//	public void warrantAction(Player currentPlayer) {
-//		if (this.cellToGo.equals("JAIL")) {
-//			GameController.setPlayerNewLocation(currentPlayer, "Jail");
-//		} else if (this.cellToGo.equals("NEXT_WARRANT")) {
-//			GameController.setPlayerNewLocation(currentPlayer, "NEXT_WARRANT");
-//		}
-//		GameController.returnGoToCardToWarrantDeck(this);
-//	}
+	@Override
+	public void surpriseAction(Player currentPlayer) {
+		if (this.cellToGo.equals("START")) {
+			Platform.runLater(()->{
+				GameEngine.addEventToEngine(EventTypes.GO_TO_START_CELL);
+			});
+		} else if (this.cellToGo.equals("NEXT_SURPRISE")) {
+			Platform.runLater(()->{
+				GameEngine.addEventToEngine(EventTypes.GO_TO_NEXT_SURPRISE);
+			});
+		}
+	}
+
+	@Override
+	public void warrantAction(Player currentPlayer) {
+		if (this.cellToGo.equals("JAIL")) {
+			Platform.runLater(()->{
+				GameEngine.addEventToEngine(EventTypes.ON_GO_TO_JAIL);
+			});
+			Platform.runLater(()->{
+				GameEngine.addEventToEngine(EventTypes.RETURN_CARD_TO_WARRANT_DECK);
+			});
+		} else if (this.cellToGo.equals("NEXT_WARRANT")) {
+			Platform.runLater(()->{
+				GameEngine.addEventToEngine(EventTypes.GO_TO_NEXT_WARRANT);
+			});
+		}
+	}
 	
 	public String toString(){
 		return String.format(this.cardText, this.cellToGo);

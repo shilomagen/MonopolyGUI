@@ -21,6 +21,7 @@ public class PcPlayer implements Player{
 	private ArrayList<Transportation> playerTrans;
 	private ArrayList<Utility> playerUtil;
 	private int lastFine;
+	private Player paidTo;
 	
 	public PcPlayer(PlayerData data) {
 		this.data = data;
@@ -154,12 +155,20 @@ public class PcPlayer implements Player{
 		return this.data;
 	}
 
-	public int getLastFine() {
-		return lastFine;
+	@Override
+	public void setLastFine(int lastFine, Player PlayerPaidTo) {
+		this.lastFine = lastFine;
+		this.paidTo = PlayerPaidTo;
 	}
 
-	public void setLastFine(int lastFine) {
-		this.lastFine = lastFine;
+	@Override
+	public int getLastFine() {
+		return this.lastFine;
+	}
+
+	@Override
+	public String getPaidPlayerName() {
+		return this.paidTo.getPlayerName();
 	}
 
 	

@@ -10,4 +10,5 @@ public final class GameConstants {
 	public static final int START = 0;
 	public static final String POPUP_BUYING_PROPERTY_PATH = "../scenes/BuyingPopup.fxml";
 	public static final String POPUP_BUYING_HOUSE_PATH = "../scenes/BuyingHousePopup.fxml";
+	public static final String POPUP_CARD_PATH = "../scenes/CardPopup.fxml";
 }

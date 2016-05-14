@@ -35,5 +35,6 @@ public interface Player {
 	public ArrayList<Utility> getUtilites();
 	public PlayerData getData();
 	public int getLastFine();
-	public void setLastFine(int lastFine);
+	public void setLastFine(int lastFine, Player PlayerPaidTo);
+	public String getPaidPlayerName();
 }

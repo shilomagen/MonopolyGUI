@@ -36,17 +36,26 @@ public class TransportationCell extends Cell implements Buyable{
 	public Player getOwner() {
 		return owner;
 	}
-	public void setOwner(Player owner) {
-		this.owner = owner;
-	}
-	public boolean isHasOwner() {
-		return hasOwner;
-	}
+	@Override
 	public void setHasOwner(boolean hasOwner) {
 		this.hasOwner = hasOwner;
 	}
 	public Transportation getData(){
 		return this.data;
+	}
+	@Override
+	public int getCost() {
+		return this.data.getCost();
+	}
+	@Override
+	public void setOwner(Player owner) {
+		this.owner = owner;
+		
+	}
+
+	@Override
+	public boolean isHasOwner() {
+		return this.hasOwner;
 	}
 	
 	

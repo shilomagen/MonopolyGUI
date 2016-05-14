@@ -48,7 +48,11 @@ public class MainBoardController {
 			root = mainBoard.getRoot();
 			GameBoard gameBoard = new GameBoard(mainBoard);
 			this.cellModel = new CellModel();
-			gameBoard.loadTheBoard(this.cellModel,surpriseDeck, warrantDeck );
+			this.surpriseDeck = new LinkedList<>();
+			this.warrantDeck = new LinkedList<>();
+			gameBoard.loadTheBoard(this.cellModel);
+			this.surpriseDeck = InitiateGame.getSupriseCards();
+			this.warrantDeck = InitiateGame.getWarrantCards();
 			this.mainBoardScene = new Scene(root, 1024, 768);
 			this.mainBoardScene.getStylesheets()
 					.add(getClass().getResource("/com/monopoly/stylesheets/board-stylesheet.css").toExternalForm());
@@ -84,13 +88,20 @@ public class MainBoardController {
 
 	public void addPlayersToMainBoard() {
 		this.playersVBox = (VBox) mainBoard.getPlayersAnchorPane().getChildren().get(0);
-
 		for (Player player : playersManager.getPlayers()) {
 			this.movePlayerIconToSpecificCell(GameConstants.START, player);
 			this.mainBoard.createPlayerProfile(playersVBox, player);
 		}
 		this.mainBoard.getRoot().getChildren().add(this.mainBoard.getPlayersAnchorPane());
 
+	}
+	
+	public void refreshPlayersOnMainBoard(){
+		VBox playersVBox = this.mainBoard.getPlayersVBox();
+		playersVBox.getChildren().clear();
+		for (Player player : playersManager.getPlayers()) {
+			this.mainBoard.createPlayerProfile(playersVBox, player);
+		}
 	}
 
 	public void movePlayerIconToSpecificCell(int diceRes, Player player) {
@@ -106,7 +117,6 @@ public class MainBoardController {
 		player.setPosition(newLocation);
 		FlowPane playerBox = mainBoard.getPlayerBox(newLocation);
 		playerBox.getChildren().add(icon);
-
 	}
 
 	private ImageView findImageViewByImage(FlowPane currentPlayerBox, Image icon) {

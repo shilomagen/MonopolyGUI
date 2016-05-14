@@ -34,20 +34,20 @@ public class GameBoard {
 		this.mainBoard = mainBoard;
 	}
 
-	public void loadTheBoard(CellModel cellModel, LinkedList<Card> surpriseDeck, LinkedList<Card> warrantDeck) {
+	public void loadTheBoard(CellModel cellModel) {
 		boardData = InitiateGame.getBoardData();
 		gameAssets = InitiateGame.getAssets();
 		LinkedList<CountryGame> theCountries = gameAssets.getTheCountries();
 		LinkedList<Transportation> transportation = gameAssets.getTransportation();
 		LinkedList<Utility> utilities = gameAssets.getUtility();
-		surpriseDeck = InitiateGame.getSupriseCards();
-		warrantDeck = InitiateGame.getWarrantCards();
-		this.LoadDataOnCells(cellModel, theCountries, transportation, utilities, surpriseDeck, warrantDeck);
+//		surpriseDeck = InitiateGame.getSupriseCards();
+//		warrantDeck = InitiateGame.getWarrantCards();
+		this.LoadDataOnCells(cellModel, theCountries, transportation, utilities);
 
 	}
 
 	private void LoadDataOnCells(CellModel cellModel , LinkedList<CountryGame> theCountries, LinkedList<Transportation> transportation,
-			LinkedList<Utility> utilities, LinkedList<Card> supriseCards, LinkedList<Card> warrantCards) {
+			LinkedList<Utility> utilities) {
 		int placeOnBoard = 0;
 		int countryCounter = 0, cityCounter = 0;
 		int transPlace = 0;

@@ -90,4 +90,13 @@ public class PlayersManager {
 		throw new NoHumanPlayerException();
 	}
 
+	public int howManyActivePlayers() {
+		int counter = 0;
+		for (Player player : this.playersModel.getPlayers()){
+			if (!player.isBankrupt())
+				counter++;
+		}
+		return counter;
+	}
+
 }

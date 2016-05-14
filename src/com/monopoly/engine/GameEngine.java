@@ -13,9 +13,11 @@ import com.monopoly.data.Assets;
 import com.monopoly.data.Card;
 import com.monopoly.data.City;
 import com.monopoly.data.CountryGame;
+import com.monopoly.data.MontaryCard;
 import com.monopoly.player.Player;
 import com.monopoly.scenes.BuyingHousePopupController;
 import com.monopoly.scenes.BuyingPopupController;
+import com.monopoly.scenes.CardPopupController;
 import com.monopoly.scenes.MainBoardController;
 import com.monopoly.utility.EventTypes;
 import com.monopoly.utility.GameConstants;
@@ -37,6 +39,10 @@ public class GameEngine {
 	private LinkedList<Card> surpriseDeck;
 	private LinkedList<Card> warrantDeck;
 	private BuyingPopupController buyingPopupController;
+	private BuyingHousePopupController buyingHousePopupController;
+	private CardPopupController cardPopupController;
+	private Card currentCard;
+	public static boolean isEventHandlerOn = false;
 
 	public void setMainBoardController(MainBoardController mainBoardController) {
 		this.boardController = mainBoardController;
@@ -49,6 +55,7 @@ public class GameEngine {
 
 	public void startObserv() {
 		eventList = FXCollections.observableArrayList();
+		isEventHandlerOn = true;
 		eventList.addListener(new ListChangeListener<String>() {
 
 			@Override
@@ -57,22 +64,24 @@ public class GameEngine {
 				while (c.next()) {
 					if (c.wasAdded()) {
 						String event = eventList.get(eventList.size() - 1);
+						System.out.println(event);
 						try {
 							eventHandler(event);
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
+				}
 
-					if (c.wasRemoved()) {
-						System.out.println("Item Was removed");
-						System.out.println(eventList.isEmpty());
+				if (c.wasRemoved()) {
+					System.out.println("Item Was removed");
+					System.out.println(eventList.isEmpty());
 
-					}
 				}
 			}
+
 		});
+
 	}
 
 	public static void addEventToEngine(String eventType) {
@@ -92,6 +101,7 @@ public class GameEngine {
 			break;
 		case EventTypes.TURN_FINISHED:
 			this.boardController.activatePlayer(currentPlayerIndex, false);
+			this.boardController.refreshPlayersOnMainBoard();
 			this.playersManager.nextPlayer();
 
 			break;
@@ -101,7 +111,7 @@ public class GameEngine {
 			int secondDie = PairOfDice.getSecondDice();
 			this.boardController.updateDice(firstDie, secondDie);
 			this.boardController.activateRoll(false);
-			this.boardController.movePlayerIconToSpecificCell(5, currentPlayer);
+			this.boardController.movePlayerIconToSpecificCell(firstDie + secondDie, currentPlayer);
 			break;
 		case EventTypes.ON_CITY: {
 			PropertyCell cell = (PropertyCell) cellModel.getCells().get(currentPlayer.getPosition());
@@ -111,10 +121,12 @@ public class GameEngine {
 				} else { // Player need to pay the fine
 					int fine = this.calculateFine(cell);
 					this.payFine(currentPlayer, cell.getOwner(), fine);
+					eventList.add(EventTypes.TURN_FINISHED);
 				}
 			} else {
 				this.buyPropertyProcedure(currentPlayer, cell);
 			}
+
 			break;
 		}
 
@@ -126,12 +138,13 @@ public class GameEngine {
 			break;
 		case EventTypes.ON_JAIL_FREE_PASS:
 			this.boardController.showMessage("Luck you " + currentPlayer.getPlayerName() + "! It's a free pass!");
-			Platform.runLater(() -> {
-				eventList.add(EventTypes.TURN_FINISHED);
-			});
-
+			eventList.add(EventTypes.TURN_FINISHED);
 			break;
 		case EventTypes.ON_GO_TO_JAIL:
+			this.boardController.showMessage(currentPlayer.getPlayerName() + " Go to jail, wait for DOUBLE!");
+			currentPlayer.setInJail(true);
+			this.setPlayerNewLocation(currentPlayer, "Jail");
+			eventList.add(EventTypes.TURN_FINISHED);
 			break;
 		case EventTypes.ON_TRANSPORTATION: {
 			TransportationCell cell = (TransportationCell) cellModel.getCells().get(currentPlayer.getPosition());
@@ -140,9 +153,7 @@ public class GameEngine {
 				if (currentPlayer == cellOwner) {
 					this.boardController
 							.showMessage(currentPlayer.getPlayerName() + " You already own this transportation center");
-					Platform.runLater(() -> {
-						eventList.add(EventTypes.TURN_FINISHED);
-					});
+
 				}
 
 				else {
@@ -151,6 +162,7 @@ public class GameEngine {
 					} else {
 						this.payFine(currentPlayer, cellOwner, cell.getData().getStayCost());
 					}
+					eventList.add(EventTypes.TURN_FINISHED);
 				}
 			} else {
 				this.buyTransportationProcedure(currentPlayer, cell);
@@ -162,21 +174,17 @@ public class GameEngine {
 			UtilityCell cell = (UtilityCell) cellModel.getCells().get(currentPlayer.getPosition());
 			if (cell.isHasOwner()) {
 				Player cellOwner = cell.getOwner();
-
 				if (currentPlayer == cellOwner) {
 					this.boardController
 							.showMessage(currentPlayer.getPlayerName() + " You already own this utility center");
-					Platform.runLater(() -> {
-						eventList.add(EventTypes.TURN_FINISHED);
-					});
-				}
 
-				else {
+				} else {
 					if (this.hasOwnerOwnAllUtilities(cellOwner)) {
 						this.payFine(currentPlayer, cellOwner, InitiateGame.getAssets().getUtilityStayCost());
 					} else {
 						this.payFine(currentPlayer, cellOwner, cell.getData().getStayCost());
 					}
+					eventList.add(EventTypes.TURN_FINISHED);
 				}
 			} else {
 				this.buyUtilityProcedure(currentPlayer, cell);
@@ -185,24 +193,30 @@ public class GameEngine {
 		}
 
 		case EventTypes.ON_START:
+
 			this.boardController.showMessage("You are on the START CELL! GET 400 $$$");
 			currentPlayer.setMoney(currentPlayer.getMoney() + 400);
-//			Platform.runLater(() -> {
-//				eventList.add(EventTypes.TURN_FINISHED);
-//			});
+			eventList.add(EventTypes.TURN_FINISHED);
+
 			break;
-		case EventTypes.ON_SUPRISE:
+		case EventTypes.ON_SUPRISE: {
+			this.currentCard = this.getSurpriseCard();
+			this.openCardPopup("surprise", this.currentCard.toString());
 			break;
+
+		}
+
 		case EventTypes.ON_WARRANT:
+			this.currentCard = this.getWarrantCard();
+			this.openCardPopup("warrant", this.currentCard.toString());
 			break;
 		case EventTypes.PLAYER_CANT_BUY_HOUSE:
 			this.boardController
 					.showMessage("We are so sorry " + currentPlayer.getPlayerName() + ", you cant buy the house");
 			break;
 		case EventTypes.PLAYER_PAID_FINE: {
-			Buyable buyable = (Buyable) this.cellModel.getCells().get(currentPlayer.getPosition());
 			this.boardController.showMessage(currentPlayer.getPlayerName() + " Paid to "
-					+ buyable.getOwner().getPlayerName() + " " + currentPlayer.getLastFine() + "$");
+					+ currentPlayer.getPaidPlayerName() + " " + currentPlayer.getLastFine() + "$");
 			break;
 		}
 		case EventTypes.PLAYER_LOST_GAME:
@@ -214,18 +228,91 @@ public class GameEngine {
 				}
 			}
 			break;
-		case EventTypes.PLAYER_WANTS_TO_BUY_PROPERTY: {
-			PropertyCell cell = (PropertyCell) cellModel.getCells().get(currentPlayer.getPosition());
+		case EventTypes.PLAYER_WANTS_TO_BUY_BUYABLE: {
+			Buyable cell = (Buyable) cellModel.getCells().get(currentPlayer.getPosition());
 			this.boardController.showMessage("You've bought " + cell.getName());
-			currentPlayer.setMoney(currentPlayer.getMoney() - cell.getData().getCost());
+			currentPlayer.setMoney(currentPlayer.getMoney() - cell.getCost());
 			cell.setHasOwner(true);
 			cell.setOwner(currentPlayer);
+			eventList.add(EventTypes.TURN_FINISHED);
 			break;
 		}
 		case EventTypes.PLAYER_DIDNT_WANT_TO_BUY:
 			this.boardController.showMessage("You chose not to buy this property!");
 			break;
+		case EventTypes.PLAYER_WANTS_TO_BUY_HOUSE: {
+			PropertyCell cell = (PropertyCell) cellModel.getCells().get(currentPlayer.getPosition());
+			this.boardController.showMessage("You've bought house on " + cell.getName());
+			cell.setNumOfHouses(cell.getNumOfHouses() + 1);
+			cell.getOwner().setMoney(cell.getOwner().getMoney() - cell.getData().getHouseCost());
+			eventList.add(EventTypes.TURN_FINISHED);
+			break;
+		}
+		case EventTypes.TAKE_MONEY_FROM_ALL_PLAYERS: {
+			this.takeMoneyFromPlayers(currentPlayer, ((MontaryCard) this.currentCard).getSum());
+			eventList.add(EventTypes.TURN_FINISHED);
+			break;
+		}
+		case EventTypes.TAKE_MONEY_FROM_JACKPOT: {
+			int sum = ((MontaryCard) this.currentCard).getSum();
+			currentPlayer.setMoney(currentPlayer.getMoney() + sum);
+			eventList.add(EventTypes.TURN_FINISHED);
+			break;
+		}
+		case EventTypes.GO_TO_START_CELL: {
+			currentPlayer.setPosition(0);
+			this.boardController.movePlayerIconToSpecificCell(0, currentPlayer);
+			break;
+		}
+		case EventTypes.GO_TO_NEXT_SURPRISE: {
+			int lastLocation = currentPlayer.getPosition();
+			this.setPlayerNewLocation(currentPlayer, "NEXT_SURPRISE");
+			if (lastLocation > currentPlayer.getPosition()) {
+				this.boardController.showMessage("You've passed on start, get 200$!");
+				currentPlayer.setMoney(currentPlayer.getMoney() + 200);
+			}
+			break;
+		}
+		case EventTypes.GET_OUT_OF_JAIL_CARD: {
+			currentPlayer.setHasFreeJailCard(true);
+			currentPlayer.setJailFreeCard(this.currentCard);
 
+			break;
+		}
+
+		case EventTypes.RETURN_CARD_TO_WARRANT_DECK: {
+			this.returnToWarrantDeck();
+		}
+		case EventTypes.GO_TO_NEXT_WARRANT: {
+			this.setPlayerNewLocation(currentPlayer, "NEXT_WARRANT");
+			break;
+		}
+		case EventTypes.PAY_TO_ALL_PLAYERS: {
+			int sum = ((MontaryCard) this.currentCard).getSum();
+			int activePlayers = this.playersManager.howManyActivePlayers();
+			int totalSum = sum * activePlayers;
+			if (currentPlayer.getMoney() < totalSum) {
+				totalSum = currentPlayer.getMoney();
+				sum = totalSum / activePlayers;
+				this.payFineToEveryPlayer(currentPlayer, sum);
+				eventList.add(EventTypes.PLAYER_LOST_GAME);
+			} else {
+				payFineToEveryPlayer(currentPlayer, sum);
+			}
+			eventList.add(EventTypes.TURN_FINISHED);
+			break;
+		}
+		case EventTypes.PAY_TO_JACKPOT: {
+			int sum = ((MontaryCard) this.currentCard).getSum();
+			if (currentPlayer.getMoney() < sum) {
+				eventList.add(EventTypes.PLAYER_LOST_GAME);
+			} else {
+				currentPlayer.setMoney(currentPlayer.getMoney() - sum);
+				this.boardController.showMessage(currentPlayer.getPlayerName() + " Paid " + sum + " To Jackpot!");
+			}
+			eventList.add(EventTypes.TURN_FINISHED);
+			break;
+		}
 		default:
 			this.boardController.showMessage(str);
 			break;
@@ -271,19 +358,15 @@ public class GameEngine {
 			payer.setMoney(payer.getMoney() - theFine);
 		}
 		owner.setMoney(owner.getMoney() + theFine);
-		payer.setLastFine(theFine);
+		payer.setLastFine(theFine, owner);
 		eventList.add(EventTypes.PLAYER_PAID_FINE);
-		Platform.runLater(() -> {
-			eventList.add(EventTypes.TURN_FINISHED);
-		});
+
 	}
 
 	private void setPlayerOutOfTheGame(Player loser) {
 		loser.setMoney(0);
 		loser.setIsBankrupt(true);
-		Platform.runLater(() -> {
-			eventList.add(EventTypes.PLAYER_LOST_GAME);
-		});
+		eventList.add(EventTypes.PLAYER_LOST_GAME);
 
 	}
 
@@ -291,24 +374,11 @@ public class GameEngine {
 		boolean playerOwnCountry = this.isPlayerOwnCountry(property);
 		boolean playerCouldBuyHouse = this.playerCouldBuyHouse(property);
 		boolean playerNotHaveMaxHouses = property.getNumOfHouses() < 3;
-
 		if (playerOwnCountry && playerCouldBuyHouse && playerNotHaveMaxHouses) {
-			boolean isWantToBuy = this.openBuyingHousePopup(property.getData().getName(),
-					property.getData().getHouseCost() + "");
-			if (isWantToBuy) {
-				this.boardController.showMessage("You've bought house on " + property.getName());
-				property.setNumOfHouses(property.getNumOfHouses() + 1);
-				property.getOwner().setMoney(property.getOwner().getMoney() - property.getData().getHouseCost());
-			} else {
-				this.boardController.showMessage("You chose not to buy house on this property!");
-			}
-		} else {
+			this.openBuyingHousePopup(property.getData().getName(), property.getData().getHouseCost() + "");
+		} else
 			this.boardController.showMessage("You can't buy the house, sorry!");
-		}
 
-		Platform.runLater(() -> {
-			eventList.add(EventTypes.TURN_FINISHED);
-		});
 	}
 
 	private boolean isPlayerOwnCountry(PropertyCell property) {
@@ -351,11 +421,12 @@ public class GameEngine {
 	private void buyPropertyProcedure(Player currentPlayer, PropertyCell theCell) throws IOException {
 		boolean playerCouldBuy = theCell.getData().getCost() <= currentPlayer.getMoney();
 		if (playerCouldBuy) {
-			this.openPropertyPopup("Property", theCell.getData().getCost() + "", theCell.getName());
+			this.openGeneralBuyingPopup("Property", theCell.getData().getCost() + "", theCell.getName());
 		} else {
 			this.boardController.showMessage("You can't buy the property, sorry!");
+			eventList.add(EventTypes.TURN_FINISHED);
 		}
-		
+
 	}
 
 	private void setPlayerToFreeParking(Player currentPlayer) {
@@ -370,57 +441,26 @@ public class GameEngine {
 
 	}
 
-	private void buyTransportationProcedure(Player currentPlayer, TransportationCell theCell) {
+	private void buyTransportationProcedure(Player currentPlayer, TransportationCell theCell) throws IOException {
 		boolean playerCouldBuy = theCell.getData().getCost() <= currentPlayer.getMoney();
-		// POPUP
-		// if (playerCouldBuy) {
-		// if (GameView.askIfPlayerWantsToBuyTransportation(currentPlayer,
-		// theCell)) {
-		// GameView.printToUser("You've bought " + theCell.getData().getName() +
-		// " Transportation, Congrats!");
-		// currentPlayer.setMoney(currentPlayer.getMoney() -
-		// theCell.getData().getCost());
-		// theCell.setHasOwner(true);
-		// theCell.setOwner(currentPlayer);
-		// } else {
-		// GameView.playerGaveUp();
-		// }
-		// } else {
-		// GameView.printToUser("We are very sorry, but you can't buy the
-		// Transportation because of the following reasons");
-		// GameView.printToUser("You basically dont have enough money");
-		// }
-		Platform.runLater(() -> {
-			eventList.add(EventTypes.TURN_FINISHED);
-		});
+		if (playerCouldBuy) {
+			this.openGeneralBuyingPopup("Transportation", theCell.getData().getCost() + "", theCell.getName());
+		} else
+			this.boardController.showMessage("You can't buy the utility, sorry!");
+
 	}
 
 	private boolean hasOwnerOwnAllUtilities(Player owner) {
 		return (owner.getTransportation().size() == InitiateGame.getAssets().getUtility().size());
 	}
 
-	private void buyUtilityProcedure(Player currentPlayer, UtilityCell theCell) {
+	private void buyUtilityProcedure(Player currentPlayer, UtilityCell theCell) throws IOException {
 		boolean playerCouldBuy = theCell.getData().getCost() <= currentPlayer.getMoney();
-		// if (playerCouldBuy) {
-		// if (GameView.askIfPlayerWantsToBuyUtility(currentPlayer, theCell)) {
-		// GameView.printToUser("You've bought " + theCell.getData().getName() +
-		// " Utility, Congrats!");
-		// currentPlayer.setMoney(currentPlayer.getMoney() -
-		// theCell.getData().getCost());
-		// theCell.setHasOwner(true);
-		// theCell.setOwner(currentPlayer);
-		// } else {
-		// GameView.playerGaveUp();
-		// }
-		// } else {
-		// GameView.printToUser("We are very sorry, but you can't buy the
-		// Transportation because of the following reasons");
-		// GameView.printToUser("You basically dont have enough money");
-		// }
-		//
-		Platform.runLater(() -> {
-			eventList.add(EventTypes.TURN_FINISHED);
-		});
+		if (playerCouldBuy) {
+			this.openGeneralBuyingPopup("Utility", theCell.getData().getCost() + "", theCell.getName());
+		} else
+			this.boardController.showMessage("You can't buy the utility, sorry!");
+
 	}
 
 	public void setSurpriseDeck(LinkedList<Card> surpriseDeck) {
@@ -431,7 +471,7 @@ public class GameEngine {
 		this.warrantDeck = warrantDeck;
 	}
 
-	private void openPropertyPopup(String property, String price, String nameOfProperty) throws IOException {
+	private void openGeneralBuyingPopup(String property, String price, String nameOfProperty) throws IOException {
 
 		Popup buyingPopUp = new Popup();
 		buyingPopUp.setX(500);
@@ -449,51 +489,159 @@ public class GameEngine {
 		buyingPopUp.show(stage);
 		buyingPopupController.getFinish().addListener((source, oldValue, newValue) -> {
 			if (newValue) {
-				this.handlePlayerPropertyChoice(this.buyingPopupController);
+				this.handlePlayerBuyableChoice(this.buyingPopupController);
 				buyingPopUp.hide();
 			}
 		});
 
 	}
 
-	private void handlePlayerPropertyChoice(BuyingPopupController buyingPopupController) {
+	private void handlePlayerBuyableChoice(BuyingPopupController buyingPopupController) {
 		boolean isWantToBuy = buyingPopupController.isWantToBuy();
 		if (isWantToBuy) {
 			Platform.runLater(() -> {
-				eventList.add(EventTypes.PLAYER_WANTS_TO_BUY_PROPERTY);
+				eventList.add(EventTypes.PLAYER_WANTS_TO_BUY_BUYABLE);
 			});
+
 		} else {
 			Platform.runLater(() -> {
 				eventList.add(EventTypes.PLAYER_DIDNT_WANT_TO_BUY);
 			});
+
 		}
-		Platform.runLater(() -> {
-			eventList.add(EventTypes.TURN_FINISHED);
-		});
 
 	}
 
-	public boolean openBuyingHousePopup(String cityName, String price) throws IOException {
+	private void openBuyingHousePopup(String cityName, String price) throws IOException {
 
 		Popup buyingHousePopUp = new Popup();
 		buyingHousePopUp.setX(500);
 		buyingHousePopUp.setY(150);
 
-		BuyingHousePopupController buyingHousePopup = new BuyingHousePopupController();
+		this.buyingHousePopupController = new BuyingHousePopupController();
 		FXMLLoader load = new FXMLLoader();
 		load.setLocation(MainBoardController.class.getResource(GameConstants.POPUP_BUYING_HOUSE_PATH));
 		Pane buyingHousePopupPane = load.load();
-		buyingHousePopup = (BuyingHousePopupController) load.getController();
-		buyingHousePopup.setCityLabel(cityName);
-		buyingHousePopup.setPriceLabel(price);
+		buyingHousePopupController = (BuyingHousePopupController) load.getController();
+		buyingHousePopupController.setCityLabel(cityName);
+		buyingHousePopupController.setPriceLabel(price);
 		buyingHousePopUp.getContent().add(buyingHousePopupPane);
 		Stage stage = (Stage) this.boardController.getMainBoardScene().getWindow();
 		buyingHousePopUp.show(stage);
-		buyingHousePopup.getFinish().addListener((source, oldValue, newValue) -> {
+		buyingHousePopupController.getFinish().addListener((source, oldValue, newValue) -> {
 			if (newValue) {
+				this.handlePlayerHouseChoice(this.buyingHousePopupController);
 				buyingHousePopUp.hide();
 			}
 		});
-		return buyingHousePopup.isWantToBuy();
+
 	}
+
+	private void handlePlayerHouseChoice(BuyingHousePopupController buyingHousePopupController) {
+		boolean isWantToBuy = buyingHousePopupController.isWantToBuy();
+		if (isWantToBuy) {
+			Platform.runLater(() -> {
+				eventList.add(EventTypes.PLAYER_WANTS_TO_BUY_HOUSE);
+			});
+
+		} else {
+			Platform.runLater(() -> {
+				eventList.add(EventTypes.PLAYER_DIDNT_WANT_TO_BUY);
+			});
+
+		}
+
+	}
+
+	public void openCardPopup(final String cardType, String message) throws IOException {
+
+		Popup cardPopUp = new Popup();
+		cardPopUp.setX(500);
+		cardPopUp.setY(150);
+
+		FXMLLoader load = new FXMLLoader();
+		load.setLocation(MainBoardController.class.getResource(GameConstants.POPUP_CARD_PATH));
+		Pane cardPopupPane = load.load();
+		this.cardPopupController = new CardPopupController();
+		this.cardPopupController = (CardPopupController) load.getController();
+		this.cardPopupController.setKindOfCard(cardType);
+		this.cardPopupController.setTheMessage(message);
+		cardPopUp.getContent().add(cardPopupPane);
+		Stage stage = (Stage) this.boardController.getMainBoardScene().getWindow();
+		cardPopUp.show(stage);
+		this.cardPopupController.getFinish().addListener((source, oldValue, newValue) -> {
+			if (newValue) {
+				if (cardType.equals("warrant")) {
+					this.currentCard.warrantAction(((ArrayList<Player>) this.playersManager.getPlayers())
+							.get(this.playersManager.getCurrentPlayer()));
+				} else {
+					this.currentCard.surpriseAction(((ArrayList<Player>) this.playersManager.getPlayers())
+							.get(this.playersManager.getCurrentPlayer()));
+				}
+				cardPopUp.hide();
+
+			}
+		});
+
+	}
+
+	public Card getSurpriseCard() {
+		Card theCard = this.surpriseDeck.get(0);
+		this.surpriseDeck.remove(0);
+		return theCard;
+	}
+
+	public Card getWarrantCard() {
+		Card theCard = this.warrantDeck.get(0);
+		this.warrantDeck.remove(0);
+		return theCard;
+	}
+
+	public void takeMoneyFromPlayers(Player getter, int sum) {
+		for (Player payer : playersManager.getPlayers()) {
+			if (!(payer.isBankrupt()))
+				this.payFine(payer, getter, sum);
+		}
+
+	}
+
+	public void setPlayerNewLocation(Player currentPlayer, String string) {
+		int newPlace = 0;
+		if (string.equals("NEXT_SURPRISE")) {
+			this.returnSurpriseCardToDeck();
+			newPlace = this.cellModel.getNextSurpriseOnBoard(currentPlayer.getPosition() + 1);
+			this.boardController.movePlayerIconToSpecificCell(Math.abs(currentPlayer.getPosition() - newPlace),
+					currentPlayer);
+		} else if (string.equals("Jail")) {
+			this.returnToWarrantDeck();
+			newPlace = this.cellModel.getPlaceOnBoardByName("Go To Jail");
+			this.boardController.movePlayerIconToSpecificCell(Math.abs(currentPlayer.getPosition() - newPlace),
+					currentPlayer);
+		} else if (string.equals("NEXT_WARRANT")) {
+			this.returnToWarrantDeck();
+			newPlace = this.cellModel.getNextWarrantOnBoard(currentPlayer.getPosition() + 1);
+			this.boardController.movePlayerIconToSpecificCell(Math.abs(currentPlayer.getPosition() - newPlace),
+					currentPlayer);
+		}
+	}
+
+	private void returnToWarrantDeck() {
+		this.warrantDeck.addLast(this.currentCard);
+
+	}
+
+	private void returnSurpriseCardToDeck() {
+		this.surpriseDeck.addLast(this.currentCard);
+
+	}
+
+	private void payFineToEveryPlayer(Player payer, int sum) {
+		for (Player getter : this.playersManager.getPlayers()) {
+			if (!(payer.isBankrupt())) {
+				this.payFine(payer, getter, sum);
+			}
+		}
+
+	}
+
 }

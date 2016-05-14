@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.monopoly.utility.EventTypes;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
@@ -79,6 +81,7 @@ public class LandingSceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         updateStarGameButtonVisability(isIsCreated());
+        this.startGame.setValue(false);
     }  
 
     public void setManager(SceneManager manager) {
