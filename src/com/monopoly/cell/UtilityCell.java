@@ -15,22 +15,7 @@ public class UtilityCell extends Cell implements Buyable{
 		this.data = data;
 		
 	}
-//	@Override
-//	public void playAction(Player currentPlayer) {
-//		if (this.hasOwner){
-//			if (currentPlayer == this.owner)
-//				GameView.printToUser(currentPlayer.getPlayerName() + " You already own this transportation center");
-//			else {
-//				if (GameController.hasOwnerOwnAllUtilities(this.owner)){
-//					GameController.payFine(currentPlayer, this.owner, InitiateGame.getAssets().getUtilityStayCost());
-//				} else {
-//					GameController.payFine(currentPlayer, this.owner , data.getStayCost());
-//				}
-//			}
-//		}else {
-//			GameController.buyUtilityProcedure(currentPlayer, this);
-//		}
-//	}
+
 	public Player getOwner() {
 		return owner;
 	}

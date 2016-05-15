@@ -29,6 +29,8 @@ public final class EventTypes {
 	public static final String GO_TO_NEXT_WARRANT = "GoToNextWarrant";
 	public static final String PAY_TO_ALL_PLAYERS = "PayToAllPlayers";
 	public static final String PAY_TO_JACKPOT = "PayToJackPot";
+	public static final String PLAYER_WANTS_TO_USE_CARD = "PlayerWantsToUseCard";
+	public static final String PLAYER_DIDNT_WANT_TO_USE_CARD = "PlayerDidntWantToUseCard";
 	
 
 }

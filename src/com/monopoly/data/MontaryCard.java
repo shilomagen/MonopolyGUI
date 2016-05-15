@@ -22,34 +22,24 @@ public class MontaryCard extends Card {
 	@Override
 	public void surpriseAction(Player currentPlayer) {
 		if (this.cardCode == 1) {
-			Platform.runLater(()->{
-				GameEngine.addEventToEngine(EventTypes.TAKE_MONEY_FROM_ALL_PLAYERS);
-			});
-			
+			GameEngine.addEventToEngine(EventTypes.TAKE_MONEY_FROM_ALL_PLAYERS);
+
 		} else if (this.cardCode == 2) {
-			Platform.runLater(()->{
-				GameEngine.addEventToEngine(EventTypes.TAKE_MONEY_FROM_JACKPOT);
-			});
+			GameEngine.addEventToEngine(EventTypes.TAKE_MONEY_FROM_JACKPOT);
 		}
 	}
 
 	@Override
 	public void warrantAction(Player currentPlayer) {
 		if (this.cardCode == 1) {
-			Platform.runLater(()->{
-				GameEngine.addEventToEngine(EventTypes.PAY_TO_ALL_PLAYERS);
-			});
-			//GameController.payToAllPlayers(currentPlayer, this.sum);
+			GameEngine.addEventToEngine(EventTypes.PAY_TO_ALL_PLAYERS);
 
 		} else if (this.cardCode == 2) {
-			Platform.runLater(()->{
-				GameEngine.addEventToEngine(EventTypes.PAY_TO_JACKPOT);
-			});
-			//GameController.payToTreasury(currentPlayer,this.sum);
+			GameEngine.addEventToEngine(EventTypes.PAY_TO_JACKPOT);
 		}
 	}
-	
-	public int getSum(){
+
+	public int getSum() {
 		return this.sum;
 	}
 

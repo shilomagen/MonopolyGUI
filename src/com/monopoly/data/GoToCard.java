@@ -18,29 +18,29 @@ public class GoToCard extends Card {
 	@Override
 	public void surpriseAction(Player currentPlayer) {
 		if (this.cellToGo.equals("START")) {
-			Platform.runLater(()->{
+
 				GameEngine.addEventToEngine(EventTypes.GO_TO_START_CELL);
-			});
+
 		} else if (this.cellToGo.equals("NEXT_SURPRISE")) {
-			Platform.runLater(()->{
+
 				GameEngine.addEventToEngine(EventTypes.GO_TO_NEXT_SURPRISE);
-			});
+
 		}
 	}
 
 	@Override
 	public void warrantAction(Player currentPlayer) {
 		if (this.cellToGo.equals("JAIL")) {
-			Platform.runLater(()->{
+
 				GameEngine.addEventToEngine(EventTypes.ON_GO_TO_JAIL);
-			});
-			Platform.runLater(()->{
+
+
 				GameEngine.addEventToEngine(EventTypes.RETURN_CARD_TO_WARRANT_DECK);
-			});
+
 		} else if (this.cellToGo.equals("NEXT_WARRANT")) {
-			Platform.runLater(()->{
+
 				GameEngine.addEventToEngine(EventTypes.GO_TO_NEXT_WARRANT);
-			});
+
 		}
 	}
 	

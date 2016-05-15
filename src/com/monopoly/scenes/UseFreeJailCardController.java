@@ -19,7 +19,7 @@ public class UseFreeJailCardController implements Initializable {
     @FXML
     private Button noButton;
     
-    private boolean wantToBuy;
+    private boolean wantToUse;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -27,12 +27,12 @@ public class UseFreeJailCardController implements Initializable {
     }    
     
     public void yesButtonOnAction(){
-        this.wantToBuy = true;
+        this.wantToUse = true;
         this.finish.setValue(true);
     }
     
     public void noButtonOnAction(){
-        this.wantToBuy = false;
+        this.wantToUse = false;
         this.finish.setValue(true);
     }
 
@@ -40,12 +40,12 @@ public class UseFreeJailCardController implements Initializable {
         return finish;
 	}
 
-	public boolean isWantToBuy() {
-		return wantToBuy;
+	public boolean isWantToUse() {
+		return wantToUse;
 	}
 
-	public void setWantToBuy(boolean wantToBuy) {
-		this.wantToBuy = wantToBuy;
+	public void setWantToUse(boolean wantToBuy) {
+		this.wantToUse = wantToBuy;
 	}
     
 }
