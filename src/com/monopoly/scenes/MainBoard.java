@@ -300,8 +300,11 @@ public class MainBoard {
 			countryLabel.getStyleClass().add("left");
 			priceLabel.getStyleClass().add("left");
 			cityPane.getItems().add(infoPane);
-			cityPane.getItems().add(new Pane());
+			cityPane.getItems().add(new FlowPane());
 			cityPane.getItems().get(1).setStyle("-fx-background-color:" + colorCountry + ";");
+                        ((FlowPane)cityPane.getItems().get(1)).setId(generateHoseBoxID(col, row));
+                        ((FlowPane)cityPane.getItems().get(1)).setVgap(3);
+                        ((FlowPane)cityPane.getItems().get(1)).setHgap(1);
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		} else if (col == 9) { // RIGHT SIDE OF MONOPOLY BOARD
 			cityPane.setOrientation(Orientation.HORIZONTAL);
@@ -311,8 +314,11 @@ public class MainBoard {
 			cityLabel.getStyleClass().add("right");
 			countryLabel.getStyleClass().add("right");
 			priceLabel.getStyleClass().add("right");
-			cityPane.getItems().add(new Pane());
+			cityPane.getItems().add(new FlowPane());
 			cityPane.getItems().get(0).setStyle("-fx-background-color:" + colorCountry + ";");
+                        ((FlowPane)cityPane.getItems().get(0)).setId(generateHoseBoxID(col, row));
+                        ((FlowPane)cityPane.getItems().get(0)).setVgap(3);
+                        ((FlowPane)cityPane.getItems().get(0)).setHgap(1);
 			cityPane.getItems().add(infoPane);
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		} else if (row == 0) {// UPPER SIDE OF MONOPOLY BOARD
@@ -324,8 +330,11 @@ public class MainBoard {
 			countryLabel.getStyleClass().add("top");
 			priceLabel.getStyleClass().add("top");
 			cityPane.getItems().add(infoPane);
-			cityPane.getItems().add(new Pane());
+			cityPane.getItems().add(new FlowPane());
 			cityPane.getItems().get(1).setStyle("-fx-background-color:" + colorCountry + ";");
+                        ((FlowPane)cityPane.getItems().get(1)).setId(generateHoseBoxID(col, row));
+                        ((FlowPane)cityPane.getItems().get(1)).setVgap(1);
+                        ((FlowPane)cityPane.getItems().get(1)).setHgap(3);
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		} else if (row == 9) { // LOWER SIDE OF MONOPOLY BOARD
 			cityPane.setOrientation(Orientation.VERTICAL);
@@ -335,10 +344,13 @@ public class MainBoard {
 			cityLabel.getStyleClass().add("bottom");
 			countryLabel.getStyleClass().add("bottom");
 			priceLabel.getStyleClass().add("bottom");
-			cityPane.getItems().add(new Pane());
+			cityPane.getItems().add(new FlowPane());
 			cityPane.getItems().add(infoPane);
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 			cityPane.getItems().get(0).setStyle("-fx-background-color:" + colorCountry + ";");
+                        ((FlowPane)cityPane.getItems().get(0)).setId(generateHoseBoxID(col, row));
+                        ((FlowPane)cityPane.getItems().get(0)).setVgap(1);
+                        ((FlowPane)cityPane.getItems().get(0)).setHgap(3);
 		}
 	}
 
@@ -840,6 +852,26 @@ public class MainBoard {
 		}
 
 		return null;
+	}
+        
+        public FlowPane getHouseBox(int location)
+        {
+            Node node = this.getCellByPosition(location);
+		int col = PositionHelper.arr.get(location).getCol();
+		int row = PositionHelper.arr.get(location).getRow();
+		Parent tempParent = (Parent) node;
+		if (tempParent.getClass().getSimpleName().equals("SplitPane")) {
+			SplitPane pane = (SplitPane) tempParent;
+			for (Node citytemp : pane.getItems()) {
+				if (citytemp.getId()!=null && citytemp.getId().equals(this.generateHoseBoxID(col, row)))
+                                    return (FlowPane)citytemp;
+                                }                            
+                        }
+                return null;
+        }
+        
+            public String generateHoseBoxID(int col, int row) {
+		return "houseBox-" + new Integer(col).toString() + new Integer(row).toString(); //eden
 	}
 
 	public String generatePlayerBoxID(int col, int row) {
