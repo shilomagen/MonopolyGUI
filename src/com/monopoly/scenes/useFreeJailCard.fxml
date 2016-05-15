@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: LIGHTYELLOW;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.monopoly.scenes.UseFreeJailCardController">
+   <children>
+      <ImageView fitHeight="131.0" fitWidth="226.0" layoutX="87.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/logo.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="79.0" fitWidth="112.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/jail-free-pass.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="79.0" fitWidth="112.0" layoutX="321.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/jail-free-pass.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="79.0" layoutY="94.0" prefHeight="17.0" prefWidth="270.0" text="You have free pass jail card">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="96.0" layoutY="120.0" text="Would you like to use it?">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="yesButton" layoutX="112.0" layoutY="157.0" mnemonicParsing="false" onAction="#yesButtonOnAction" prefHeight="27.0" prefWidth="59.0" text="Yes" />
+      <Button fx:id="noButton" layoutX="226.0" layoutY="157.0" mnemonicParsing="false" onAction="#noButtonOnAction" prefHeight="27.0" prefWidth="59.0" text="No" />
+   </children>
+</AnchorPane>

@@ -118,6 +118,24 @@ public class MainBoardController {
 		FlowPane playerBox = mainBoard.getPlayerBox(newLocation);
 		playerBox.getChildren().add(icon);
 	}
+        
+        public void addHouseToSpecificCell(int location){
+            ImageView house = new ImageView("file:src/com/monopoly/assets/house.png");
+            house.setFitHeight(20);
+            house.setFitWidth(19);
+            house.setLayoutY(5);
+            house.setLayoutX(5);
+            house.setPickOnBounds(true);
+            house.setPreserveRatio(true);
+            FlowPane houseBox = mainBoard.getHouseBox(location);
+            if(location >= 9 && location <=17)
+                house.setRotate(90);
+            if(location >=18 && location <=27)
+                house.setRotate(180);
+            if(location >=27 && location <= 35)
+                house.setRotate(270);
+            houseBox.getChildren().add(house);
+        }
 
 	private ImageView findImageViewByImage(FlowPane currentPlayerBox, Image icon) {
 		for (Node node : currentPlayerBox.getChildren()) {
