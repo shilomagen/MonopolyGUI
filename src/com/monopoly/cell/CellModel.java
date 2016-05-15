@@ -27,7 +27,9 @@ public class CellModel {
 	}
 	
 	public int getPlaceOnBoardByName(String string){
-		for (Cell tempCell : cells){
+		Cell tempCell;
+		for (int i=0;i<cells.size(); ++i){
+			tempCell = cells.get(i);
 			if (tempCell.getName().equals(string))
 				return tempCell.getPosition();
 		}

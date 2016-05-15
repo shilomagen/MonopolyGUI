@@ -1,5 +1,6 @@
 package com.monopoly.engine;
 
+import java.awt.Event;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -97,7 +98,15 @@ public class GameEngine {
 		switch (str) {
 		case EventTypes.PLAY_TURN:
 			this.boardController.activatePlayer(currentPlayerIndex, true);
-			this.boardController.activateRoll(true);
+			if (!currentPlayer.isBankrupt()){
+				if (currentPlayer.isParked()) {
+					this.boardController.showMessage("Sorry, " + currentPlayer.getPlayerName() + " you are PARKED! Wait for next turn");
+					currentPlayer.setIsParked(false);
+					eventList.add(EventTypes.TURN_FINISHED);
+				}else {
+					this.boardController.activateRoll(true);
+				}	
+			}
 			break;
 		case EventTypes.TURN_FINISHED:
 			this.boardController.activatePlayer(currentPlayerIndex, false);
@@ -111,7 +120,18 @@ public class GameEngine {
 			int secondDie = PairOfDice.getSecondDice();
 			this.boardController.updateDice(firstDie, secondDie);
 			this.boardController.activateRoll(false);
-			this.boardController.movePlayerIconToSpecificCell(firstDie + secondDie, currentPlayer);
+			PairOfDice.roll();
+			if (currentPlayer.isInJail() && firstDie != secondDie) {
+				this.boardController.showMessage("Sorry, " + currentPlayer.getPlayerName() + " you are JAIL! Wait for a double");
+				eventList.add(EventTypes.TURN_FINISHED);
+			} else if (currentPlayer.isInJail() && firstDie == secondDie) {
+				currentPlayer.setInJail(false);
+				this.boardController.showMessage("Congrats " + currentPlayer.getPlayerName() + ", You're out of JAIL");
+				this.boardController.movePlayerIconToSpecificCell(firstDie + secondDie, currentPlayer);
+			} else {
+				this.boardController.movePlayerIconToSpecificCell(firstDie + secondDie, currentPlayer);
+			}
+			
 			break;
 		case EventTypes.ON_CITY: {
 			PropertyCell cell = (PropertyCell) cellModel.getCells().get(currentPlayer.getPosition());
@@ -132,18 +152,19 @@ public class GameEngine {
 
 		case EventTypes.ON_FREE_PARKING:
 			this.setPlayerToFreeParking(currentPlayer);
-			Platform.runLater(() -> {
-				eventList.add(EventTypes.TURN_FINISHED);
-			});
-			break;
-		case EventTypes.ON_JAIL_FREE_PASS:
-			this.boardController.showMessage("Luck you " + currentPlayer.getPlayerName() + "! It's a free pass!");
 			eventList.add(EventTypes.TURN_FINISHED);
 			break;
+		case EventTypes.ON_JAIL_FREE_PASS:
+			if (eventList.get(eventList.size() - 3) != EventTypes.ON_GO_TO_JAIL) {
+				this.boardController.showMessage("Luck you " + currentPlayer.getPlayerName() + "! It's a free pass!");
+				eventList.add(EventTypes.TURN_FINISHED);
+			}
+			
+			break;
 		case EventTypes.ON_GO_TO_JAIL:
-			this.boardController.showMessage(currentPlayer.getPlayerName() + " Go to jail, wait for DOUBLE!");
 			currentPlayer.setInJail(true);
 			this.setPlayerNewLocation(currentPlayer, "Jail");
+			this.boardController.showMessage(currentPlayer.getPlayerName() + " Go to jail, wait for DOUBLE!");
 			eventList.add(EventTypes.TURN_FINISHED);
 			break;
 		case EventTypes.ON_TRANSPORTATION: {
@@ -614,7 +635,7 @@ public class GameEngine {
 					currentPlayer);
 		} else if (string.equals("Jail")) {
 			this.returnToWarrantDeck();
-			newPlace = this.cellModel.getPlaceOnBoardByName("Go To Jail");
+			newPlace = this.cellModel.getPlaceOnBoardByName("Jail Free Pass");
 			this.boardController.movePlayerIconToSpecificCell(Math.abs(currentPlayer.getPosition() - newPlace),
 					currentPlayer);
 		} else if (string.equals("NEXT_WARRANT")) {
