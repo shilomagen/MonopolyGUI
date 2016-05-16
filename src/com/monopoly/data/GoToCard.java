@@ -5,8 +5,6 @@ import com.monopoly.engine.GameEngine;
 import com.monopoly.player.Player;
 import com.monopoly.utility.EventTypes;
 
-import javafx.application.Platform;
-
 public class GoToCard extends Card {
 	String cellToGo;
 
@@ -19,11 +17,11 @@ public class GoToCard extends Card {
 	public void surpriseAction(Player currentPlayer) {
 		if (this.cellToGo.equals("START")) {
 
-				GameEngine.addEventToEngine(EventTypes.GO_TO_START_CELL);
+			GameEngine.addEventToEngine(EventTypes.GO_TO_START_CELL);
 
 		} else if (this.cellToGo.equals("NEXT_SURPRISE")) {
 
-				GameEngine.addEventToEngine(EventTypes.GO_TO_NEXT_SURPRISE);
+			GameEngine.addEventToEngine(EventTypes.GO_TO_NEXT_SURPRISE);
 
 		}
 	}
@@ -32,21 +30,19 @@ public class GoToCard extends Card {
 	public void warrantAction(Player currentPlayer) {
 		if (this.cellToGo.equals("JAIL")) {
 
-				GameEngine.addEventToEngine(EventTypes.ON_GO_TO_JAIL);
+			GameEngine.addEventToEngine(EventTypes.ON_GO_TO_JAIL);
 
-
-				GameEngine.addEventToEngine(EventTypes.RETURN_CARD_TO_WARRANT_DECK);
+			GameEngine.addEventToEngine(EventTypes.RETURN_CARD_TO_WARRANT_DECK);
 
 		} else if (this.cellToGo.equals("NEXT_WARRANT")) {
 
-				GameEngine.addEventToEngine(EventTypes.GO_TO_NEXT_WARRANT);
+			GameEngine.addEventToEngine(EventTypes.GO_TO_NEXT_WARRANT);
 
 		}
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return String.format(this.cardText, this.cellToGo);
 	}
-
 
 }

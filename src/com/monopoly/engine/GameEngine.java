@@ -3,7 +3,6 @@ package com.monopoly.engine;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Random;
 
 import com.monopoly.cell.Buyable;
 import com.monopoly.cell.CellModel;
@@ -24,7 +23,6 @@ import com.monopoly.scenes.UseFreeJailCardController;
 import com.monopoly.utility.EventTypes;
 import com.monopoly.utility.GameConstants;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -100,6 +98,10 @@ public class GameEngine {
 
 		switch (str) {
 		case EventTypes.PLAY_TURN:
+			if (this.playersManager.howManyActivePlayers()==1){
+				//IF ONLY ONE PLAY LAST, HE IS THE WINNER
+				//EDEN PUT THE LANDING SCENE
+			}
 			this.boardController.activatePlayer(currentPlayerIndex, true);
 			if (!currentPlayer.isBankrupt()) {
 				if (currentPlayer.isParked()) {
@@ -307,6 +309,7 @@ public class GameEngine {
 		case EventTypes.GO_TO_NEXT_SURPRISE: {
 			int lastLocation = currentPlayer.getPosition();
 			this.setPlayerNewLocation(currentPlayer, "NEXT_SURPRISE");
+			this.returnSurpriseCardToDeck(this.currentCard);
 			if (lastLocation > currentPlayer.getPosition()) {
 				this.boardController.showMessage("You've passed on start, get 200$!");
 				currentPlayer.setMoney(currentPlayer.getMoney() + 200);
@@ -316,7 +319,7 @@ public class GameEngine {
 		case EventTypes.GET_OUT_OF_JAIL_CARD: {
 			currentPlayer.setHasFreeJailCard(true);
 			currentPlayer.setJailFreeCard(this.currentCard);
-
+			eventList.add(EventTypes.TURN_FINISHED);
 			break;
 		}
 
@@ -325,6 +328,8 @@ public class GameEngine {
 		}
 		case EventTypes.GO_TO_NEXT_WARRANT: {
 			this.setPlayerNewLocation(currentPlayer, "NEXT_WARRANT");
+			this.returnToWarrantDeck();
+			eventList.add(EventTypes.TURN_FINISHED);
 			break;
 		}
 		case EventTypes.PAY_TO_ALL_PLAYERS: {
