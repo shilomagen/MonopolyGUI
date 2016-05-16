@@ -23,7 +23,8 @@ import javafx.scene.image.Image;
 public class PlayersManager {
 
 	private final PlayerModel playersModel;
-	int currentPlayer=0;
+	int currentPlayer = 0;
+
 	public PlayersManager() {
 		playersModel = new PlayerModel();
 	}
@@ -52,18 +53,18 @@ public class PlayersManager {
 
 		return newPlayerData;
 	}
-	public int getCurrentPlayer(){
+
+	public int getCurrentPlayer() {
 		return this.currentPlayer;
 	}
-	
-	public void nextPlayer(){
+
+	public void nextPlayer() {
 		this.currentPlayer++;
 		this.currentPlayer %= this.getPlayers().size();
-//		Platform.runLater(()->{
-			GameEngine.addEventToEngine(EventTypes.PLAY_TURN);
-//		});
-		
+		GameEngine.addEventToEngine(EventTypes.PLAY_TURN);
+
 	}
+
 	public Collection<Player> getPlayers() {
 		ArrayList<Player> sortedPlayersList = new ArrayList<>(playersModel.getPlayers());
 		Collections.sort(sortedPlayersList, new PlayerComparator());
@@ -92,7 +93,7 @@ public class PlayersManager {
 
 	public int howManyActivePlayers() {
 		int counter = 0;
-		for (Player player : this.playersModel.getPlayers()){
+		for (Player player : this.playersModel.getPlayers()) {
 			if (!player.isBankrupt())
 				counter++;
 		}
