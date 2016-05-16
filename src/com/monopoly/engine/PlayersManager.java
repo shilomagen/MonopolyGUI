@@ -58,7 +58,7 @@ public class PlayersManager {
 	
 	public void nextPlayer(){
 		this.currentPlayer++;
-		this.currentPlayer %= GameConstants.MAX_PLAYERS;
+		this.currentPlayer %= this.getPlayers().size();
 		Platform.runLater(()->{
 			GameEngine.addEventToEngine(EventTypes.PLAY_TURN);
 		});
@@ -78,7 +78,7 @@ public class PlayersManager {
 	}
 
 	public boolean isPlayersFullyLoaded() {
-		return playersModel.getPlayers().size() >= 6;
+		return true;
 	}
 
 	public boolean isThereHumanPlayer() throws NoHumanPlayerException {
