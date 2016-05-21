@@ -34,7 +34,7 @@ import javafx.stage.Stage;
 public class GameEngine {
 	private MainBoardController boardController;
 	private PlayersManager playersManager;
-	private static ObservableList<String> eventList;
+	private static ObservableList<MonopolyEvent> eventList;
 	private CellModel cellModel;
 	private LinkedList<Card> surpriseDeck;
 	private LinkedList<Card> warrantDeck;
@@ -58,15 +58,16 @@ public class GameEngine {
 	public void startObserv() {
 		eventList = FXCollections.observableArrayList();
 		isEventHandlerOn = true;
-		eventList.addListener(new ListChangeListener<String>() {
+		eventList.addListener(new ListChangeListener<MonopolyEvent>() {
 
 			@Override
 			public void onChanged(ListChangeListener.Change c) {
 
 				while (c.next()) {
 					if (c.wasAdded()) {
-						String event = eventList.get(eventList.size() - 1);
+						MonopolyEvent event = eventList.get(eventList.size() - 1);
 						System.out.println(event);
+						System.out.println(event.getEventID());
 						try {
 							eventHandler(event);
 						} catch (IOException e) {
@@ -87,16 +88,16 @@ public class GameEngine {
 	}
 
 	public static void addEventToEngine(String eventType) {
-		eventList.add(eventType);
+		eventList.add(new MonopolyEvent(eventType));
 
 	}
 
-	public void eventHandler(String str) throws IOException {
+	public void eventHandler(MonopolyEvent event) throws IOException {
 		int currentPlayerIndex = this.playersManager.getCurrentPlayer();
 		this.currentPlayer = ((ArrayList<Player>) this.playersManager.getPlayers())
 				.get(this.playersManager.getCurrentPlayer());
 
-		switch (str) {
+		switch (event.getEventType()) {
 		case EventTypes.PLAY_TURN:
 			if (this.playersManager.howManyActivePlayers() == 1) {
 				// IF ONLY ONE PLAY LAST, HE IS THE WINNER
@@ -108,7 +109,7 @@ public class GameEngine {
 					this.boardController.showMessage(
 							"Sorry, " + currentPlayer.getPlayerName() + " you are PARKED! Wait for next turn");
 					currentPlayer.setIsParked(false);
-					eventList.add(EventTypes.TURN_FINISHED);
+					eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 				} else {
 					this.boardController.activateRoll(true);
 					if (!this.currentPlayer.getData().isHuman()) {
@@ -117,7 +118,7 @@ public class GameEngine {
 					}
 				}
 			} else {
-				eventList.add(EventTypes.TURN_FINISHED);
+				eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			}
 			break;
 		case EventTypes.TURN_FINISHED:
@@ -135,7 +136,7 @@ public class GameEngine {
 			if (currentPlayer.isInJail() && firstDie != secondDie) {
 				this.boardController
 						.showMessage("Sorry, " + currentPlayer.getPlayerName() + " you are JAIL! Wait for a double");
-				eventList.add(EventTypes.TURN_FINISHED);
+				eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			} else if (currentPlayer.isInJail() && firstDie == secondDie) {
 				currentPlayer.setInJail(false);
 				this.boardController.showMessage("Congrats " + currentPlayer.getPlayerName() + ", You're out of JAIL");
@@ -155,7 +156,7 @@ public class GameEngine {
 				} else { // Player need to pay the fine
 					int fine = this.calculateFine(cell);
 					this.payFine(currentPlayer, cell.getOwner(), fine);
-					eventList.add(EventTypes.TURN_FINISHED);
+					eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 				}
 			} else {
 				this.buyPropertyProcedure(currentPlayer, cell);
@@ -167,12 +168,12 @@ public class GameEngine {
 
 		case EventTypes.ON_FREE_PARKING:
 			this.setPlayerToFreeParking(currentPlayer);
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		case EventTypes.ON_JAIL_FREE_PASS:
-			if (eventList.get(eventList.size() - 3) != EventTypes.ON_GO_TO_JAIL) {
+			if (eventList.get(eventList.size() - 3).getEventType() != EventTypes.ON_GO_TO_JAIL) {
 				this.boardController.showMessage("Lucky you " + currentPlayer.getPlayerName() + "! It's a free pass!");
-				eventList.add(EventTypes.TURN_FINISHED);
+				eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			}
 
 			break;
@@ -183,7 +184,7 @@ public class GameEngine {
 				currentPlayer.setInJail(true);
 				this.setPlayerNewLocation(currentPlayer, "Jail");
 				this.boardController.showMessage(currentPlayer.getPlayerName() + " Go to jail, wait for DOUBLE!");
-				eventList.add(EventTypes.TURN_FINISHED);
+				eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			}
 
 			break;
@@ -194,7 +195,7 @@ public class GameEngine {
 				if (currentPlayer == cellOwner) {
 					this.boardController
 							.showMessage(currentPlayer.getPlayerName() + " You already own this transportation center");
-					eventList.add(EventTypes.TURN_FINISHED);
+					eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 				}
 
 				else {
@@ -203,7 +204,7 @@ public class GameEngine {
 					} else {
 						this.payFine(currentPlayer, cellOwner, cell.getData().getStayCost());
 					}
-					eventList.add(EventTypes.TURN_FINISHED);
+					eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 				}
 			} else {
 				this.buyTransportationProcedure(currentPlayer, cell);
@@ -218,14 +219,14 @@ public class GameEngine {
 				if (currentPlayer == cellOwner) {
 					this.boardController
 							.showMessage(currentPlayer.getPlayerName() + " You already own this utility center");
-					eventList.add(EventTypes.TURN_FINISHED);
+					eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 				} else {
 					if (this.hasOwnerOwnAllUtilities(cellOwner)) {
 						this.payFine(currentPlayer, cellOwner, InitiateGame.getAssets().getUtilityStayCost());
 					} else {
 						this.payFine(currentPlayer, cellOwner, cell.getData().getStayCost());
 					}
-					eventList.add(EventTypes.TURN_FINISHED);
+					eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 				}
 			} else {
 				this.buyUtilityProcedure(currentPlayer, cell);
@@ -237,7 +238,7 @@ public class GameEngine {
 
 			this.boardController.showMessage("You are on the START CELL! GET 400 $$$");
 			currentPlayer.setMoney(currentPlayer.getMoney() + 400);
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 
 			break;
 		case EventTypes.ON_SUPRISE: {
@@ -277,12 +278,12 @@ public class GameEngine {
 			cell.setHasOwner(true);
 			cell.setOwner(currentPlayer);
 
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		}
 		case EventTypes.PLAYER_DIDNT_WANT_TO_BUY:
 			this.boardController.showMessage("You chose not to buy this property!");
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		case EventTypes.PLAYER_WANTS_TO_BUY_HOUSE: {
 			PropertyCell cell = (PropertyCell) cellModel.getCells().get(currentPlayer.getPosition());
@@ -290,18 +291,18 @@ public class GameEngine {
 			cell.setNumOfHouses(cell.getNumOfHouses() + 1);
 			cell.getOwner().setMoney(cell.getOwner().getMoney() - cell.getData().getHouseCost());
 			this.boardController.addHouseToSpecificCell(currentPlayer.getPosition());
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		}
 		case EventTypes.TAKE_MONEY_FROM_ALL_PLAYERS: {
 			this.takeMoneyFromPlayers(currentPlayer, ((MontaryCard) this.currentCard).getSum());
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		}
 		case EventTypes.TAKE_MONEY_FROM_JACKPOT: {
 			int sum = ((MontaryCard) this.currentCard).getSum();
 			currentPlayer.setMoney(currentPlayer.getMoney() + sum);
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		}
 		case EventTypes.GO_TO_START_CELL: {
@@ -321,7 +322,7 @@ public class GameEngine {
 		case EventTypes.GET_OUT_OF_JAIL_CARD: {
 			currentPlayer.setHasFreeJailCard(true);
 			currentPlayer.setJailFreeCard(this.currentCard);
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		}
 
@@ -336,7 +337,7 @@ public class GameEngine {
 		case EventTypes.GO_TO_NEXT_WARRANT: {
 			this.setPlayerNewLocation(currentPlayer, "NEXT_WARRANT");
 
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		}
 		case EventTypes.PAY_TO_ALL_PLAYERS: {
@@ -347,39 +348,39 @@ public class GameEngine {
 				totalSum = currentPlayer.getMoney();
 				sum = totalSum / activePlayers;
 				this.payFineToEveryPlayer(currentPlayer, sum);
-				eventList.add(EventTypes.PLAYER_LOST_GAME);
+				eventList.add(new MonopolyEvent(EventTypes.PLAYER_LOST_GAME));
 			} else {
 				payFineToEveryPlayer(currentPlayer, sum);
 			}
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		}
 		case EventTypes.PAY_TO_JACKPOT: {
 			int sum = ((MontaryCard) this.currentCard).getSum();
 			if (currentPlayer.getMoney() < sum) {
-				eventList.add(EventTypes.PLAYER_LOST_GAME);
+				eventList.add(new MonopolyEvent(EventTypes.PLAYER_LOST_GAME));
 			} else {
 				currentPlayer.setMoney(currentPlayer.getMoney() - sum);
 				this.boardController.showMessage(currentPlayer.getPlayerName() + " Paid " + sum + " To Jackpot!");
 			}
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		}
 		case EventTypes.PLAYER_WANTS_TO_USE_CARD:
 			currentPlayer.setHasFreeJailCard(false);
 			this.returnSurpriseCardToDeck(currentPlayer.getJailFreeCard());
 			currentPlayer.setJailFreeCard(null);
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		case EventTypes.PLAYER_DIDNT_WANT_TO_USE_CARD:
 			this.boardController.showMessage("You chose not to use the card!");
 			currentPlayer.setInJail(true);
 			this.setPlayerNewLocation(currentPlayer, "Jail");
 			this.boardController.showMessage(currentPlayer.getPlayerName() + " Go to jail, wait for DOUBLE!");
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 			break;
 		default:
-			this.boardController.showMessage(str);
+			this.boardController.showMessage(event.toString());
 			break;
 		}
 
@@ -389,7 +390,7 @@ public class GameEngine {
 		eventList.remove(string);
 	}
 
-	public ObservableList<String> getEventList() {
+	public ObservableList<MonopolyEvent> getEventList() {
 		return eventList;
 	}
 
@@ -427,14 +428,14 @@ public class GameEngine {
 			payer.setLastFine(theFine, owner);
 		}
 
-		eventList.add(EventTypes.PLAYER_PAID_FINE);
+		eventList.add(new MonopolyEvent(EventTypes.PLAYER_PAID_FINE));
 
 	}
 
 	private void setPlayerOutOfTheGame(Player loser) {
 		loser.setMoney(0);
 		loser.setIsBankrupt(true);
-		eventList.add(EventTypes.PLAYER_LOST_GAME);
+		eventList.add(new MonopolyEvent(EventTypes.PLAYER_LOST_GAME));
 
 	}
 
@@ -446,7 +447,7 @@ public class GameEngine {
 			this.openBuyingHousePopup(property.getData().getName(), property.getData().getHouseCost() + "");
 		} else {
 			this.boardController.showMessage("You can't buy the house, sorry!");
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 		}
 
 	}
@@ -458,7 +459,7 @@ public class GameEngine {
 		String countryName = property.getData().getCountry();
 		int citiesByCountry = howManyCitiesInCountry(theCountries, countryName);
 		if (citiesByCountry == 0) {
-			eventList.add("Could not find the country");
+			eventList.add(new MonopolyEvent(EventTypes.ERROR));
 		} else {
 			playerCitiesOnCountry = getPlayerCitiesInCountry(property.getOwner(), countryName);
 		}
@@ -494,7 +495,7 @@ public class GameEngine {
 			this.openGeneralBuyingPopup("Property", theCell.getData().getCost() + "", theCell.getName());
 		} else {
 			this.boardController.showMessage("You can't buy the property, sorry!");
-			eventList.add(EventTypes.TURN_FINISHED);
+			eventList.add(new MonopolyEvent(EventTypes.TURN_FINISHED));
 		}
 
 	}
@@ -571,11 +572,11 @@ public class GameEngine {
 	private void handlePlayerBuyableChoice(BuyingPopupController buyingPopupController) {
 		boolean isWantToBuy = buyingPopupController.isWantToBuy();
 		if (isWantToBuy) {
-			eventList.add(EventTypes.PLAYER_WANTS_TO_BUY_BUYABLE);
+			eventList.add(new MonopolyEvent(EventTypes.PLAYER_WANTS_TO_BUY_BUYABLE));
 
 		} else {
 
-			eventList.add(EventTypes.PLAYER_DIDNT_WANT_TO_BUY);
+			eventList.add(new MonopolyEvent(EventTypes.PLAYER_DIDNT_WANT_TO_BUY));
 
 		}
 
@@ -634,9 +635,9 @@ public class GameEngine {
 	private void handlePlayerUseFreeJailCard(UseFreeJailCardController useFreeJailCardController) {
 		boolean isWantToUse = useFreeJailCardController.isWantToUse();
 		if (isWantToUse) {
-			eventList.add(EventTypes.PLAYER_WANTS_TO_USE_CARD);
+			eventList.add(new MonopolyEvent(EventTypes.PLAYER_WANTS_TO_USE_CARD));
 		} else {
-			eventList.add(EventTypes.PLAYER_DIDNT_WANT_TO_USE_CARD);
+			eventList.add(new MonopolyEvent(EventTypes.PLAYER_DIDNT_WANT_TO_USE_CARD));
 		}
 
 	}
@@ -644,9 +645,9 @@ public class GameEngine {
 	private void handlePlayerHouseChoice(BuyingHousePopupController buyingHousePopupController) {
 		boolean isWantToBuy = buyingHousePopupController.isWantToBuy();
 		if (isWantToBuy) {
-			eventList.add(EventTypes.PLAYER_WANTS_TO_BUY_HOUSE);
+			eventList.add(new MonopolyEvent(EventTypes.PLAYER_WANTS_TO_BUY_HOUSE));
 		} else {
-			eventList.add(EventTypes.PLAYER_DIDNT_WANT_TO_BUY);
+			eventList.add(new MonopolyEvent(EventTypes.PLAYER_DIDNT_WANT_TO_BUY));
 
 		}
 
