@@ -18,6 +18,6 @@ public abstract class Cell {
 	public int getPosition() {
 		return position;
 	}
-//	public abstract void playAction(Player currentPlayer);
+
 
 }

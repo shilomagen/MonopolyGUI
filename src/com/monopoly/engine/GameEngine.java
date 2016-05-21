@@ -98,9 +98,9 @@ public class GameEngine {
 
 		switch (str) {
 		case EventTypes.PLAY_TURN:
-			if (this.playersManager.howManyActivePlayers()==1){
-				//IF ONLY ONE PLAY LAST, HE IS THE WINNER
-				//EDEN PUT THE LANDING SCENE
+			if (this.playersManager.howManyActivePlayers() == 1) {
+				// IF ONLY ONE PLAY LAST, HE IS THE WINNER
+				// EDEN PUT THE LANDING SCENE
 			}
 			this.boardController.activatePlayer(currentPlayerIndex, true);
 			if (!currentPlayer.isBankrupt()) {
@@ -111,8 +111,9 @@ public class GameEngine {
 					eventList.add(EventTypes.TURN_FINISHED);
 				} else {
 					this.boardController.activateRoll(true);
-					if (!this.currentPlayer.getData().isHuman()){
+					if (!this.currentPlayer.getData().isHuman()) {
 						addEventToEngine(EventTypes.ROLL_DICE);
+
 					}
 				}
 			} else {
@@ -131,7 +132,6 @@ public class GameEngine {
 			int secondDie = PairOfDice.getSecondDice();
 			this.boardController.updateDice(firstDie, secondDie);
 			this.boardController.activateRoll(false);
-			PairOfDice.roll();
 			if (currentPlayer.isInJail() && firstDie != secondDie) {
 				this.boardController
 						.showMessage("Sorry, " + currentPlayer.getPlayerName() + " you are JAIL! Wait for a double");
@@ -146,6 +146,7 @@ public class GameEngine {
 
 			break;
 		case EventTypes.ON_CITY: {
+
 			PropertyCell cell = (PropertyCell) cellModel.getCells().get(currentPlayer.getPosition());
 			if (cell.isHasOwner()) {
 				if (currentPlayer == cell.getOwner()) {
@@ -170,7 +171,7 @@ public class GameEngine {
 			break;
 		case EventTypes.ON_JAIL_FREE_PASS:
 			if (eventList.get(eventList.size() - 3) != EventTypes.ON_GO_TO_JAIL) {
-				this.boardController.showMessage("Luck you " + currentPlayer.getPlayerName() + "! It's a free pass!");
+				this.boardController.showMessage("Lucky you " + currentPlayer.getPlayerName() + "! It's a free pass!");
 				eventList.add(EventTypes.TURN_FINISHED);
 			}
 
@@ -262,6 +263,7 @@ public class GameEngine {
 		case EventTypes.PLAYER_LOST_GAME:
 			for (Player player : playersManager.getPlayers()) {
 				if (player.isBankrupt()) {
+					player.releasePlayerAssets();
 					this.boardController.setBankruptIndication(player);
 					this.boardController.showMessage(player.getPlayerName() + " has lost the game, bye bye!");
 					this.boardController.removePlayerIconFromBoard(player);
@@ -302,14 +304,13 @@ public class GameEngine {
 			break;
 		}
 		case EventTypes.GO_TO_START_CELL: {
-			currentPlayer.setPosition(0);
-			this.boardController.movePlayerIconToSpecificCell(0, currentPlayer);
+			this.boardController.movePlayerIconToSpecificCell((-1) * currentPlayer.getPosition(), currentPlayer);
+
 			break;
 		}
 		case EventTypes.GO_TO_NEXT_SURPRISE: {
 			int lastLocation = currentPlayer.getPosition();
 			this.setPlayerNewLocation(currentPlayer, "NEXT_SURPRISE");
-			this.returnSurpriseCardToDeck(this.currentCard);
 			if (lastLocation > currentPlayer.getPosition()) {
 				this.boardController.showMessage("You've passed on start, get 200$!");
 				currentPlayer.setMoney(currentPlayer.getMoney() + 200);
@@ -325,10 +326,15 @@ public class GameEngine {
 
 		case EventTypes.RETURN_CARD_TO_WARRANT_DECK: {
 			this.returnToWarrantDeck();
+			break;
+		}
+		case EventTypes.RETURN_CARD_TO_SURPRISE_DECK: {
+			this.returnSurpriseCardToDeck();
+			break;
 		}
 		case EventTypes.GO_TO_NEXT_WARRANT: {
 			this.setPlayerNewLocation(currentPlayer, "NEXT_WARRANT");
-			this.returnToWarrantDeck();
+
 			eventList.add(EventTypes.TURN_FINISHED);
 			break;
 		}
@@ -409,14 +415,17 @@ public class GameEngine {
 	}
 
 	private void payFine(Player payer, Player owner, int theFine) {
-		if (payer.getMoney() < theFine) {
-			theFine = payer.getMoney();
-			this.setPlayerOutOfTheGame(payer);
-		} else {
-			payer.setMoney(payer.getMoney() - theFine);
+		if (!owner.isBankrupt()) {
+			if (payer.getMoney() < theFine) {
+				theFine = payer.getMoney();
+				this.setPlayerOutOfTheGame(payer);
+			} else {
+				payer.setMoney(payer.getMoney() - theFine);
+			}
+			owner.setMoney(owner.getMoney() + theFine);
+			payer.setLastFine(theFine, owner);
 		}
-		owner.setMoney(owner.getMoney() + theFine);
-		payer.setLastFine(theFine, owner);
+
 		eventList.add(EventTypes.PLAYER_PAID_FINE);
 
 	}
@@ -553,14 +562,13 @@ public class GameEngine {
 				buyingPopUp.hide();
 			}
 		});
-		if (!this.currentPlayer.getData().isHuman()){
+		if (!this.currentPlayer.getData().isHuman()) {
 			this.buyingPopupController.yesButtonOnAction();
 		}
 	}
 
 	private void handlePlayerBuyableChoice(BuyingPopupController buyingPopupController) {
 		boolean isWantToBuy = buyingPopupController.isWantToBuy();
-		
 		if (isWantToBuy) {
 			eventList.add(EventTypes.PLAYER_WANTS_TO_BUY_BUYABLE);
 
@@ -594,7 +602,7 @@ public class GameEngine {
 				buyingHousePopUp.hide();
 			}
 		});
-		if (!this.currentPlayer.getData().isHuman()){
+		if (!this.currentPlayer.getData().isHuman()) {
 			this.buyingHousePopupController.yesButtonOnAction();
 		}
 	}
@@ -605,7 +613,7 @@ public class GameEngine {
 		useFreeJailPassCardPopup.setY(150);
 		this.useFreeJailCardController = new UseFreeJailCardController();
 		FXMLLoader load = new FXMLLoader();
-		load.setLocation(MainBoardController.class.getResource(GameConstants.POPUP_CARD_PATH));
+		load.setLocation(MainBoardController.class.getResource(GameConstants.POPUP_USER_FREE_JAIL));
 		Pane useFreeJailCardPane = load.load();
 		useFreeJailCardController = (UseFreeJailCardController) load.getController();
 		useFreeJailPassCardPopup.getContent().add(useFreeJailCardPane);
@@ -617,7 +625,7 @@ public class GameEngine {
 				useFreeJailPassCardPopup.hide();
 			}
 		});
-		if (!this.currentPlayer.getData().isHuman()){
+		if (!this.currentPlayer.getData().isHuman()) {
 			this.useFreeJailCardController.yesButtonOnAction();
 		}
 	}
@@ -672,7 +680,7 @@ public class GameEngine {
 
 			}
 		});
-		if (!this.currentPlayer.getData().isHuman()){
+		if (!this.currentPlayer.getData().isHuman()) {
 			this.cardPopupController.okButtonOnAction();
 		}
 
@@ -701,17 +709,14 @@ public class GameEngine {
 	public void setPlayerNewLocation(Player currentPlayer, String string) {
 		int newPlace = 0;
 		if (string.equals("NEXT_SURPRISE")) {
-			this.returnSurpriseCardToDeck();
 			newPlace = this.cellModel.getNextSurpriseOnBoard(currentPlayer.getPosition() + 1);
 			this.boardController.movePlayerIconToSpecificCell(Math.abs(currentPlayer.getPosition() - newPlace),
 					currentPlayer);
 		} else if (string.equals("Jail")) {
-			this.returnToWarrantDeck();
 			newPlace = this.cellModel.getPlaceOnBoardByName("Jail Free Pass");
 			this.boardController.movePlayerIconToSpecificCell(Math.abs(currentPlayer.getPosition() - newPlace),
 					currentPlayer);
 		} else if (string.equals("NEXT_WARRANT")) {
-			this.returnToWarrantDeck();
 			newPlace = this.cellModel.getNextWarrantOnBoard(currentPlayer.getPosition() + 1);
 			this.boardController.movePlayerIconToSpecificCell(Math.abs(currentPlayer.getPosition() - newPlace),
 					currentPlayer);

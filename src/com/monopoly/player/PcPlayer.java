@@ -1,4 +1,5 @@
 package com.monopoly.player;
+
 import java.util.ArrayList;
 
 import com.monopoly.data.Card;
@@ -7,7 +8,7 @@ import com.monopoly.data.Transportation;
 import com.monopoly.data.Utility;
 import com.monopoly.utility.GameConstants;
 
-public class PcPlayer implements Player{
+public class PcPlayer implements Player {
 
 	private PlayerData data;
 	private boolean bankrupt;
@@ -22,7 +23,7 @@ public class PcPlayer implements Player{
 	private ArrayList<Utility> playerUtil;
 	private int lastFine;
 	private Player paidTo;
-	
+
 	public PcPlayer(PlayerData data) {
 		this.data = data;
 		this.money = GameConstants.INITIAL_MONEY;
@@ -35,36 +36,41 @@ public class PcPlayer implements Player{
 		playerTrans = new ArrayList<>();
 		playerUtil = new ArrayList<>();
 		this.freeJailCard = null;
-		
+
 	}
 
-	public boolean canPlay(){
+	public boolean canPlay() {
 		return this.isInJail && this.isBankrupt() && this.isParked;
 	}
 
-	public boolean isBankrupt(){
+	public boolean isBankrupt() {
 		return bankrupt;
 	}
-	public boolean isInJail(){
+
+	public boolean isInJail() {
 		return this.isInJail;
 	}
-	public void setInJail(boolean val){
+
+	public void setInJail(boolean val) {
 		this.isInJail = val;
 	}
-	public boolean isParked(){
+
+	public boolean isParked() {
 		return this.isParked;
 	}
-	
+
 	@Override
 	public void setIsParked(boolean val) {
 		this.isParked = val;
-		
+
 	}
-	public int getPosition(){
+
+	public int getPosition() {
 		return this.position;
 	}
+
 	@Override
-	public void setPosition(int position){
+	public void setPosition(int position) {
 		this.position = position;
 	}
 
@@ -96,28 +102,22 @@ public class PcPlayer implements Player{
 	public String getPlayerName() {
 		return this.data.getName();
 	}
+
 	@Override
 	public void setMoney(int money) {
 		this.money = money;
-		
-	}
 
+	}
 
 	@Override
 	public int getMoney() {
 		return money;
 	}
 
-//	@Override
-//	public boolean getAnswer() {
-//		return GameView.getAnswerFromPcPlayer();
-//		
-//	}
-
 	@Override
 	public void setIsBankrupt(boolean b) {
 		this.bankrupt = b;
-		
+
 	}
 
 	public boolean isHasFreeJailCard() {
@@ -131,7 +131,7 @@ public class PcPlayer implements Player{
 	@Override
 	public void setJailFreeCard(Card freeJailCard) {
 		this.freeJailCard = freeJailCard;
-		
+
 	}
 
 	@Override
@@ -143,7 +143,6 @@ public class PcPlayer implements Player{
 	public ArrayList<Transportation> getTransportation() {
 		return this.playerTrans;
 	}
-
 
 	@Override
 	public ArrayList<Utility> getUtilites() {
@@ -171,6 +170,23 @@ public class PcPlayer implements Player{
 		return this.paidTo.getPlayerName();
 	}
 
-	
+	@Override
+	public void releasePlayerAssets() {
+		for (City city : playerCities) {
+			city.getCell().setHasOwner(false);
+			city.getCell().setOwner(null);
+		}
+		for (Utility util : playerUtil) {
+			util.getCell().setHasOwner(false);
+			util.getCell().setOwner(null);
+		}
+		for (Transportation trans : playerTrans) {
+			trans.getCell().setHasOwner(false);
+			trans.getCell().setOwner(null);
+		}
+		this.playerCities.clear();
+		this.playerUtil.clear();
+		this.playerTrans.clear();
+	}
+
 }
-	

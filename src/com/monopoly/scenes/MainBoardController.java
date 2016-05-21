@@ -220,8 +220,14 @@ public class MainBoardController {
 		int currentPlayerPositionToDelete = player.getPosition();
 		FlowPane currentPlayerBox = mainBoard.getPlayerBox(currentPlayerPositionToDelete);
 		ImageView currentImageView = this.findImageViewByImage(currentPlayerBox, player.getData().getIcon());
-		if (currentImageView != null)
-			currentPlayerBox.getChildren().remove(currentImageView);
+		try {
+			if (currentImageView != null)
+				currentPlayerBox.getChildren().remove(currentImageView);
+		} catch (UnsupportedOperationException e){
+			e.printStackTrace();
+			
+		}
+		
 		// else, player is already bankrupt and he's not on the cell
 
 	}

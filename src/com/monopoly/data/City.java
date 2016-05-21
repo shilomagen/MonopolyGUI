@@ -1,5 +1,7 @@
 package com.monopoly.data;
 
+import com.monopoly.cell.PropertyCell;
+
 public class City {
 	private String country;
 	private String name;
@@ -9,6 +11,7 @@ public class City {
 	private int stayCost1; 
 	private int stayCost2;
 	private int stayCost3;
+	private PropertyCell cell;
 	
 	
 	public City(String country, String name, int cost, int houseCost,int stayCost, int stayCost1, int stayCost2, int stayCost3){
@@ -20,6 +23,7 @@ public class City {
 		this.stayCost1 = stayCost1;
 		this.stayCost2 = stayCost2;
 		this.stayCost3 = stayCost3;
+		this.cell = null;
 	}
 
 	public String getCountry() {
@@ -84,6 +88,14 @@ public class City {
 
 	public void setStayCost3(int stayCost3) {
 		this.stayCost3 = stayCost3;
+	}
+
+	public void setPropertyCell(PropertyCell propertyCell) {
+		this.cell = propertyCell;
+		
+	}
+	public PropertyCell getCell(){
+		return this.cell;
 	}
 	
 	

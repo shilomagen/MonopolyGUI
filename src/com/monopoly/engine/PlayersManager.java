@@ -61,7 +61,10 @@ public class PlayersManager {
 	public void nextPlayer() {
 		this.currentPlayer++;
 		this.currentPlayer %= this.getPlayers().size();
-		GameEngine.addEventToEngine(EventTypes.PLAY_TURN);
+		Platform.runLater(()->{
+			GameEngine.addEventToEngine(EventTypes.PLAY_TURN);
+		});
+		
 
 	}
 

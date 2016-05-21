@@ -168,5 +168,23 @@ public class HumanPlayer implements Player {
 	public String getPaidPlayerName() {
 		return this.paidTo.getPlayerName();
 	}
+	@Override
+	public void releasePlayerAssets() {
+		for (City city : playerCities) {
+			city.getCell().setHasOwner(false);
+			city.getCell().setOwner(null);
+		}
+		for (Utility util : playerUtil) {
+			util.getCell().setHasOwner(false);
+			util.getCell().setOwner(null);
+		}
+		for (Transportation trans : playerTrans) {
+			trans.getCell().setHasOwner(false);
+			trans.getCell().setOwner(null);
+		}
+		this.playerCities.clear();
+		this.playerUtil.clear();
+		this.playerTrans.clear();
+	}
 
 }

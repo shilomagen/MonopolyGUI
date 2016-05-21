@@ -79,9 +79,9 @@
     </surprise>
 
     <warrant>
-      <monetary num="1" text="You buy drinks for all your friends, pay %s NIS for each player" who="PLAYERS" sum="200" />
-      <monetary num="1" text="You were selected as the worst Monopoly player, pay %s NIS to each player" who="PLAYERS" sum="120" ></monetary>
-      <monetary num="2" text="You were caught thinking of programming the Monopoly game while your girl friend talks to you, pay %s NIS fine to the treasury" who="TREASURY" sum="700" ></monetary>
+      <monetary num="1" text="You buy drinks for all your friends, pay %s NIS for each player" who="PLAYERS" sum="350" />
+      <monetary num="1" text="You were selected as the worst Monopoly player, pay %s NIS to each player" who="PLAYERS" sum="200" ></monetary>
+      <monetary num="2" text="You were caught thinking of programming the Monopoly game while your girl friend talks to you, pay %s NIS fine to the treasury" who="TREASURY" sum="1000" ></monetary>
       <goto num="1" text="Go to Jail" to="JAIL" />
       <goto num="2" text="Go to next Warrant square, if you pass the Start square DO NOT get 200 NIS" to="NEXT_WARRANT" />
     </warrant>

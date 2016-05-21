@@ -6,7 +6,6 @@ import com.monopoly.utility.BoardConsts;
 import com.monopoly.utility.EventTypes;
 import com.monopoly.utility.PositionHelper;
 
-import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
@@ -148,9 +147,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(() -> {
+						
 							GameEngine.addEventToEngine(EventTypes.ON_JAIL_FREE_PASS);
-						});
+						
 					}
 				}
 			}
@@ -178,9 +177,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(() -> {
+						
 							GameEngine.addEventToEngine(EventTypes.ON_FREE_PARKING);
-						});
+						
 					}
 				}
 			}
@@ -211,9 +210,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(() -> {
+						
 							GameEngine.addEventToEngine(EventTypes.ON_GO_TO_JAIL);
-						});
+						
 					}
 				}
 			}
@@ -282,9 +281,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(() -> {
+						
 							GameEngine.addEventToEngine(EventTypes.ON_CITY);
-						});
+						
 					}
 				}
 			}
@@ -488,9 +487,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(() -> {
+						
 							GameEngine.addEventToEngine(EventTypes.ON_TRANSPORTATION);
-						});
+						
 					}
 				}
 			}
@@ -558,6 +557,7 @@ public class MainBoard {
 		Label utilityLabel = new Label(utilName);
 		utilityLabel.getStyleClass().add("trans-util-label");
 		Label utilityPrice = new Label(utilPrice + "$");
+		
 		utilityPrice.getStyleClass().add("trans-util-price");
 		FlowPane playerBox = new FlowPane();
 		playerBox.setId(this.generatePlayerBoxID(col, row));
@@ -568,9 +568,7 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(() -> {
 							GameEngine.addEventToEngine(EventTypes.ON_UTILITY);
-						});
 					}
 				}
 			}
@@ -642,9 +640,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(() -> {
+				
 							GameEngine.addEventToEngine(EventTypes.ON_WARRANT);
-						});
+					
 					}
 				}
 			}
@@ -694,9 +692,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						Platform.runLater(() -> {
+						
 							GameEngine.addEventToEngine(EventTypes.ON_SUPRISE);
-						});
+						
 					}
 				}
 			}

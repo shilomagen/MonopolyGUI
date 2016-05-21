@@ -37,4 +37,5 @@ public interface Player {
 	public int getLastFine();
 	public void setLastFine(int lastFine, Player PlayerPaidTo);
 	public String getPaidPlayerName();
+	public void releasePlayerAssets();
 }

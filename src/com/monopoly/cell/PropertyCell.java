@@ -15,6 +15,8 @@ public class PropertyCell extends Cell implements Buyable {
 		this.hasOwner = false;
 		this.numOfHouses = 0;
 		this.setData(data);
+		data.setPropertyCell(this);
+		
 
 	}
 

@@ -13,6 +13,7 @@ public class UtilityCell extends Cell implements Buyable{
 		this.owner = null;
 		this.hasOwner = false;
 		this.data = data;
+		data.setUtilityCell(this);
 		
 	}
 
