@@ -72,8 +72,7 @@ public class GameBoard {
 				}
 				City cityToData = theCountries.get(countryCounter).getCities().get(cityCounter);
 				mainBoard.createCityPane(PositionHelper.arr.get(placeOnBoard).getCol(),
-						PositionHelper.arr.get(placeOnBoard).getRow(), cityToData.getCountry(), cityToData.getName(),
-						cityToData.getCost(), CountryColors.countryArr[countryCounter]);
+						PositionHelper.arr.get(placeOnBoard).getRow(), cityToData, CountryColors.countryArr[countryCounter]);
 				cellModel.addCell(new PropertyCell(cityToData.getName(), placeOnBoard, cityToData));
 				cityCounter++;
 				placeOnBoard++;
@@ -91,8 +90,7 @@ public class GameBoard {
 				placeOnBoard++;
 			} else if (cellType.equals("TRANSPORTATION")) {
 				mainBoard.createTransportationPane(PositionHelper.arr.get(placeOnBoard).getCol(),
-						PositionHelper.arr.get(placeOnBoard).getRow(), transportation.get(transPlace).getName(),
-						transportation.get(transPlace).getCost());
+						PositionHelper.arr.get(placeOnBoard).getRow(), transportation.get(transPlace));
 				cellModel.addCell(new TransportationCell(transportation.get(transPlace).getName(), placeOnBoard,
 						transportation.get(transPlace)));
 				placeOnBoard++;
@@ -110,8 +108,7 @@ public class GameBoard {
 				placeOnBoard++;
 			} else if (cellType.equals("UTILITY")) {
 				mainBoard.createUtilityPane(PositionHelper.arr.get(placeOnBoard).getCol(),
-						PositionHelper.arr.get(placeOnBoard).getRow(), utilities.get(utilityPlace).getName(),
-						utilities.get(utilityPlace).getCost());
+						PositionHelper.arr.get(placeOnBoard).getRow(), utilities.get(utilityPlace));
 				cellModel.addCell(new UtilityCell(utilities.get(utilityPlace).getName(), placeOnBoard,
 						utilities.get(utilityPlace)));
 				placeOnBoard++;

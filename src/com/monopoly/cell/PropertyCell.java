@@ -9,6 +9,7 @@ public class PropertyCell extends Cell implements Buyable {
 	private int numOfHouses;
 	private City data;
 
+
 	public PropertyCell(String name, int position, City data) {
 		super(name, position);
 		this.owner = null;
@@ -16,7 +17,7 @@ public class PropertyCell extends Cell implements Buyable {
 		this.numOfHouses = 0;
 		this.setData(data);
 		data.setPropertyCell(this);
-		
+
 
 	}
 
@@ -60,5 +61,12 @@ public class PropertyCell extends Cell implements Buyable {
 	public boolean isHasOwner() {
 		return this.hasOwner;
 	}
+
+//	@Override
+//	public void setToolTip() {
+//		this.intoTip = "Owner: " + this.getOwner().getPlayerName() + "\n" + " House Cost: " + this.data.getHouseCost() + "\n"
+//				+ "Stay Cost: " +  this.data.getStayCost() +"\nStay Cost 1"+ this.data.getStayCost1() +"\nStay Cost 2"+ this.data.getStayCost2()
+//				+ "\nStay Cost 3"+ this.data.getStayCost3();
+//	}
 
 }

@@ -1,6 +1,10 @@
 package com.monopoly.scenes;
 
+import com.monopoly.data.City;
+import com.monopoly.data.Transportation;
+import com.monopoly.data.Utility;
 import com.monopoly.engine.GameEngine;
+import com.monopoly.engine.InitiateGame;
 import com.monopoly.player.Player;
 import com.monopoly.utility.BoardConsts;
 import com.monopoly.utility.EventTypes;
@@ -17,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -147,9 +152,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						
-							GameEngine.addEventToEngine(EventTypes.ON_JAIL_FREE_PASS);
-						
+
+						GameEngine.addEventToEngine(EventTypes.ON_JAIL_FREE_PASS);
+
 					}
 				}
 			}
@@ -177,9 +182,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						
-							GameEngine.addEventToEngine(EventTypes.ON_FREE_PARKING);
-						
+
+						GameEngine.addEventToEngine(EventTypes.ON_FREE_PARKING);
+
 					}
 				}
 			}
@@ -210,9 +215,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						
-							GameEngine.addEventToEngine(EventTypes.ON_GO_TO_JAIL);
-						
+
+						GameEngine.addEventToEngine(EventTypes.ON_GO_TO_JAIL);
+
 					}
 				}
 			}
@@ -258,20 +263,26 @@ public class MainBoard {
 		this.boardPane.add(paneToAssign, gridCol, gridRow);
 	}
 
-	public void createCityPane(int col, int row, String countryName, String cityName, int cityPrice,
-			String colorCountry) {
+	public void createCityPane(int col, int row, City city, String colorCountry) {
 		SplitPane cityPane = new SplitPane();
 		cityPane.getStyleClass().add("city-cell");
 		Pane infoPane = new StackPane();
-		Label countryLabel = new Label(countryName);
-		Label cityLabel = new Label(cityName);
-		Label priceLabel = new Label(cityPrice + "$");
+		Label countryLabel = new Label(city.getCountry());
+		countryLabel.setId(this.generateCountryLabelID(col, row, city.getCountry()));
+		Label cityLabel = new Label(city.getName());
+		cityLabel.setId(this.generateCityLabelID(col, row, city.getName()));
+		Label priceLabel = new Label(city.getCost() + "$");
 		cityLabel.getStyleClass().add("city-label");
 		countryLabel.getStyleClass().add("country-label");
+		Tooltip infoTip = new Tooltip();
+		infoTip.setText("House Cost: " + city.getHouseCost() + "\n" + "Stay Cost: " + city.getStayCost()
+				+ "\nStay Cost 1" + city.getStayCost1() + "\nStay Cost 2" + city.getStayCost2() + "\nStay Cost 3"
+				+ city.getStayCost3());
+
+		infoTip.setId(this.generateToolTipID(col, row, city.getName()));
+		countryLabel.setTooltip(infoTip);
+		cityLabel.setTooltip(infoTip);
 		priceLabel.getStyleClass().add("price-label");
-		infoPane.getChildren().add(countryLabel);
-		infoPane.getChildren().add(cityLabel);
-		infoPane.getChildren().add(priceLabel);
 		FlowPane playerBox = new FlowPane();
 		playerBox.setId(this.generatePlayerBoxID(col, row));
 		playerBox.setVgap(3);
@@ -281,14 +292,17 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						
-							GameEngine.addEventToEngine(EventTypes.ON_CITY);
-						
+
+						GameEngine.addEventToEngine(EventTypes.ON_CITY);
+
 					}
 				}
 			}
 		});
 		infoPane.getChildren().add(playerBox);
+		infoPane.getChildren().add(countryLabel);
+		infoPane.getChildren().add(cityLabel);
+		infoPane.getChildren().add(priceLabel);
 
 		if (col == 0) { // LEFT SIDE OF MONOPOLY BOARD
 			cityPane.setOrientation(Orientation.HORIZONTAL);
@@ -301,9 +315,9 @@ public class MainBoard {
 			cityPane.getItems().add(infoPane);
 			cityPane.getItems().add(new FlowPane());
 			cityPane.getItems().get(1).setStyle("-fx-background-color:" + colorCountry + ";");
-                        ((FlowPane)cityPane.getItems().get(1)).setId(generateHoseBoxID(col, row));
-                        ((FlowPane)cityPane.getItems().get(1)).setVgap(3);
-                        ((FlowPane)cityPane.getItems().get(1)).setHgap(1);
+			((FlowPane) cityPane.getItems().get(1)).setId(generateHoseBoxID(col, row));
+			((FlowPane) cityPane.getItems().get(1)).setVgap(3);
+			((FlowPane) cityPane.getItems().get(1)).setHgap(1);
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		} else if (col == 9) { // RIGHT SIDE OF MONOPOLY BOARD
 			cityPane.setOrientation(Orientation.HORIZONTAL);
@@ -315,9 +329,9 @@ public class MainBoard {
 			priceLabel.getStyleClass().add("right");
 			cityPane.getItems().add(new FlowPane());
 			cityPane.getItems().get(0).setStyle("-fx-background-color:" + colorCountry + ";");
-                        ((FlowPane)cityPane.getItems().get(0)).setId(generateHoseBoxID(col, row));
-                        ((FlowPane)cityPane.getItems().get(0)).setVgap(3);
-                        ((FlowPane)cityPane.getItems().get(0)).setHgap(1);
+			((FlowPane) cityPane.getItems().get(0)).setId(generateHoseBoxID(col, row));
+			((FlowPane) cityPane.getItems().get(0)).setVgap(3);
+			((FlowPane) cityPane.getItems().get(0)).setHgap(1);
 			cityPane.getItems().add(infoPane);
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		} else if (row == 0) {// UPPER SIDE OF MONOPOLY BOARD
@@ -331,9 +345,9 @@ public class MainBoard {
 			cityPane.getItems().add(infoPane);
 			cityPane.getItems().add(new FlowPane());
 			cityPane.getItems().get(1).setStyle("-fx-background-color:" + colorCountry + ";");
-                        ((FlowPane)cityPane.getItems().get(1)).setId(generateHoseBoxID(col, row));
-                        ((FlowPane)cityPane.getItems().get(1)).setVgap(1);
-                        ((FlowPane)cityPane.getItems().get(1)).setHgap(3);
+			((FlowPane) cityPane.getItems().get(1)).setId(generateHoseBoxID(col, row));
+			((FlowPane) cityPane.getItems().get(1)).setVgap(1);
+			((FlowPane) cityPane.getItems().get(1)).setHgap(3);
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 		} else if (row == 9) { // LOWER SIDE OF MONOPOLY BOARD
 			cityPane.setOrientation(Orientation.VERTICAL);
@@ -347,10 +361,23 @@ public class MainBoard {
 			cityPane.getItems().add(infoPane);
 			this.assignPaneOnGridByCoordinates(col, row, cityPane);
 			cityPane.getItems().get(0).setStyle("-fx-background-color:" + colorCountry + ";");
-                        ((FlowPane)cityPane.getItems().get(0)).setId(generateHoseBoxID(col, row));
-                        ((FlowPane)cityPane.getItems().get(0)).setVgap(1);
-                        ((FlowPane)cityPane.getItems().get(0)).setHgap(3);
+			((FlowPane) cityPane.getItems().get(0)).setId(generateHoseBoxID(col, row));
+			((FlowPane) cityPane.getItems().get(0)).setVgap(1);
+			((FlowPane) cityPane.getItems().get(0)).setHgap(3);
 		}
+	}
+
+	private String generateCityLabelID(int col, int row, String name) {
+		return name + col + row;
+
+	}
+
+	private String generateCountryLabelID(int col, int row, String country) {
+		return col + row + country;
+	}
+
+	private String generateToolTipID(int col, int row, String name) {
+		return col + row + "ToolTip";
 	}
 
 	public void createBoardLogo() {
@@ -467,17 +494,21 @@ public class MainBoard {
 
 	}
 
-	public void createTransportationPane(int col, int row, String transName, int transportPrice) {
+	public void createTransportationPane(int col, int row, Transportation trans) {
 		StackPane transPane = new StackPane();
 		transPane.getStyleClass().add("trans-util-cell");
 		ImageView transImage = new ImageView(BoardConsts.IMAGE_URL + "/transportation.png");
 		transImage.getStyleClass().add("trans-util-image");
 		transImage.setPickOnBounds(true);
 
-		Label transLabel = new Label(transName);
+		Label transLabel = new Label(trans.getName());
 		transLabel.getStyleClass().add("trans-util-label");
-		Label transPrice = new Label(transportPrice + "");
+		Label transPrice = new Label(trans.getCost() + "$");
 		transPrice.getStyleClass().add("trans-util-price");
+		Tooltip infoTip = new Tooltip();
+		infoTip.setText("Stay Cost: " + trans.getStayCost() + "\nStay Cost With All Transportation:" + InitiateGame.getAssets().getTransportationStayCost());
+		transLabel.setTooltip(infoTip);
+		transPrice.setTooltip(infoTip);
 		FlowPane playerBox = new FlowPane();
 		playerBox.setId(this.generatePlayerBoxID(col, row));
 		playerBox.setVgap(3);
@@ -487,9 +518,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						
-							GameEngine.addEventToEngine(EventTypes.ON_TRANSPORTATION);
-						
+
+						GameEngine.addEventToEngine(EventTypes.ON_TRANSPORTATION);
+
 					}
 				}
 			}
@@ -547,17 +578,20 @@ public class MainBoard {
 		}
 	}
 
-	public void createUtilityPane(int col, int row, String utilName, int utilPrice) {
+	public void createUtilityPane(int col, int row, Utility util) {
 		StackPane utilityPane = new StackPane();
 		utilityPane.getStyleClass().add("trans-util-cell");
 		ImageView utilityImage = new ImageView(BoardConsts.IMAGE_URL + "/utilities.png");
 		utilityImage.getStyleClass().add("trans-util-image");
 		utilityImage.setPickOnBounds(true);
 
-		Label utilityLabel = new Label(utilName);
+		Label utilityLabel = new Label(util.getName());
 		utilityLabel.getStyleClass().add("trans-util-label");
-		Label utilityPrice = new Label(utilPrice + "$");
-		
+		Label utilityPrice = new Label(util.getCost() + "$");
+		Tooltip infoTip = new Tooltip();
+		infoTip.setText("Stay Cost: " + util.getStayCost() + "\nStay Cost With All Transportation:" + InitiateGame.getAssets().getUtilityStayCost());
+		utilityLabel.setTooltip(infoTip);
+		utilityPrice.setTooltip(infoTip);
 		utilityPrice.getStyleClass().add("trans-util-price");
 		FlowPane playerBox = new FlowPane();
 		playerBox.setId(this.generatePlayerBoxID(col, row));
@@ -568,7 +602,7 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-							GameEngine.addEventToEngine(EventTypes.ON_UTILITY);
+						GameEngine.addEventToEngine(EventTypes.ON_UTILITY);
 					}
 				}
 			}
@@ -640,9 +674,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-				
-							GameEngine.addEventToEngine(EventTypes.ON_WARRANT);
-					
+
+						GameEngine.addEventToEngine(EventTypes.ON_WARRANT);
+
 					}
 				}
 			}
@@ -692,9 +726,9 @@ public class MainBoard {
 			public void onChanged(ListChangeListener.Change change) {
 				while (change.next()) {
 					if (change.wasAdded()) {
-						
-							GameEngine.addEventToEngine(EventTypes.ON_SUPRISE);
-						
+
+						GameEngine.addEventToEngine(EventTypes.ON_SUPRISE);
+
 					}
 				}
 			}
@@ -851,25 +885,24 @@ public class MainBoard {
 
 		return null;
 	}
-        
-        public FlowPane getHouseBox(int location)
-        {
-            Node node = this.getCellByPosition(location);
+
+	public FlowPane getHouseBox(int location) {
+		Node node = this.getCellByPosition(location);
 		int col = PositionHelper.arr.get(location).getCol();
 		int row = PositionHelper.arr.get(location).getRow();
 		Parent tempParent = (Parent) node;
 		if (tempParent.getClass().getSimpleName().equals("SplitPane")) {
 			SplitPane pane = (SplitPane) tempParent;
 			for (Node citytemp : pane.getItems()) {
-				if (citytemp.getId()!=null && citytemp.getId().equals(this.generateHoseBoxID(col, row)))
-                                    return (FlowPane)citytemp;
-                                }                            
-                        }
-                return null;
-        }
-        
-            public String generateHoseBoxID(int col, int row) {
-		return "houseBox-" + new Integer(col).toString() + new Integer(row).toString(); //eden
+				if (citytemp.getId() != null && citytemp.getId().equals(this.generateHoseBoxID(col, row)))
+					return (FlowPane) citytemp;
+			}
+		}
+		return null;
+	}
+
+	public String generateHoseBoxID(int col, int row) {
+		return "houseBox-" + new Integer(col).toString() + new Integer(row).toString(); // eden
 	}
 
 	public String generatePlayerBoxID(int col, int row) {

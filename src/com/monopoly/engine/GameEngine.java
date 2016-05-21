@@ -276,6 +276,7 @@ public class GameEngine {
 			currentPlayer.setMoney(currentPlayer.getMoney() - cell.getCost());
 			cell.setHasOwner(true);
 			cell.setOwner(currentPlayer);
+
 			eventList.add(EventTypes.TURN_FINISHED);
 			break;
 		}
