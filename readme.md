@@ -79,7 +79,8 @@ The Support Site solution includes several components:
   * **SAP Jam Group Feed**: Select a group. The widget will show the group feed and allow end users to post to the group.
   * **SAP Jam Search**: Configure a default query to enable end users to search for content in the SAP Jam tenant.
   * **Prerequisite**:  Make sure you are connected to SAP Jam and that you have enabled integration with SAP Jam in the Site Settings.
-  Note that the SAP Jam widgets are part of the site template and are created automatically as part of the site’s initial content. If you did not deploy the SAP Jam applications, these sections will show an error message. In this case, simply click on the sections and delete the widgets.
+  
+    Note that the SAP Jam widgets are part of the site template and are created automatically as part of the site’s initial content. If you did not deploy the SAP Jam applications, these sections will show an error message. In this case, simply click on the sections and delete the widgets.
  
  
 ## Extend the Sample Solution for Productive Use
